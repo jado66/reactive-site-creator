@@ -51,16 +51,24 @@ function StylesEditor(props) {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, _defineProperty({}, e.target.name, e.target.value)));
   };
 
+  var handleColorChange = function handleColorChange(e) {
+    appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
+      colors: _objectSpread(_objectSpread({}, webStyle.colors), {}, _defineProperty({}, e.target.name, e.target.value))
+    }));
+  };
+
   var handleCheckBox = function handleCheckBox(e, name) {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, _defineProperty({}, name, !webStyle[name])));
   };
 
   var invertColors = function invertColors() {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
-      lightShade: webStyle.colors.darkShade,
-      lightAccent: webStyle.colors.darkAccent,
-      darkAccent: webStyle.colors.lightAccent,
-      darkShade: webStyle.colors.lightShade
+      colors: _objectSpread(_objectSpread({}, webStyle.colors), {}, {
+        lightShade: webStyle.colors.darkShade,
+        lightAccent: webStyle.colors.darkAccent,
+        darkAccent: webStyle.colors.lightAccent,
+        darkShade: webStyle.colors.lightShade
+      })
     }));
   };
 
@@ -109,9 +117,8 @@ function StylesEditor(props) {
           type: "text",
           value: name,
           onChange: function onChange(e) {
-            appMethods.handleNameChange(index, e.target.value);
+            appMethods.handlePageNameChange(index, e.target.value);
           },
-          name: "homePageName",
           style: {
             width: "90px",
             borderWidth: "0px 0px 1px 0px",
@@ -123,9 +130,8 @@ function StylesEditor(props) {
           type: "text",
           value: path,
           onChange: function onChange(e) {
-            appMethods.handlePathChange(index, e.target.value);
+            appMethods.handlePagePathChange(index, e.target.value);
           },
-          name: "homePageName",
           style: {
             width: "90px",
             borderWidth: "0px 0px 1px 0px",
@@ -277,7 +283,7 @@ function StylesEditor(props) {
               type: "color",
               value: webStyle.colors.lightShade,
               name: "lightShade",
-              onChange: handleInputChange,
+              onChange: handleColorChange,
               style: {
                 border: "none",
                 background: "none",
@@ -290,7 +296,7 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
               value: webStyle.colors.lightAccent,
-              onChange: handleInputChange,
+              onChange: handleColorChange,
               name: "lightAccent",
               style: {
                 border: "none",
@@ -304,7 +310,7 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
               value: webStyle.colors.mainBrandColor,
-              onChange: handleInputChange,
+              onChange: handleColorChange,
               name: "mainBrandColor",
               style: {
                 border: "none",
@@ -318,7 +324,7 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
               value: webStyle.colors.darkAccent,
-              onChange: handleInputChange,
+              onChange: handleColorChange,
               name: "darkAccent",
               style: {
                 border: "none",
@@ -327,12 +333,12 @@ function StylesEditor(props) {
                 height: "40px",
                 padding: "0"
               }
-            }), " - Secoondary Accent"]
+            }), " - Secondary Accent"]
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
               value: webStyle.colors.darkShade,
-              onChange: handleInputChange,
+              onChange: handleColorChange,
               name: "darkShade",
               style: {
                 border: "none",

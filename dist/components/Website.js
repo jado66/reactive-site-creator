@@ -69,9 +69,29 @@ var site_template = {
     darkShade: "#1C191E"
   },
   pages: [{
-    id: 1,
+    id: "Page-1",
     name: "Home",
-    path: "/"
+    path: "/",
+    components: [{
+      name: "Header",
+      id: "Home-Header-0-000",
+      content: {
+        html: "New Website Home"
+      }
+    }, {
+      name: "NavigationBar",
+      id: "Home-NavBar-1-001 ",
+      content: {}
+    }]
+  }, {
+    id: "Page-2",
+    name: "Blog",
+    path: "/blog",
+    components: [{
+      name: "Header",
+      id: "Blog-Header-0-000",
+      content: {}
+    }]
   }],
   masterNavBarData: [{
     id: 1,
@@ -216,19 +236,17 @@ function Website() {
       }
     },
     handlePageNameChange: function handlePageNameChange(index, name) {
-      var newPage = {
-        path: pages[index].path,
+      var newPage = _objectSpread(_objectSpread({}, pages[index]), {}, {
         name: name
-      };
+      });
 
       _setPages([].concat(_toConsumableArray(pages.slice(0, index)), [newPage], _toConsumableArray(pages.slice(index + 1)))); // Callback to save to storage
 
     },
     handlePagePathChange: function handlePagePathChange(index, path) {
-      var newPage = {
-        path: path,
-        name: pages[index].name
-      };
+      var newPage = _objectSpread(_objectSpread({}, pages[index]), {}, {
+        path: path
+      });
 
       _setPages([].concat(_toConsumableArray(pages.slice(0, index)), [newPage], _toConsumableArray(pages.slice(index + 1))));
     },
@@ -248,19 +266,17 @@ function Website() {
         _setPages([].concat(_toConsumableArray(pages.slice(0, index)), _toConsumableArray(pages.slice(index + 1))));
       }
     },
-    addPage: function addPage(name, path) {
+    addPage: function addPage() {
       // alert("New Page")
-      if (!name) {
-        name = "New Page";
-      }
-
-      if (!path) {
-        path = "/new-page";
-      }
-
       var newPage = {
-        path: path,
-        name: name
+        id: generatePageKey(),
+        path: "/new-page",
+        name: "New Page",
+        components: [{
+          name: "Header",
+          id: "Home-Header-0-000",
+          content: {}
+        }]
       };
 
       _setPages([].concat(_toConsumableArray(pages), [newPage]));
@@ -341,7 +357,7 @@ function Website() {
 
   var setCartFromStorage = function setCartFromStorage() {
     // This stays as a local storage item
-    var storedCart = JSON.parse(localStorage.getItem("cart"));
+    var storedCart = JSON.parse(localStorage.getItem("cart"), 4, null);
 
     if (storedCart) {
       // storedCart = {}
@@ -357,26 +373,42 @@ function Website() {
     }));
   }
 
+  function generatePageKey() {
+    var newID = -1;
+
+    while (newID === -1) {
+      newID = String(new Date().getTime()).slice(-3); // Check if newID exists
+
+      pages.forEach(function (page) {
+        if (newID === page.id) {
+          newID = -1;
+        }
+      });
+    }
+
+    return newID;
+  }
+
   (0, _react.useEffect)(function () {
     if (msgPort == "save") {
       appMethods.sendMsgPortMsg("");
     }
   }, [msgPort]);
   var sitePages = pages.map(function (_ref) {
-    var name = _ref.name,
-        path = _ref.path;
-    var pageContent = site_template.pageData[name];
+    var id = _ref.id,
+        name = _ref.name,
+        path = _ref.path,
+        components = _ref.components;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
-      basename: "/site-creator",
       exact: true,
       path: path + "/:pathParam?",
       children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
         webStyle: webStyle,
         pageName: name,
-        content: pageContent,
+        components: components,
         defaultComponentList: ["Header", "Navbar"],
         componentOptions: componentOptions
-      }, name + "Page")]
+      }, id)]
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
@@ -400,7 +432,6 @@ function Website() {
         overflowX: "hidden"
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
-        basename: "/site-creator",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Switch, {
           children: sitePages
         })

@@ -118,8 +118,8 @@ function DynamicPage(props) {
 
   };
   (0, _react.useEffect)(function () {
-    if (props.content) {
-      var _components = props.content;
+    if (props.components) {
+      var _components = props.components;
       setComponents(_components);
     } else {
       var _components2 = [];
@@ -154,13 +154,10 @@ function DynamicPage(props) {
         }
       }, el.id + "c")
     }, el.id));
-
-    if (index !== components.length - 1) {
-      pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_Spacer.default, {
-        insertComponent: insertComponent,
-        index: index
-      }));
-    }
+    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_Spacer.default, {
+      insertComponent: insertComponent,
+      index: index
+    }));
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     style: {
