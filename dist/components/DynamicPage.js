@@ -5,14 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = DynamicPage;
 
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-require("core-js/modules/es.string.replace.js");
-
-require("core-js/modules/es.string.includes.js");
-
 var _react = require("react");
 
 var _core = require("@dnd-kit/core");
@@ -33,62 +25,77 @@ var _AdminWrapper = _interopRequireDefault(require("./wrappers/AdminWrapper"));
 
 var _Website = require("./Website");
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import "bootstrap/dist/css/bootstrap.css";
-// import BlogPreview from "./BlogPreview";
-// import CaptionedPicture from "./pageComponents/CaptionedPicture";
-// import DynamicForm from "./pageComponents/DynamicForm";
-// import CardPaymentBlock from "./CardPaymentBlock";
-// import Mosaic from "./pageComponents/Mosaic";
-// import Footer from "./pageComponents/Footer";
-// import VideoFrame from "./pageComponents/VideoFrame";
-// import SlideShow from "./pageComponents/SlideShow";
-// import PictureFrame from "./PictureFrame";
-// import QuickLink from "./pageComponents/QuickLink";
-// import Paragraph from "./pageComponents/Paragraph";
-// import ProductComparisonCards from "./pageComponents/ProductComparisonCards";
-// import ProductComparisonTable from "./pageComponents/ProductComparisonTable";
-// import WalkThrough from "./pageComponents/Walkthrough";
-// import ParagraphBacked from "./pageComponents/ParagraphBacked";
-// import CountDown from "./pageComponents/CountDown";
-// import Appointments from "./pageComponents/Appointments";
-// import PhotoGallery from "./pageComponents/PhotoGallery";
-function DynamicPage(props) {
-  const {
-    flatComponents,
-    webStyle
-  } = (0, _react.useContext)(_Website.WebContext);
-  const [components, setComponents] = (0, _react.useState)([]);
-  const [activeID, setActiveID] = (0, _react.useState)(null);
-  const sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor));
-  const [selectedComponents, setSelectedComponents] = (0, _react.useState)([]);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-  const insertComponent = (option, index) => {
-    let newComponent = {
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function DynamicPage(props) {
+  var _useContext = (0, _react.useContext)(_Website.WebContext),
+      flatComponents = _useContext.flatComponents,
+      webStyle = _useContext.webStyle;
+
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      components = _useState2[0],
+      setComponents = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(null),
+      _useState4 = _slicedToArray(_useState3, 2),
+      activeID = _useState4[0],
+      setActiveID = _useState4[1];
+
+  var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor));
+
+  var _useState5 = (0, _react.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      selectedComponents = _useState6[0],
+      setSelectedComponents = _useState6[1];
+
+  var insertComponent = function insertComponent(option, index) {
+    var newComponent = {
       name: option.replace(/\s+/g, ''),
       id: generateKey(option, index),
       content: {}
     };
-    let newComponents = [...components.slice(0, index + 1), newComponent, ...components.slice(index + 1)];
+    var newComponents = [].concat(_toConsumableArray(components.slice(0, index + 1)), [newComponent], _toConsumableArray(components.slice(index + 1)));
     setComponents(newComponents);
   };
 
-  const addSelected = id => {
-    setSelectedComponents([...selectedComponents, id]);
+  var addSelected = function addSelected(id) {
+    setSelectedComponents([].concat(_toConsumableArray(selectedComponents), [id]));
   };
 
-  const removeSelected = id => {
+  var removeSelected = function removeSelected(id) {
     try {
-      const idIndex = selectedComponents.indexOf(id); // alert(`Removing ${id} at index ${idIndex}`);
+      var idIndex = selectedComponents.indexOf(id); // alert(`Removing ${id} at index ${idIndex}`);
 
-      setSelectedComponents([...selectedComponents.splice(idIndex, 1)]);
+      setSelectedComponents(_toConsumableArray(selectedComponents.splice(idIndex, 1)));
     } catch (error) {
       alert("Error in removedSelected function:" + error);
     }
   };
 
-  const componentMap = {
+  var componentMap = {
     Header: _Header.default,
     // Footer:Footer,
     // Mosaic:Mosaic,
@@ -110,99 +117,101 @@ function DynamicPage(props) {
     // PhotoGallery:PhotoGallery
 
   };
-  (0, _react.useEffect)(() => {
+  (0, _react.useEffect)(function () {
     if (props.content) {
-      const components = props.content;
-      setComponents(components);
+      var _components = props.content;
+      setComponents(_components);
     } else {
-      let components = [];
+      var _components2 = [];
 
       for (var i = 0; i < props.defaultComponentList.length; i++) {
-        components.push({
+        _components2.push({
           name: props.defaultComponentList[i],
           id: generateKey(props.defaultComponentList[i], i)
         });
       }
 
-      setComponents(components);
+      setComponents(_components2);
     }
   }, []);
-  let pagecomponents = [];
-  components.forEach((el, index) => {
-    const Component = componentMap[el.name];
-    pagecomponents.push( /*#__PURE__*/React.createElement(_AdminWrapper.default, {
-      key: el.id,
+  var pagecomponents = [];
+  components.forEach(function (el, index) {
+    var Component = componentMap[el.name];
+    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminWrapper.default, {
       isFlat: flatComponents.includes(el.name),
       id: el.id,
       addSelected: addSelected,
       removeSelected: removeSelected,
-      className: "py-3 "
-    }, /*#__PURE__*/React.createElement(Component, {
-      key: el.id + "c",
-      id: el.id + "c",
-      index: index,
-      pageName: props.pageName,
-      content: el.content,
-      componentName: el.name,
-      style: {
-        cursor: "auto"
-      }
-    })));
+      className: "py-3 ",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {
+        id: el.id + "c",
+        index: index,
+        pageName: props.pageName,
+        content: el.content,
+        componentName: el.name,
+        style: {
+          cursor: "auto"
+        }
+      }, el.id + "c")
+    }, el.id));
 
     if (index !== components.length - 1) {
-      pagecomponents.push( /*#__PURE__*/React.createElement(_Spacer.default, {
+      pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_Spacer.default, {
         insertComponent: insertComponent,
         index: index
       }));
     }
   });
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     style: {
       backgroundColor: webStyle.lightShade
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    id: "outerSection",
-    className: "min-vh-100" + (webStyle.isMobile ? " " : " container")
-  }, /*#__PURE__*/React.createElement("div", {
-    id: "innerSection",
-    className: "col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4",
-    style: {
-      backgroundColor: webStyle.lightAccent
-    }
-  }, /*#__PURE__*/React.createElement(_core.DndContext, {
-    sensors: sensors,
-    modifiers: [_modifiers.restrictToVerticalAxis],
-    collisionDetection: _core.closestCenter,
-    onDragStart: handleDragStart,
-    onDragEnd: handleDragEnd
-  }, /*#__PURE__*/React.createElement(_sortable.SortableContext, {
-    items: components,
-    strategy: _sortable.verticalListSortingStrategy
-  }, pagecomponents), /*#__PURE__*/React.createElement(_core.DragOverlay, null, activeID ? /*#__PURE__*/React.createElement(OverlaySpot, {
-    id: activeID
-  }) : null)))));
+    },
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      id: "outerSection",
+      className: "min-vh-100" + (webStyle.isMobile ? " " : " container"),
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        id: "innerSection",
+        className: "col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4",
+        style: {
+          backgroundColor: webStyle.lightAccent
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.DndContext, {
+          sensors: sensors,
+          modifiers: [_modifiers.restrictToVerticalAxis],
+          collisionDetection: _core.closestCenter,
+          onDragStart: handleDragStart,
+          onDragEnd: handleDragEnd,
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_sortable.SortableContext, {
+            items: components,
+            strategy: _sortable.verticalListSortingStrategy,
+            children: pagecomponents
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DragOverlay, {
+            children: activeID ? /*#__PURE__*/(0, _jsxRuntime.jsx)(OverlaySpot, {
+              id: activeID
+            }) : null
+          })]
+        })
+      })
+    })
+  });
 
   function generateKey(componentName, index) {
     return "".concat(props.pageName, "-").concat(componentName, "-").concat(index).concat(String(new Date().getTime()).slice(-3));
   }
 
   function handleDragStart(event) {
-    const {
-      active
-    } = event;
+    var active = event.active;
     setActiveID(active.id);
   }
 
   function handleDragEnd(event) {
-    const {
-      active,
-      over
-    } = event;
+    var active = event.active,
+        over = event.over;
 
     if (active.id !== over.id) {
-      const oldIndex = active.data.current.sortable.index;
-      const newIndex = over.data.current.sortable.index;
-      setComponents(components => {
+      var oldIndex = active.data.current.sortable.index;
+      var newIndex = over.data.current.sortable.index;
+      setComponents(function (components) {
         return (0, _sortable.arrayMove)(components, oldIndex, newIndex);
       });
       setActiveID(null);
@@ -211,7 +220,7 @@ function DynamicPage(props) {
 }
 
 function OverlaySpot(props) {
-  return /*#__PURE__*/React.createElement("div", {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "text-center"
   });
 }

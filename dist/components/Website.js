@@ -6,12 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.WebContext = void 0;
 exports.default = Website;
 
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.sort.js");
-
-require("core-js/modules/es.parse-int.js");
-
 var _react = require("react");
 
 var _reactRouterDom = require("react-router-dom");
@@ -28,11 +22,33 @@ var _StylesEditor = _interopRequireDefault(require("./StylesEditor"));
 
 var _DynamicPage = _interopRequireDefault(require("./DynamicPage"));
 
+var _jsxRuntime = require("react/jsx-runtime");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -43,7 +59,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 // import Page404 from "./pages/Page404"
 // Data
 // import {site_template} from "./websiteVersions/current"
-const site_template = {
+var site_template = {
   siteName: "New Website",
   colors: {
     lightShade: "#EEE4E8",
@@ -67,25 +83,23 @@ const site_template = {
     link: "https://github.com"
   }],
   promoCodes: {},
-  pageData: {
-    ["Home"]: [{
-      name: "Header",
-      id: "Home-Header-0-000",
-      content: {
-        html: "New Website Home"
-      }
-    }, {
-      name: "NavigationBar",
-      id: "Home-NavBar-1-001 ",
-      content: {}
-    }]
-  }
+  pageData: _defineProperty({}, "Home", [{
+    name: "Header",
+    id: "Home-Header-0-000",
+    content: {
+      html: "New Website Home"
+    }
+  }, {
+    name: "NavigationBar",
+    id: "Home-NavBar-1-001 ",
+    content: {}
+  }])
 };
-const WebContext = /*#__PURE__*/(0, _react.createContext)();
+var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
 function Website() {
-  const [webStyle, _setWebStyle] = (0, _react.useState)({
+  var _useState = (0, _react.useState)({
     siteName: site_template.siteName,
     isEditMode: true,
     isShowEditor: true,
@@ -93,55 +107,101 @@ function Website() {
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)
-  });
-  const [masterNavData, _setMasterNavData] = (0, _react.useState)(site_template.masterNavBarData);
-  const [socialMedias, _setSocialMedias] = (0, _react.useState)(site_template.socialMedias);
-  const [pages, _setPages] = (0, _react.useState)(site_template.pages);
-  const [promoCodes, _setPromoCodes] = (0, _react.useState)(site_template.pages);
-  const [cart, _setCart] = (0, _react.useState)({});
-  const [msgPort, setMsgPort] = (0, _react.useState)("");
-  const [savedData, _setSavedData] = (0, _react.useState)({});
-  const componentOptions = ["Product Comparison Table", "Walk Through", "Product Comparison Cards", "Paragraph", "Paragraph Backed", "Quick Link", "Navigation Bar", "Header", "Footer", "Mosaic", "Captioned Picture", "Video Frame", "Slide Show"].sort();
-  const flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable"];
-  const appMethods = {
-    setWebStyle: state => _setWebStyle(state),
-    setMasterNavData: state => _setMasterNavData(state),
-    setCart: state => _setCart(state),
-    setSocialMedias: state => _setSocialMedias(state),
-    setPages: state => _setPages(state),
-    sendMsgPortMsg: msg => setMsgPort(msg),
-    setSavedData: state => _setSavedData(state),
-    setPromoCodes: state => _setPromoCodes(state),
-    addToCart: cartItem => {
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      webStyle = _useState2[0],
+      _setWebStyle = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(site_template.masterNavBarData),
+      _useState4 = _slicedToArray(_useState3, 2),
+      masterNavData = _useState4[0],
+      _setMasterNavData = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(site_template.socialMedias),
+      _useState6 = _slicedToArray(_useState5, 2),
+      socialMedias = _useState6[0],
+      _setSocialMedias = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(site_template.pages),
+      _useState8 = _slicedToArray(_useState7, 2),
+      pages = _useState8[0],
+      _setPages = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(site_template.pages),
+      _useState10 = _slicedToArray(_useState9, 2),
+      promoCodes = _useState10[0],
+      _setPromoCodes = _useState10[1];
+
+  var _useState11 = (0, _react.useState)({}),
+      _useState12 = _slicedToArray(_useState11, 2),
+      cart = _useState12[0],
+      _setCart = _useState12[1];
+
+  var _useState13 = (0, _react.useState)(""),
+      _useState14 = _slicedToArray(_useState13, 2),
+      msgPort = _useState14[0],
+      setMsgPort = _useState14[1];
+
+  var _useState15 = (0, _react.useState)({}),
+      _useState16 = _slicedToArray(_useState15, 2),
+      savedData = _useState16[0],
+      _setSavedData = _useState16[1];
+
+  var componentOptions = ["Product Comparison Table", "Walk Through", "Product Comparison Cards", "Paragraph", "Paragraph Backed", "Quick Link", "Navigation Bar", "Header", "Footer", "Mosaic", "Captioned Picture", "Video Frame", "Slide Show"].sort();
+  var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable"];
+  var appMethods = {
+    setWebStyle: function setWebStyle(state) {
+      return _setWebStyle(state);
+    },
+    setMasterNavData: function setMasterNavData(state) {
+      return _setMasterNavData(state);
+    },
+    setCart: function setCart(state) {
+      return _setCart(state);
+    },
+    setSocialMedias: function setSocialMedias(state) {
+      return _setSocialMedias(state);
+    },
+    setPages: function setPages(state) {
+      return _setPages(state);
+    },
+    sendMsgPortMsg: function sendMsgPortMsg(msg) {
+      return setMsgPort(msg);
+    },
+    setSavedData: function setSavedData(state) {
+      return _setSavedData(state);
+    },
+    setPromoCodes: function setPromoCodes(state) {
+      return _setPromoCodes(state);
+    },
+    addToCart: function addToCart(cartItem) {
       // Check if we already have it in the cart
       if (cartItem.name in cart) {
-        let newCart = _objectSpread({}, cart);
+        var newCart = _objectSpread({}, cart);
 
         newCart[cartItem.name].quantity += 1;
 
         _setCart(newCart);
       } else {
-        let newCart = _objectSpread(_objectSpread({}, cart), {}, {
-          [cartItem.name]: cartItem
-        });
+        var _newCart = _objectSpread(_objectSpread({}, cart), {}, _defineProperty({}, cartItem.name, cartItem));
 
-        _setCart(newCart);
+        _setCart(_newCart);
       }
     },
-    removeFromCart: itemName => {
+    removeFromCart: function removeFromCart(itemName) {
       // Check if we already have it in the cart
       if (itemName in cart) {
-        let newCart = _objectSpread({}, cart);
+        var newCart = _objectSpread({}, cart);
 
         delete newCart[itemName];
 
         _setCart(newCart);
       }
     },
-    setCartItemQuantity: (itemName, quantity) => {
+    setCartItemQuantity: function setCartItemQuantity(itemName, quantity) {
       // This should only be called if the item already exists in the cart
       if (itemName in cart) {
-        let newCart = _objectSpread({}, cart);
+        var newCart = _objectSpread({}, cart);
 
         newCart[itemName].quantity = parseInt(quantity);
 
@@ -155,40 +215,40 @@ function Website() {
         alert("Error: Item not found in cart");
       }
     },
-    handlePageNameChange: (index, name) => {
-      let newPage = {
+    handlePageNameChange: function handlePageNameChange(index, name) {
+      var newPage = {
         path: pages[index].path,
         name: name
       };
 
-      _setPages([...pages.slice(0, index), newPage, ...pages.slice(index + 1)]); // Callback to save to storage
+      _setPages([].concat(_toConsumableArray(pages.slice(0, index)), [newPage], _toConsumableArray(pages.slice(index + 1)))); // Callback to save to storage
 
     },
-    handlePagePathChange: (index, path) => {
-      let newPage = {
+    handlePagePathChange: function handlePagePathChange(index, path) {
+      var newPage = {
         path: path,
         name: pages[index].name
       };
 
-      _setPages([...pages.slice(0, index), newPage, ...pages.slice(index + 1)]);
+      _setPages([].concat(_toConsumableArray(pages.slice(0, index)), [newPage], _toConsumableArray(pages.slice(index + 1))));
     },
-    checkIfPageExists: path => {
-      let pageExists = false;
-      pages.forEach(page => {
+    checkIfPageExists: function checkIfPageExists(path) {
+      var pageExists = false;
+      pages.forEach(function (page) {
         if (page.path === path) {
           pageExists = true;
         }
       });
       return pageExists;
     },
-    deletePage: (pageName, index) => {
-      let sureDelete = prompt("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), "");
+    deletePage: function deletePage(pageName, index) {
+      var sureDelete = prompt("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), "");
 
       if (sureDelete === "YES") {
-        _setPages([...pages.slice(0, index), ...pages.slice(index + 1)]);
+        _setPages([].concat(_toConsumableArray(pages.slice(0, index)), _toConsumableArray(pages.slice(index + 1))));
       }
     },
-    addPage: (name, path) => {
+    addPage: function addPage(name, path) {
       // alert("New Page")
       if (!name) {
         name = "New Page";
@@ -198,58 +258,58 @@ function Website() {
         path = "/new-page";
       }
 
-      let newPage = {
+      var newPage = {
         path: path,
         name: name
       };
 
-      _setPages([...pages, newPage]);
+      _setPages([].concat(_toConsumableArray(pages), [newPage]));
     },
     // Social
-    handleSocialSiteChange: (index, location) => {
-      let newSocialMedia = {
+    handleSocialSiteChange: function handleSocialSiteChange(index, location) {
+      var newSocialMedia = {
         link: socialMedias[index].link,
         location: location
       };
 
-      _setSocialMedias([...socialMedias.slice(0, index), newSocialMedia, ...socialMedias.slice(index + 1)]); // Callback to save to storage
+      _setSocialMedias([].concat(_toConsumableArray(socialMedias.slice(0, index)), [newSocialMedia], _toConsumableArray(socialMedias.slice(index + 1)))); // Callback to save to storage
 
     },
-    handleSocialLinkChange: (index, link) => {
-      let newSocialMedia = {
+    handleSocialLinkChange: function handleSocialLinkChange(index, link) {
+      var newSocialMedia = {
         location: socialMedias[index].location,
         link: link
       };
 
-      _setSocialMedias([...socialMedias.slice(0, index), newSocialMedia, ...socialMedias.slice(index + 1)]);
+      _setSocialMedias([].concat(_toConsumableArray(socialMedias.slice(0, index)), [newSocialMedia], _toConsumableArray(socialMedias.slice(index + 1))));
     },
-    deleteSocialMedia: (location, index) => {
-      let sureDelete = window.confirm("Are you sure you would like to your social media link to ".concat(location));
+    deleteSocialMedia: function deleteSocialMedia(location, index) {
+      var sureDelete = window.confirm("Are you sure you would like to your social media link to ".concat(location));
 
       if (sureDelete) {
-        _setSocialMedias([...socialMedias.slice(0, index), ...socialMedias.slice(index + 1)]);
+        _setSocialMedias([].concat(_toConsumableArray(socialMedias.slice(0, index)), _toConsumableArray(socialMedias.slice(index + 1))));
       }
     },
-    addSocialMedia: () => {
-      let newSocialMedia = {
+    addSocialMedia: function addSocialMedia() {
+      var newSocialMedia = {
         location: "New Link",
         link: "/"
       };
 
-      _setSocialMedias([...socialMedias, newSocialMedia]);
+      _setSocialMedias([].concat(_toConsumableArray(socialMedias), [newSocialMedia]));
     },
-    saveWebsite: () => {
+    saveWebsite: function saveWebsite() {
       appMethods.sendMsgPortMsg("save");
     },
-    toggleStyleEditor: () => {
-      let newWebstyle = _objectSpread({}, webStyle);
+    toggleStyleEditor: function toggleStyleEditor() {
+      var newWebstyle = _objectSpread({}, webStyle);
 
       newWebstyle.isShowEditor = !newWebstyle.isShowEditor;
 
       _setWebStyle(newWebstyle);
     },
-    saveComponentData: (pageName, index, data) => {
-      let newSavedData = savedData;
+    saveComponentData: function saveComponentData(pageName, index, data) {
+      var newSavedData = savedData;
 
       if (pageName in newSavedData) {
         newSavedData[pageName][index] = data;
@@ -263,7 +323,7 @@ function Website() {
   };
 
   function handleWindowSizeChange() {
-    const isMobile = window.innerWidth <= 991;
+    var isMobile = window.innerWidth <= 991;
 
     _setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
       isMobile: isMobile
@@ -271,17 +331,17 @@ function Website() {
   } // Website init
 
 
-  (0, _react.useEffect)(() => {
+  (0, _react.useEffect)(function () {
     setCartFromStorage();
     window.addEventListener('resize', handleWindowSizeChange);
-    return () => {
+    return function () {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
   }, []);
 
-  const setCartFromStorage = () => {
+  var setCartFromStorage = function setCartFromStorage() {
     // This stays as a local storage item
-    let storedCart = JSON.parse(localStorage.getItem("cart"));
+    var storedCart = JSON.parse(localStorage.getItem("cart"));
 
     if (storedCart) {
       // storedCart = {}
@@ -290,39 +350,36 @@ function Website() {
   };
 
   function handleWindowSizeChange() {
-    const isMobile = window.innerWidth <= 991;
+    var isMobile = window.innerWidth <= 991;
 
     _setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
       isMobile: isMobile
     }));
   }
 
-  (0, _react.useEffect)(() => {
+  (0, _react.useEffect)(function () {
     if (msgPort == "save") {
       appMethods.sendMsgPortMsg("");
     }
   }, [msgPort]);
-  let sitePages = pages.map(_ref => {
-    let {
-      name,
-      path
-    } = _ref;
-    let pageContent = site_template.pageData[name];
-    return /*#__PURE__*/React.createElement(_reactRouterDom.Route, {
+  var sitePages = pages.map(function (_ref) {
+    var name = _ref.name,
+        path = _ref.path;
+    var pageContent = site_template.pageData[name];
+    return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       basename: "/site-creator",
       exact: true,
       path: path + "/:pathParam?",
-      key: name + "Route"
-    }, webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/React.createElement(_StylesEditor.default, null), /*#__PURE__*/React.createElement(_DynamicPage.default, {
-      webStyle: webStyle,
-      key: name + "Page",
-      pageName: name,
-      content: pageContent,
-      defaultComponentList: ["Header", "Navbar"],
-      componentOptions: componentOptions
-    }));
+      children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
+        webStyle: webStyle,
+        pageName: name,
+        content: pageContent,
+        defaultComponentList: ["Header", "Navbar"],
+        componentOptions: componentOptions
+      }, name + "Page")]
+    }, name + "Route");
   });
-  return /*#__PURE__*/React.createElement(WebContext.Provider, {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
     value: {
       webStyle: webStyle,
       socialMedias: socialMedias,
@@ -335,14 +392,19 @@ function Website() {
       flatComponents: flatComponents,
       componentOptions: componentOptions,
       appMethods: appMethods
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "App",
-    style: {
-      minHeight: "100vh",
-      overflowX: "hidden"
-    }
-  }, /*#__PURE__*/React.createElement(_reactRouterDom.BrowserRouter, {
-    basename: "/site-creator"
-  }, /*#__PURE__*/React.createElement(_reactRouterDom.Switch, null, sitePages))));
+    },
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "App",
+      style: {
+        minHeight: "100vh",
+        overflowX: "hidden"
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
+        basename: "/site-creator",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Switch, {
+          children: sitePages
+        })
+      })
+    })
+  });
 }
