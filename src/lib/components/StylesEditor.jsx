@@ -27,6 +27,18 @@ export default function StylesEditor(props) {
     )
   }
 
+  const handleColorChange = (e) => {
+    appMethods.setWebStyle(
+      {
+        ...webStyle,
+        colors: {
+          ...webStyle.colors,
+          [e.target.name]: e.target.value
+        }
+      }
+    )
+  }
+
   const handleCheckBox = (e,name) => {
     appMethods.setWebStyle(
       {
@@ -40,10 +52,13 @@ export default function StylesEditor(props) {
     appMethods.setWebStyle(
       {
         ...webStyle,
-        lightShade: webStyle.darkShade,
-        lightAccent: webStyle.darkAccent,
-        darkAccent: webStyle.lightAccent,
-        darkShade: webStyle.lightShade
+        colors:{
+          ...webStyle.colors,
+          lightShade: webStyle.colors.darkShade,
+          lightAccent: webStyle.colors.darkAccent,
+          darkAccent: webStyle.colors.lightAccent,
+          darkShade: webStyle.colors.lightShade
+        }
       }
     )     
   }
@@ -70,8 +85,8 @@ const socialMediaSelectOptions = [
   let pageMenus = pages.map(({name, path},index)=> 
   (
     <SubMenu label={name}>
-        <FocusableItem>Name: <input type={"text"} value={name} onChange = {(e)=>{appMethods.handleNameChange(index,e.target.value)}} name = {"homePageName"} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
-        <FocusableItem>Path: <input type={"text"} value={path} onChange = {(e)=>{appMethods.handlePathChange(index,e.target.value)}} name = {"homePageName"} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
+        <FocusableItem>Name: <input type={"text"} value={name} onChange = {(e)=>{appMethods.handlePageNameChange(index,e.target.value)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
+        <FocusableItem>Path: <input type={"text"} value={path} onChange = {(e)=>{appMethods.handlePagePathChange(index,e.target.value)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
         <MenuItem><Link to={path}>Visit Page</Link></MenuItem>
         <MenuDivider />
         <MenuItem><a onClick={()=>{appMethods.deletePage(name,index)}}>Delete Page</a></MenuItem>
@@ -131,12 +146,12 @@ const socialMediaSelectOptions = [
           <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon   icon={faPalette} /></MenuButton>} transition>
             <MenuHeader>Colors</MenuHeader>
             <MenuDivider />
-            <FocusableItem><input   type={"color"} value ={webStyle.lightShade} name = {"lightShade"} onChange = {handleInputChange}
+            <FocusableItem><input   type={"color"} value ={webStyle.colors.lightShade} name = {"lightShade"} onChange = {handleColorChange}
                                     style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} />-  Background Color</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.lightAccent} onChange = {handleInputChange} name = {"lightAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Primary Accent</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.mainBrandColor} onChange = {handleInputChange} name = {"mainBrandColor"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Main Brand Color</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.darkAccent} onChange = {handleInputChange} name = {"darkAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secoondary Accent</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.darkShade} onChange = {handleInputChange} name = {"darkShade"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Shade (Font) </FocusableItem>
+            <FocusableItem><input type={"color"} value ={webStyle.colors.lightAccent} onChange = {handleColorChange} name = {"lightAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Primary Accent</FocusableItem>
+            <FocusableItem><input type={"color"} value ={webStyle.colors.mainBrandColor} onChange = {handleColorChange} name = {"mainBrandColor"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Main Brand Color</FocusableItem>
+            <FocusableItem><input type={"color"} value ={webStyle.colors.darkAccent} onChange = {handleColorChange} name = {"darkAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Accent</FocusableItem>
+            <FocusableItem><input type={"color"} value ={webStyle.colors.darkShade} onChange = {handleColorChange} name = {"darkShade"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Shade (Font) </FocusableItem>
             <FocusableItem><button onClick={invertColors}>Invert Color Scheme</button> </FocusableItem>
           </Menu>
         </div>

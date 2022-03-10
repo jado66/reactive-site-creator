@@ -54,7 +54,7 @@ export default function Header(props){
       <div className="px-5 text-center " data-no-dnd="true">
         <ContentEditable
           className='apply-font-primary mb-0'
-          style={{color:webStyle.darkShade}}
+          style={{color:webStyle.colors.darkShade}}
           spellCheck = "false"
           innerRef={contentEditable}
           html={html} // innerHTML of the editable div

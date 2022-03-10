@@ -57,10 +57,10 @@ function StylesEditor(props) {
 
   var invertColors = function invertColors() {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
-      lightShade: webStyle.darkShade,
-      lightAccent: webStyle.darkAccent,
-      darkAccent: webStyle.lightAccent,
-      darkShade: webStyle.lightShade
+      lightShade: webStyle.colors.darkShade,
+      lightAccent: webStyle.colors.darkAccent,
+      darkAccent: webStyle.colors.lightAccent,
+      darkShade: webStyle.colors.lightShade
     }));
   };
 
@@ -275,7 +275,7 @@ function StylesEditor(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
-              value: webStyle.lightShade,
+              value: webStyle.colors.lightShade,
               name: "lightShade",
               onChange: handleInputChange,
               style: {
@@ -289,7 +289,7 @@ function StylesEditor(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
-              value: webStyle.lightAccent,
+              value: webStyle.colors.lightAccent,
               onChange: handleInputChange,
               name: "lightAccent",
               style: {
@@ -303,7 +303,7 @@ function StylesEditor(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
-              value: webStyle.mainBrandColor,
+              value: webStyle.colors.mainBrandColor,
               onChange: handleInputChange,
               name: "mainBrandColor",
               style: {
@@ -317,7 +317,7 @@ function StylesEditor(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
-              value: webStyle.darkAccent,
+              value: webStyle.colors.darkAccent,
               onChange: handleInputChange,
               name: "darkAccent",
               style: {
@@ -331,7 +331,7 @@ function StylesEditor(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               type: "color",
-              value: webStyle.darkShade,
+              value: webStyle.colors.darkShade,
               onChange: handleInputChange,
               name: "darkShade",
               style: {

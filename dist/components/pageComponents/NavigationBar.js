@@ -224,13 +224,13 @@ function NavigationBar(props) {
               },
               style: {
                 width: "".concat(el.name.length + 2, "ch"),
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               },
               value: el.name
             }, "edit" + el.name + "input"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
               className: "nav-link dropdown-toggle" + (webStyle.isMobile ? " w-50" : ""),
               style: {
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               },
               "data-no-dnd": "true",
               "data-bs-toggle": "dropdown",
@@ -242,7 +242,7 @@ function NavigationBar(props) {
             }, "edit" + el.name + "dropToggle"), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
               className: "dropdown-menu " + (webStyle.isMobile ? "" : "boxShadow"),
               style: {
-                backgroundColor: webStyle.darkAccent
+                backgroundColor: webStyle.colors.darkAccent
               },
               "aria-labelledby": "navbarDropdown",
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -258,7 +258,7 @@ function NavigationBar(props) {
               },
               style: {
                 width: "".concat(el.name.length + 2, "ch"),
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               },
               value: el.name
             }, "edit" + el.name + "input1"), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
@@ -268,7 +268,7 @@ function NavigationBar(props) {
               },
               style: {
                 width: "".concat(el.path.length + 2, "ch"),
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               },
               value: el.path
             }, "edit" + el.name + "input2")]
@@ -292,7 +292,7 @@ function NavigationBar(props) {
               className: "nav-item ms-2",
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
                 style: {
-                  color: webStyle.lightShade
+                  color: webStyle.colors.lightShade
                 },
                 "data-no-dnd": "true",
                 className: "nav-link ",
@@ -318,7 +318,7 @@ function NavigationBar(props) {
             className: "position-relative ",
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
               style: {
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               },
               className: "  dropdown-toggle text-decoration-none",
               "data-bs-toggle": "dropdown",
@@ -330,7 +330,7 @@ function NavigationBar(props) {
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
               className: "dropdown-menu border-0 rounded-0 mt-0 " + (webStyle.isMobile ? "" : "boxShadow"),
               style: {
-                backgroundColor: webStyle.darkAccent,
+                backgroundColor: webStyle.colors.darkAccent,
                 top: "2.5em",
                 opacity: "1 !important"
               },
@@ -357,7 +357,7 @@ function NavigationBar(props) {
                       "data-no-dnd": "true",
                       type: "button",
                       style: {
-                        color: webStyle.lightShade
+                        color: webStyle.colors.lightShade
                       },
                       onClick: function onClick(evt) {
                         addDropdownlink(evt, index);
@@ -373,7 +373,7 @@ function NavigationBar(props) {
           }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
             "data-no-dnd": "true",
             style: {
-              color: webStyle.lightShade
+              color: webStyle.colors.lightShade
             },
             className: "text-decoration-none ",
             "aria-current": "page",
@@ -408,7 +408,7 @@ function NavigationBar(props) {
         className: 'nav-link social-link',
         href: "".concat(link),
         style: {
-          color: webStyle.lightShade
+          color: webStyle.colors.lightShade
         },
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
           className: "sm-icons",
@@ -420,8 +420,8 @@ function NavigationBar(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "fullWidth boxShadow px-5  ",
     style: {
-      backgroundColor: webStyle.darkAccent,
-      color: webStyle.lightShade,
+      backgroundColor: webStyle.colors.darkAccent,
+      color: webStyle.colors.lightShade,
       position: "sticky",
       top: 0,
       alignSelf: "flex-start",
@@ -441,7 +441,7 @@ function NavigationBar(props) {
           "data-no-dnd": "true",
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
             style: {
-              color: webStyle.lightShade
+              color: webStyle.colors.lightShade
             },
             className: "form-control-plaintext w-50",
             value: homeLinkText,
@@ -451,7 +451,7 @@ function NavigationBar(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
             className: "form-control-plaintext w-50",
             style: {
-              color: webStyle.lightShade
+              color: webStyle.colors.lightShade
             },
             value: "\\",
             onChange: function onChange(evt) {
@@ -463,7 +463,7 @@ function NavigationBar(props) {
           className: "navbar-brand",
           to: "/",
           style: {
-            color: webStyle.lightShade
+            color: webStyle.colors.lightShade
           },
           children: homeLinkText
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -477,7 +477,7 @@ function NavigationBar(props) {
           "aria-label": "Toggle navigation",
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             style: {
-              color: webStyle.lightShade
+              color: webStyle.colors.lightShade
             },
             icon: _freeSolidSvgIcons.faBars
           })
@@ -527,7 +527,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faPlusSquare,
                 style: {
-                  color: webStyle.lightShade
+                  color: webStyle.colors.lightShade
                 }
               })
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -539,7 +539,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faCaretSquareDown,
                 style: {
-                  color: webStyle.lightShade
+                  color: webStyle.colors.lightShade
                 }
               })
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -551,7 +551,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: isEdit ? _freeSolidSvgIcons.faArrowsAlt : _freeSolidSvgIcons.faPencilAlt,
                 style: {
-                  color: webStyle.lightShade
+                  color: webStyle.colors.lightShade
                 }
               })
             })]
@@ -566,7 +566,7 @@ function NavigationBar(props) {
                 className: "col ms-3",
                 to: "/checkout",
                 style: {
-                  color: webStyle.lightShade
+                  color: webStyle.colors.lightShade
                 },
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                   className: "m-icons",
@@ -592,7 +592,7 @@ function NavigationBar(props) {
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
               icon: _freeSolidSvgIcons.faCog,
               style: {
-                color: webStyle.lightShade
+                color: webStyle.colors.lightShade
               }
             })
           })]
@@ -636,7 +636,7 @@ function NavigationBar(props) {
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             icon: _freeSolidSvgIcons.faCog,
             style: {
-              color: webStyle.lightShade
+              color: webStyle.colors.lightShade
             }
           })
         })]
@@ -793,7 +793,7 @@ var DropDownLink = function DropDownLink(props) {
       className: "input-group ",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         style: {
-          color: webStyle.lightShade
+          color: webStyle.colors.lightShade
         },
         className: "form-control-plaintext w-50",
         value: props.name,
@@ -801,7 +801,7 @@ var DropDownLink = function DropDownLink(props) {
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         className: "form-control-plaintext w-50",
         style: {
-          color: webStyle.lightShade
+          color: webStyle.colors.lightShade
         },
         value: props.path,
         onChange: props.onChangePath

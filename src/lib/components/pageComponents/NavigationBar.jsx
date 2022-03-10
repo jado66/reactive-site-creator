@@ -185,7 +185,7 @@ export default function NavigationBar(props) {
                   onChange={(evt) => {
                     handleLinkChange(evt, index, "text");
                   }}
-                  style ={{width:`${el.name.length+2}ch`,color:webStyle.lightShade}}
+                  style ={{width:`${el.name.length+2}ch`,color:webStyle.colors.lightShade}}
 
                   value={el.name}
                 />
@@ -194,7 +194,7 @@ export default function NavigationBar(props) {
                   className={
                     "nav-link dropdown-toggle" + (webStyle.isMobile ? " w-50" : "")
                   }
-                  style ={{color:webStyle.lightShade}}
+                  style ={{color:webStyle.colors.lightShade}}
                   data-no-dnd="true"
                   data-bs-toggle="dropdown"
                   id="navbarDropdown"
@@ -204,7 +204,7 @@ export default function NavigationBar(props) {
                 >
                   Dropdown
                 </Link>
-                <ul key={"edit"+el.name+"ul"} className={"dropdown-menu "+(webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.darkAccent}} aria-labelledby="navbarDropdown">
+                <ul key={"edit"+el.name+"ul"} className={"dropdown-menu "+(webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.colors.darkAccent}} aria-labelledby="navbarDropdown">
                   <div>
                   {dropdownItems}
 
@@ -221,7 +221,7 @@ export default function NavigationBar(props) {
                   onChange={(evt) => {
                     handleLinkChange(evt, index, "name");
                   }}
-                  style ={{width:`${el.name.length+2}ch`,color:webStyle.lightShade}}
+                  style ={{width:`${el.name.length+2}ch`,color:webStyle.colors.lightShade}}
 
                   value={el.name}
                 />
@@ -233,7 +233,7 @@ export default function NavigationBar(props) {
                   onChange={(evt) => {
                     handleLinkChange(evt, index, "path");
                   }}
-                  style ={{width:`${el.path.length+2}ch`,color:webStyle.lightShade}}
+                  style ={{width:`${el.path.length+2}ch`,color:webStyle.colors.lightShade}}
                   value={el.path}
                 />
               </div>
@@ -262,7 +262,7 @@ export default function NavigationBar(props) {
             >
               <li className="nav-item ms-2" >
                 <Link
-                  style={{color:webStyle.lightShade}}
+                  style={{color:webStyle.colors.lightShade}}
                   data-no-dnd="true"
                   className="nav-link "
                   aria-current="page"
@@ -287,7 +287,7 @@ export default function NavigationBar(props) {
             {"dropdown" in el ? (
               <div className="position-relative ">
                 <a
-                  style={{color:webStyle.lightShade}}
+                  style={{color:webStyle.colors.lightShade}}
                   className="  dropdown-toggle text-decoration-none"
                   data-bs-toggle="dropdown"
                   id={"navbarDropdown" + el.id}
@@ -298,7 +298,7 @@ export default function NavigationBar(props) {
                   {el.name}
                 </a>
                 <ul
-                  className={"dropdown-menu border-0 rounded-0 mt-0 "+(webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.darkAccent, top:"2.5em", opacity:"1 !important"}}
+                  className={"dropdown-menu border-0 rounded-0 mt-0 "+(webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.colors.darkAccent, top:"2.5em", opacity:"1 !important"}}
                   aria-labelledby={"navbarDropdown" + el.id}
 
                 >                  
@@ -332,7 +332,7 @@ export default function NavigationBar(props) {
                         className={"btn "+(webStyle.isMobile?"ps-4":"w-100")}
                         data-no-dnd="true"
                         type="button"
-                        style={{color:webStyle.lightShade}}
+                        style={{color:webStyle.colors.lightShade}}
                         onClick={(evt) => {
                           addDropdownlink(evt, index);
                         }}
@@ -348,7 +348,7 @@ export default function NavigationBar(props) {
               <Link
                 data-no-dnd="true"
 
-                style={{color:webStyle.lightShade}}
+                style={{color:webStyle.colors.lightShade}}
                 className={"text-decoration-none "}
                 aria-current="page"
                 to={el.path}
@@ -369,13 +369,13 @@ export default function NavigationBar(props) {
     return true;
     }).map(({link,location}) =>
       <li className="py-2">
-        <Link className={'nav-link social-link'} key = {location}  href={`${link}`}  style={{color:webStyle.lightShade}}><FontAwesomeIcon className={"sm-icons"} icon={componentMapping[location]} /></Link>
+        <Link className={'nav-link social-link'} key = {location}  href={`${link}`}  style={{color:webStyle.colors.lightShade}}><FontAwesomeIcon className={"sm-icons"} icon={componentMapping[location]} /></Link>
       </li>
     );
 
   return (
     <div
-      className="fullWidth boxShadow px-5  " style={{backgroundColor:webStyle.darkAccent, color:webStyle.lightShade, position: "sticky",top: 0, alignSelf: "flex-start",zIndex:1}}
+      className="fullWidth boxShadow px-5  " style={{backgroundColor:webStyle.colors.darkAccent, color:webStyle.colors.lightShade, position: "sticky",top: 0, alignSelf: "flex-start",zIndex:1}}
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -383,7 +383,7 @@ export default function NavigationBar(props) {
         showButtons(false);
       }}
     >
-      {/* style={{backgroundColor:webStyle.lightShade}} */}
+      {/* style={{backgroundColor:webStyle.colors.lightShade}} */}
         <nav className="navbar navbar-expand-lg mx-4 p-0 container mx-auto">
           
           {!isSettingsMode?
@@ -391,7 +391,7 @@ export default function NavigationBar(props) {
             {isEdit?
             <div data-no-dnd="true">
               <input
-                  style ={{color:webStyle.lightShade}}
+                  style ={{color:webStyle.colors.lightShade}}
 
                   className="form-control-plaintext w-50"
                   value={homeLinkText}
@@ -401,7 +401,7 @@ export default function NavigationBar(props) {
                 />
                 <input
                   className="form-control-plaintext w-50"
-                  style ={{color:webStyle.lightShade}}
+                  style ={{color:webStyle.colors.lightShade}}
 
                   value={"\\"}
                   onChange={(evt) => {
@@ -410,7 +410,7 @@ export default function NavigationBar(props) {
                 />
             </div>
             :
-            <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.lightShade}}>{homeLinkText}</Link>
+            <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.colors.lightShade}}>{homeLinkText}</Link>
             }
             <button
               data-no-dnd="true"
@@ -422,7 +422,7 @@ export default function NavigationBar(props) {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <FontAwesomeIcon  style={{color:webStyle.lightShade}} icon={faBars}/>
+              <FontAwesomeIcon  style={{color:webStyle.colors.lightShade}} icon={faBars}/>
             </button>
             <div
               className="collapse navbar-collapse"
@@ -487,7 +487,7 @@ export default function NavigationBar(props) {
                         addLink();
                       }}
                     >
-                      <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.lightShade}} />
+                      <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.colors.lightShade}} />
                     </button>
                       
                     <button
@@ -497,7 +497,7 @@ export default function NavigationBar(props) {
                         addLink(true);
                       }}
                     >
-                      <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.lightShade}}/>
+                      <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.colors.lightShade}}/>
 
                     </button>
                     <button
@@ -507,7 +507,7 @@ export default function NavigationBar(props) {
                         setIsEdit(!isEdit); 
                       }}
                     >
-                      <FontAwesomeIcon icon={isEdit?faArrowsAlt:faPencilAlt} style={{color:webStyle.lightShade}}/> 
+                      <FontAwesomeIcon icon={isEdit?faArrowsAlt:faPencilAlt} style={{color:webStyle.colors.lightShade}}/> 
                     </button>
                   </div>
                 )}
@@ -516,7 +516,7 @@ export default function NavigationBar(props) {
                     
                     {Object.keys(cart).length != 0 &&
                     <li className="position-relative">
-                      <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.lightShade}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
+                      <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.colors.lightShade}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill ">
                         {Object.keys(cart).length}
                         <span className="visually-hidden">unread messages</span>
@@ -525,7 +525,7 @@ export default function NavigationBar(props) {
                     } 
                   </ul>
                   {isShowButtons&&<button className="relative-r btn" style={{marginRight:"-2.5em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.lightShade}} />
+                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
                   </button>}
                 
             </div>
@@ -546,7 +546,7 @@ export default function NavigationBar(props) {
                 </div>
               </form>
               {<button className="relative-r btn h-auto mt-2 " style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.lightShade}} />
+                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
                   </button>}
             </div> 
           }
@@ -721,7 +721,7 @@ const DropDownLink = (props) =>{
       <li className="nav-item col" >
         <div className="input-group " >
           <input
-            style ={{color:webStyle.lightShade}}
+            style ={{color:webStyle.colors.lightShade}}
 
             className="form-control-plaintext w-50"
             value={props.name}
@@ -730,7 +730,7 @@ const DropDownLink = (props) =>{
           />
           <input
             className="form-control-plaintext w-50"
-            style ={{color:webStyle.lightShade}}
+            style ={{color:webStyle.colors.lightShade}}
             value={props.path}
             onChange={props.onChangePath}
           />

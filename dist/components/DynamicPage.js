@@ -164,7 +164,7 @@ function DynamicPage(props) {
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     style: {
-      backgroundColor: webStyle.lightShade
+      backgroundColor: webStyle.colors.lightShade
     },
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       id: "outerSection",
@@ -173,7 +173,7 @@ function DynamicPage(props) {
         id: "innerSection",
         className: "col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4",
         style: {
-          backgroundColor: webStyle.lightAccent
+          backgroundColor: webStyle.colors.lightAccent
         },
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.DndContext, {
           sensors: sensors,

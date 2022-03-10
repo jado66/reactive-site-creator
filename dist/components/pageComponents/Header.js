@@ -90,7 +90,7 @@ function Header(props) {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
       className: "apply-font-primary mb-0",
       style: {
-        color: webStyle.darkShade
+        color: webStyle.colors.darkShade
       },
       spellCheck: "false",
       innerRef: contentEditable,

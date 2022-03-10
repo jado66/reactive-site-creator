@@ -109,8 +109,8 @@ export default function DynamicPage(props) {
 
   useEffect(() => {
         
-    if(props.content){
-        const components = props.content;
+    if(props.components){
+        const components = props.components;
        
         setComponents(components)
     
@@ -152,15 +152,14 @@ export default function DynamicPage(props) {
       </AdminWrapper>
     );
 
-    if (index !== components.length-1){
-      pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {index}/>);
-    }
+    pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {index}/>);
+    
   });
 
   return (
-    <div style ={{backgroundColor:webStyle.lightShade}}>
+    <div style ={{backgroundColor:webStyle.colors.lightShade}}>
       <div id = "outerSection" className={"min-vh-100"+(webStyle.isMobile?" ":" container")} >
-        <div id = "innerSection" className="col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4" style={{backgroundColor:webStyle.lightAccent}}>
+        <div id = "innerSection" className="col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4" style={{backgroundColor:webStyle.colors.lightAccent}}>
 
           <DndContext
             sensors={sensors}

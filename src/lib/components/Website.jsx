@@ -39,10 +39,37 @@ const site_template = {
     },
     pages: [
         {
-          id:1,
+          id:"Page-1",
           name:"Home",
-          path:"/"
-        }],
+          path:"/",
+          components:
+            [
+              { 
+                  name: "Header",
+                  id: `Home-Header-0-000`,
+                  content: { html: "New Website Home" }
+              },
+              {
+                  name: "NavigationBar",
+                  id: `Home-NavBar-1-001 `,
+                  content:{}
+              }
+            ]
+        },
+        {
+          id:"Page-2",
+          name:"Blog",
+          path:"/blog",
+          components:
+            [
+              { 
+                  name: "Header",
+                  id: `Blog-Header-0-000`,
+                  content: {}
+              }
+            ]
+        }  
+      ],
     masterNavBarData: 
         [
           {
@@ -69,7 +96,8 @@ const site_template = {
               name: "NavigationBar",
               id: `Home-NavBar-1-001 `,
               content:{}
-          }]
+          }
+        ]
     }
 }
 
@@ -149,7 +177,7 @@ export default function Website() {
 
     handlePageNameChange: (index,name) => {
       let newPage = {
-        path: pages[index].path,
+        ...pages[index],
         name: name
       }
       setPages([...pages.slice(0,index), newPage ,...pages.slice(index+1)]); // Callback to save to storage
@@ -157,8 +185,8 @@ export default function Website() {
   
     handlePagePathChange: (index,path) => {
       let newPage = {
-        path: path,
-        name: pages[index].name
+        ...pages[index],
+        path: path
       }
       setPages([...pages.slice(0,index), newPage ,...pages.slice(index+1)]);
     },
@@ -181,18 +209,21 @@ export default function Website() {
       }
     },
   
-    addPage: (name,path) => {
+    addPage: () => {
       // alert("New Page")
-      if (!name){
-        name = "New Page"
-      }
-      if (!path){
-        path = "/new-page"
-      }
       
       let newPage = {
-          path: path,
-        name: name
+        id: generatePageKey(),
+        path: "/new-page",
+        name: "New Page",
+        components:
+          [
+            { 
+                name: "Header",
+                id: `Home-Header-0-000`,
+                content: {}
+            }
+          ]
       }
       setPages([...pages, newPage])
     },
@@ -275,7 +306,7 @@ export default function Website() {
 
   const setCartFromStorage = () => {
     // This stays as a local storage item
-    let storedCart = JSON.parse(localStorage.getItem("cart"))
+    let storedCart = JSON.parse(localStorage.getItem("cart"),4,null)
     if (storedCart){
       // storedCart = {}
       setCart(storedCart)
@@ -287,6 +318,22 @@ export default function Website() {
     setWebStyle({...webStyle, isMobile:isMobile})
   }
 
+  function generatePageKey(){
+    let newID = -1
+
+    while (newID === -1){
+      newID = String(new Date().getTime()).slice(-3)
+
+      // Check if newID exists
+      pages.forEach((page)=>{
+        if (newID === page.id){
+          newID = -1
+        }
+      })
+    }
+    return newID
+  }
+
   useEffect(() => {
     if (msgPort == "save"){
       appMethods.sendMsgPortMsg("")
@@ -294,19 +341,18 @@ export default function Website() {
   }, [msgPort]);
 
 
-  let sitePages  = pages.map(({name, path})=> {
+  let sitePages  = pages.map(({id, name, path, components})=> {
     
-    let pageContent = site_template.pageData[name];
-
-
     return(
-        <Route basename="/site-creator" exact path = {path+"/:pathParam?"} key = {name+"Route"}>
+        <Route exact path = {path+"/:pathParam?"} key = {name+"Route"}>
             {webStyle.isAdmin && webStyle.isShowEditor &&
                 <StylesEditor/>
             }         
-            <DynamicPage    
-              webStyle = {webStyle} key = {name+"Page"} pageName = {name}
-              content = {pageContent}
+            <DynamicPage   
+              key = {id} 
+              webStyle = {webStyle} 
+              pageName = {name}
+              components = {components}
               defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}
             />
         </Route>
@@ -334,9 +380,10 @@ export default function Website() {
           appMethods: appMethods
         }
       }>
+      {/* {pages.map((page,index)=><><span>{JSON.stringify(page)}</span><br></br></> )} */}
       <div className="App" style={{minHeight:"100vh", overflowX: "hidden"}}>
 
-        <Router basename="/site-creator">
+        <Router>
             <Switch>
             
             {/* App pages */}
