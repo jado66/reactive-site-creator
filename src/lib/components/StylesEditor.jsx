@@ -166,6 +166,14 @@ const socialMediaSelectOptions = [
                     <input className="form-check-input me-2" type={"checkbox"} checked = {webStyle.isShowEditor} onClick={(evt)=>{handleCheckBox(evt,"isShowEditor")}} />
                     <label className="form-check-label" >Show Admin Editor</label> 
                 </FocusableItem>
+                <FocusableItem className="form-check">
+                    <input className="form-check-input me-2" type={"checkbox"} checked = {webStyle.autoSaveEdits} onClick={(evt)=>{handleCheckBox(evt,"autoSaveEdits")}} />
+                    <label className="form-check-label" >Auto Save Locally</label> 
+                </FocusableItem>
+                <FocusableItem className="form-check">
+                    <input className="form-check-input me-2" type={"checkbox"} checked = {false} />
+                    <label className="form-check-label" >Auto Save To DB</label> 
+                </FocusableItem>
                 <MenuItem>
                     <Link to={"/admin"}>Visit Admin Page</Link>
                 </MenuItem>

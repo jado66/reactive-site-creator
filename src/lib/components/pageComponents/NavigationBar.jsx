@@ -61,7 +61,27 @@ export default function NavigationBar(props) {
   }
 
   const setContent = (content) =>{
+
+    // TODO integrate me
     setIsUnique(true)
+
+     // Save in local browser
+    if (webStyle.autoSaveEdits){
+      const homeLinkText = localStorage.getItem(props.id+"-homeLinkText");
+      const navData = localStorage.getItem(props.id+"-navData");
+     
+      if (homeLinkText){
+        setHomeLinkText(homeLinkText)
+      }
+      if (navData){
+        setUniqueNavData(navData)
+      }
+
+      if (homeLinkText || navData){
+        return
+      }
+    }
+
     setHomeLinkText(content.homeLinkText)
     setUniqueNavData(content.navData)
   } 
@@ -328,7 +348,7 @@ export default function NavigationBar(props) {
                         <DeleteDrop id={`${index}:deleteDrop`} />
                       )}
 
-                      {isShowButtons&&<button
+                      {isShowButtons&& webStyle.isEditMode &&<button
                         className={"btn "+(webStyle.isMobile?"ps-4":"w-100")}
                         data-no-dnd="true"
                         type="button"
@@ -470,7 +490,7 @@ export default function NavigationBar(props) {
                   
                 )}
               </ul>
-              {isShowButtons && !isShowDeleteSpot && (
+              {isShowButtons && webStyle.isEditMode && !isShowDeleteSpot && (
                   <div
                     data-no-dnd="true"
                     className="btn-group  "
@@ -524,7 +544,7 @@ export default function NavigationBar(props) {
                     </li>
                     } 
                   </ul>
-                  {isShowButtons&&<button className="relative-r btn" style={{marginRight:"-2.5em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
+                  {isShowButtons && webStyle.isEditMode &&<button className="relative-r btn" style={{marginRight:"-2.5em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
                     <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
                   </button>}
                 
@@ -621,6 +641,10 @@ export default function NavigationBar(props) {
 
       newData[index][type] = event.target.value;
 
+      if (webStyle.autoSaveEdits){
+        localStorage.setItem(props.id+"-navData",newData);
+      }
+
       return newData;
     });
   }
@@ -630,6 +654,10 @@ export default function NavigationBar(props) {
       let newData = [...prevData];
 
       newData[parentIndex].dropdown[index][type] = event.target.value;
+
+      if (webStyle.autoSaveEdits){
+        localStorage.setItem(props.id+"-navData",newData);
+      }
 
       return newData;
     });
@@ -654,7 +682,14 @@ export default function NavigationBar(props) {
       // removeLink
 
       setNavData((prevData) => {
-        return arrayMove(prevData, oldIndex, newIndex);
+
+        let newData = arrayMove(prevData, oldIndex, newIndex)
+
+        if (webStyle.autoSaveEdits){
+          localStorage.setItem(props.id+"-navData",newData);
+        }
+
+        return newData;
       });
     }
 
@@ -682,6 +717,10 @@ export default function NavigationBar(props) {
           oldIndex,
           newIndex
         );
+
+        if (webStyle.autoSaveEdits){
+          localStorage.setItem(props.id+"-navData",newData);
+        }
 
         return newData;
       });

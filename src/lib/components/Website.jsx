@@ -15,6 +15,7 @@ import '../css/bootstrapOverrides.css'
 // High level components
 import StylesEditor from "./StylesEditor";
 import DynamicPage from "./DynamicPage";
+import StaticPage from "./StaticPage";
 // Pages
 // import CheckoutPage from "./pages/checkoutPage";
 // import AdminPage from "./pages/AdminPage"
@@ -66,6 +67,11 @@ const site_template = {
                   name: "Header",
                   id: `Blog-Header-0-000`,
                   content: {}
+              },
+              {
+                name: "NavigationBar",
+                id: `Blog-NavBar-1-001`,
+                content:{}
               }
             ]
         }  
@@ -110,6 +116,7 @@ export default function Website() {
     isEditMode: true,
     isShowEditor: true,
     isAdmin: true,
+    autoSaveEdits: true,
     // Website colors
     colors: {...site_template.colors},
     promoCodes: {...site_template.promoCodes}
@@ -211,17 +218,23 @@ export default function Website() {
   
     addPage: () => {
       // alert("New Page")
-      
+      const newID = generatePageKey()
+
       let newPage = {
-        id: generatePageKey(),
+        id: newID,
         path: "/new-page",
         name: "New Page",
         components:
           [
             { 
                 name: "Header",
-                id: `Home-Header-0-000`,
+                id: `Page-${newID}-Header-0-000`,
                 content: {}
+            },
+            {
+              name: "NavigationBar",
+              id: `Page-${newID}-NavBar-1-001`,
+              content:{}
             }
           ]
       }
@@ -347,14 +360,24 @@ export default function Website() {
         <Route exact path = {path+"/:pathParam?"} key = {name+"Route"}>
             {webStyle.isAdmin && webStyle.isShowEditor &&
                 <StylesEditor/>
-            }         
+            }   
+            
+            {webStyle.isEditMode === true?      
+            
+            
             <DynamicPage   
               key = {id} 
-              webStyle = {webStyle} 
               pageName = {name}
               components = {components}
               defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}
             />
+            :
+            <StaticPage   
+              key = {id+"static"} 
+              pageName = {name}
+              components = {components}
+            />
+            }
         </Route>
         )
     }

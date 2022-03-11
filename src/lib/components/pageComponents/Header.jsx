@@ -10,8 +10,15 @@ export default function Header(props){
     const {webStyle, msgPort, appMethods} = useContext(WebContext)
 
     const setContent = (content) =>{
-      //const \[(.+), .+ use.+
-      // set$1(content.$1)
+      // Save in local browser
+      if (webStyle.autoSaveEdits){
+        const html = localStorage.getItem(props.id);
+        if (html){
+          setHtml(html)
+          return
+        }
+      }
+
       if (Object.keys(content).length !== 0 && content){
         setHtml(content.html)
       }
@@ -21,8 +28,6 @@ export default function Header(props){
     } 
   
     const getContent = () =>{
-      //const \[(.+), .+ use.+
-      //content.$1 = $1
       let content = {}
       content.html = html
       return (content)
@@ -47,7 +52,10 @@ export default function Header(props){
 
     const handleChange = (evt) => {
       setHtml(evt.target.value);
-      // localStorage.setItem(props.id,evt.target.value);
+
+      if (webStyle.autoSaveEdits){
+        localStorage.setItem(props.id,evt.target.value);
+      }
     };
     return(
 
