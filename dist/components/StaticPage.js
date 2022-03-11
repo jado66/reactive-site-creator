@@ -3,39 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = DynamicPage;
+exports.default = StaticPage;
 
 var _react = require("react");
-
-var _core = require("@dnd-kit/core");
-
-var _sortable = require("@dnd-kit/sortable");
-
-var _modifiers = require("@dnd-kit/modifiers");
-
-var _DndSensors = require("./helpers/DndSensors");
-
-var _Spacer = _interopRequireDefault(require("./pageComponents/Spacer"));
 
 var _Header = _interopRequireDefault(require("./pageComponents/Header"));
 
 var _NavigationBar = _interopRequireDefault(require("./pageComponents/NavigationBar"));
-
-var _AdminWrapper = _interopRequireDefault(require("./wrappers/AdminWrapper"));
 
 var _Website = require("./Website");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -49,51 +29,14 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function DynamicPage(props) {
+function StaticPage(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
-      flatComponents = _useContext.flatComponents,
       webStyle = _useContext.webStyle;
 
   var _useState = (0, _react.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       components = _useState2[0],
       setComponents = _useState2[1];
-
-  var _useState3 = (0, _react.useState)(null),
-      _useState4 = _slicedToArray(_useState3, 2),
-      activeID = _useState4[0],
-      setActiveID = _useState4[1];
-
-  var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor));
-
-  var _useState5 = (0, _react.useState)([]),
-      _useState6 = _slicedToArray(_useState5, 2),
-      selectedComponents = _useState6[0],
-      setSelectedComponents = _useState6[1];
-
-  var insertComponent = function insertComponent(option, index) {
-    var newComponent = {
-      name: option.replace(/\s+/g, ''),
-      id: generateKey(option, index),
-      content: {}
-    };
-    var newComponents = [].concat(_toConsumableArray(components.slice(0, index + 1)), [newComponent], _toConsumableArray(components.slice(index + 1)));
-    setComponents(newComponents);
-  };
-
-  var addSelected = function addSelected(id) {
-    setSelectedComponents([].concat(_toConsumableArray(selectedComponents), [id]));
-  };
-
-  var removeSelected = function removeSelected(id) {
-    try {
-      var idIndex = selectedComponents.indexOf(id); // alert(`Removing ${id} at index ${idIndex}`);
-
-      setSelectedComponents(_toConsumableArray(selectedComponents.splice(idIndex, 1)));
-    } catch (error) {
-      alert("Error in removedSelected function:" + error);
-    }
-  };
 
   var componentMap = {
     Header: _Header.default,
@@ -137,11 +80,7 @@ function DynamicPage(props) {
   var pagecomponents = [];
   components.forEach(function (el, index) {
     var Component = componentMap[el.name];
-    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminWrapper.default, {
-      isFlat: flatComponents.includes(el.name),
-      id: el.id,
-      addSelected: addSelected,
-      removeSelected: removeSelected,
+    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "py-3 ",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {
         id: el.id + "c",
@@ -154,9 +93,12 @@ function DynamicPage(props) {
         }
       }, el.id + "c")
     }, el.id));
-    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_Spacer.default, {
-      insertComponent: insertComponent,
-      index: index
+    pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "g-0 row align-content-center ",
+      style: {
+        height: ".5em"
+      } // onFocus
+
     }));
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -172,22 +114,7 @@ function DynamicPage(props) {
         style: {
           backgroundColor: webStyle.colors.lightAccent
         },
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.DndContext, {
-          sensors: sensors,
-          modifiers: [_modifiers.restrictToVerticalAxis],
-          collisionDetection: _core.closestCenter,
-          onDragStart: handleDragStart,
-          onDragEnd: handleDragEnd,
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_sortable.SortableContext, {
-            items: components,
-            strategy: _sortable.verticalListSortingStrategy,
-            children: pagecomponents
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DragOverlay, {
-            children: activeID ? /*#__PURE__*/(0, _jsxRuntime.jsx)(OverlaySpot, {
-              id: activeID
-            }) : null
-          })]
-        })
+        children: pagecomponents
       })
     })
   });
@@ -195,29 +122,4 @@ function DynamicPage(props) {
   function generateKey(componentName, index) {
     return "".concat(props.pageName, "-").concat(componentName, "-").concat(index).concat(String(new Date().getTime()).slice(-3));
   }
-
-  function handleDragStart(event) {
-    var active = event.active;
-    setActiveID(active.id);
-  }
-
-  function handleDragEnd(event) {
-    var active = event.active,
-        over = event.over;
-
-    if (active.id !== over.id) {
-      var oldIndex = active.data.current.sortable.index;
-      var newIndex = over.data.current.sortable.index;
-      setComponents(function (components) {
-        return (0, _sortable.arrayMove)(components, oldIndex, newIndex);
-      });
-      setActiveID(null);
-    }
-  }
-}
-
-function OverlaySpot(props) {
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "text-center"
-  });
 }

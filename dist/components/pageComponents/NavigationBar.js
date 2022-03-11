@@ -118,7 +118,27 @@ function NavigationBar(props) {
   };
 
   var setContent = function setContent(content) {
-    setIsUnique(true);
+    // TODO integrate me
+    setIsUnique(true); // Save in local browser
+
+    if (webStyle.autoSaveEdits) {
+      var _homeLinkText = localStorage.getItem(props.id + "-homeLinkText");
+
+      var _navData = localStorage.getItem(props.id + "-navData");
+
+      if (_homeLinkText) {
+        setHomeLinkText(_homeLinkText);
+      }
+
+      if (_navData) {
+        setUniqueNavData(_navData);
+      }
+
+      if (_homeLinkText || _navData) {
+        return;
+      }
+    }
+
     setHomeLinkText(content.homeLinkText);
     setUniqueNavData(content.navData);
   };
@@ -352,7 +372,7 @@ function NavigationBar(props) {
                     strategy: _sortable.verticalListSortingStrategy,
                     children: [dropdownItems, isShowDropdownDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
                       id: "".concat(index, ":deleteDrop")
-                    }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+                    }), isShowButtons && webStyle.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
                       className: "btn " + (webStyle.isMobile ? "ps-4" : "w-100"),
                       "data-no-dnd": "true",
                       type: "button",
@@ -512,7 +532,7 @@ function NavigationBar(props) {
                 })]
               })
             })
-          }), isShowButtons && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          }), isShowButtons && webStyle.isEditMode && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
             "data-no-dnd": "true",
             className: "btn-group  ",
             role: "group",
@@ -580,7 +600,7 @@ function NavigationBar(props) {
                 })]
               })]
             })]
-          }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          }), isShowButtons && webStyle.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
             className: "relative-r btn",
             style: {
               marginRight: "-2.5em"
@@ -706,6 +726,11 @@ function NavigationBar(props) {
       var newData = _toConsumableArray(prevData);
 
       newData[index][type] = event.target.value;
+
+      if (webStyle.autoSaveEdits) {
+        localStorage.setItem(props.id + "-navData", newData);
+      }
+
       return newData;
     });
   }
@@ -715,6 +740,11 @@ function NavigationBar(props) {
       var newData = _toConsumableArray(prevData);
 
       newData[parentIndex].dropdown[index][type] = event.target.value;
+
+      if (webStyle.autoSaveEdits) {
+        localStorage.setItem(props.id + "-navData", newData);
+      }
+
       return newData;
     });
   }
@@ -734,7 +764,13 @@ function NavigationBar(props) {
       var newIndex = over.data.current.sortable.index; // removeLink
 
       setNavData(function (prevData) {
-        return (0, _sortable.arrayMove)(prevData, oldIndex, newIndex);
+        var newData = (0, _sortable.arrayMove)(prevData, oldIndex, newIndex);
+
+        if (webStyle.autoSaveEdits) {
+          localStorage.setItem(props.id + "-navData", newData);
+        }
+
+        return newData;
       });
     }
   }
@@ -756,6 +792,11 @@ function NavigationBar(props) {
         var newData = _toConsumableArray(prevData);
 
         newData[index].dropdown = (0, _sortable.arrayMove)(newData[index].dropdown, oldIndex, newIndex);
+
+        if (webStyle.autoSaveEdits) {
+          localStorage.setItem(props.id + "-navData", newData);
+        }
+
         return newData;
       });
     } // event.preventDefault();

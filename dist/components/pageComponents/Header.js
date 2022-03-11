@@ -47,8 +47,16 @@ function Header(props) {
       appMethods = _useContext.appMethods;
 
   var setContent = function setContent(content) {
-    //const \[(.+), .+ use.+
-    // set$1(content.$1)
+    // Save in local browser
+    if (webStyle.autoSaveEdits) {
+      var _html = localStorage.getItem(props.id);
+
+      if (_html) {
+        setHtml(_html);
+        return;
+      }
+    }
+
     if (Object.keys(content).length !== 0 && content) {
       setHtml(content.html);
     } else if (props.index === 0) {
@@ -57,8 +65,6 @@ function Header(props) {
   };
 
   var getContent = function getContent() {
-    //const \[(.+), .+ use.+
-    //content.$1 = $1
     var content = {};
     content.html = html;
     return content;
@@ -81,7 +87,11 @@ function Header(props) {
   }, [msgPort]);
 
   var handleChange = function handleChange(evt) {
-    setHtml(evt.target.value); // localStorage.setItem(props.id,evt.target.value);
+    setHtml(evt.target.value);
+
+    if (webStyle.autoSaveEdits) {
+      localStorage.setItem(props.id, evt.target.value);
+    }
   };
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

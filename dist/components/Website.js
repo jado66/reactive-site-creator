@@ -22,6 +22,8 @@ var _StylesEditor = _interopRequireDefault(require("./StylesEditor"));
 
 var _DynamicPage = _interopRequireDefault(require("./DynamicPage"));
 
+var _StaticPage = _interopRequireDefault(require("./StaticPage"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -91,6 +93,10 @@ var site_template = {
       name: "Header",
       id: "Blog-Header-0-000",
       content: {}
+    }, {
+      name: "NavigationBar",
+      id: "Blog-NavBar-1-001",
+      content: {}
     }]
   }],
   masterNavBarData: [{
@@ -124,6 +130,7 @@ function Website() {
     isEditMode: true,
     isShowEditor: true,
     isAdmin: true,
+    autoSaveEdits: true,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)
@@ -268,13 +275,18 @@ function Website() {
     },
     addPage: function addPage() {
       // alert("New Page")
+      var newID = generatePageKey();
       var newPage = {
-        id: generatePageKey(),
+        id: newID,
         path: "/new-page",
         name: "New Page",
         components: [{
           name: "Header",
-          id: "Home-Header-0-000",
+          id: "Page-".concat(newID, "-Header-0-000"),
+          content: {}
+        }, {
+          name: "NavigationBar",
+          id: "Page-".concat(newID, "-NavBar-1-001"),
           content: {}
         }]
       };
@@ -402,13 +414,15 @@ function Website() {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       exact: true,
       path: path + "/:pathParam?",
-      children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
-        webStyle: webStyle,
+      children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), webStyle.isEditMode === true ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
         pageName: name,
         components: components,
         defaultComponentList: ["Header", "Navbar"],
         componentOptions: componentOptions
-      }, id)]
+      }, id) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_StaticPage.default, {
+        pageName: name,
+        components: components
+      }, id + "static")]
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {

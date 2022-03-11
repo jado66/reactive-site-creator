@@ -392,6 +392,29 @@ function StylesEditor(props) {
               className: "form-check-label",
               children: "Show Admin Editor"
             })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+            className: "form-check",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              className: "form-check-input me-2",
+              type: "checkbox",
+              checked: webStyle.autoSaveEdits,
+              onClick: function onClick(evt) {
+                handleCheckBox(evt, "autoSaveEdits");
+              }
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+              className: "form-check-label",
+              children: "Auto Save Locally"
+            })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+            className: "form-check",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              className: "form-check-input me-2",
+              type: "checkbox",
+              checked: false
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+              className: "form-check-label",
+              children: "Auto Save To DB"
+            })]
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
               to: "/admin",
