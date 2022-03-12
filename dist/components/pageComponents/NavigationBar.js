@@ -121,7 +121,7 @@ function NavigationBar(props) {
     // TODO integrate me
     setIsUnique(true); // Save in local browser
 
-    if (webStyle.autoSaveEdits) {
+    if (webStyle.autoSaveEditsLocally) {
       var _homeLinkText = localStorage.getItem(props.id + "-homeLinkText");
 
       var _navData = localStorage.getItem(props.id + "-navData");
@@ -727,7 +727,7 @@ function NavigationBar(props) {
 
       newData[index][type] = event.target.value;
 
-      if (webStyle.autoSaveEdits) {
+      if (webStyle.autoSaveEditsLocally) {
         localStorage.setItem(props.id + "-navData", newData);
       }
 
@@ -741,7 +741,7 @@ function NavigationBar(props) {
 
       newData[parentIndex].dropdown[index][type] = event.target.value;
 
-      if (webStyle.autoSaveEdits) {
+      if (webStyle.autoSaveEditsLocally) {
         localStorage.setItem(props.id + "-navData", newData);
       }
 
@@ -766,7 +766,7 @@ function NavigationBar(props) {
       setNavData(function (prevData) {
         var newData = (0, _sortable.arrayMove)(prevData, oldIndex, newIndex);
 
-        if (webStyle.autoSaveEdits) {
+        if (webStyle.autoSaveEditsLocally) {
           localStorage.setItem(props.id + "-navData", newData);
         }
 
@@ -793,7 +793,7 @@ function NavigationBar(props) {
 
         newData[index].dropdown = (0, _sortable.arrayMove)(newData[index].dropdown, oldIndex, newIndex);
 
-        if (webStyle.autoSaveEdits) {
+        if (webStyle.autoSaveEditsLocally) {
           localStorage.setItem(props.id + "-navData", newData);
         }
 

@@ -16,7 +16,7 @@ import { WebContext } from "./Website";
 
 export default function StylesEditor(props) {
     
-  const { webStyle, pages, socialMedias, appMethods, promoCodes } = useContext(WebContext);
+  const { siteIsDraft, webStyle, pages, socialMedias, appMethods, apiMethods, storageSettings, promoCodes } = useContext(WebContext);
 
   const handleInputChange = (e) => {
     appMethods.setWebStyle(
@@ -167,11 +167,41 @@ const socialMediaSelectOptions = [
                     <label className="form-check-label" >Show Admin Editor</label> 
                 </FocusableItem>
                 <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {webStyle.autoSaveEdits} onClick={(evt)=>{handleCheckBox(evt,"autoSaveEdits")}} />
+                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.showDraftEdits} 
+                           onClick={(evt)=>
+                              {
+                                appMethods.setStorageSettings((prevState) => ({
+                                  ...prevState,
+                                  showDraftEdits: !prevState.showDraftEdits,
+                                })
+                            )}
+                            } 
+                    />
+                    <label className="form-check-label" >Show Draft Edits</label> 
+                </FocusableItem>
+                <FocusableItem className="form-check">
+                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.autoSaveEditsLocally} 
+                           onClick={(evt)=>
+                              {
+                                appMethods.setStorageSettings((prevState) => ({
+                                  ...prevState,
+                                  autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
+                                })
+                            )}
+                            } 
+                    />
                     <label className="form-check-label" >Auto Save Locally</label> 
                 </FocusableItem>
                 <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {false} />
+                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.autoUpdateLiveWebsite} 
+                          onClick={(evt)=>
+                              {
+                                appMethods.setStorageSettings((prevState) => ({
+                                  ...prevState,
+                                  autoUpdateLiveWebsite: !prevState.autoUpdateLiveWebsite,
+                                })
+                            )}
+                            } />
                     <label className="form-check-label" >Auto Save To DB</label> 
                 </FocusableItem>
                 <MenuItem>
@@ -218,6 +248,9 @@ const socialMediaSelectOptions = [
         <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
           {/* Socials Pages */}
           <MenuButton className={"styleEditorIcon font-shrink-md m-0"} onClick = {()=>{appMethods.toggleStyleEditor()}}><FontAwesomeIcon  icon={faTimes} /></MenuButton>
+        </div>
+        <div className={"col text-center align-self-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+          <span className={" font-shrink fw-bold m-0"}>{siteIsDraft?"Draft Site":"Live Site"}</span>
         </div>
       </div>
     </div>   

@@ -109,32 +109,56 @@ const site_template = {
 
 export const WebContext = createContext()
 
-export default function Website() {
+export default function Website(props) {
 
   const [webStyle, setWebStyle] = useState({
     siteName: site_template.siteName,
     isEditMode: true,
     isShowEditor: true,
     isAdmin: true,
-    autoSaveEdits: true,
+    
     // Website colors
     colors: {...site_template.colors},
     promoCodes: {...site_template.promoCodes}
   } )
-
+  const [storageSettings,setStorageSettings] = useState(
+    {
+      viewDraftEdits: true, 
+      autoSaveEditsLocally: true,
+      autoUpdateLiveWebsite: false
+    }
+  )
   const [masterNavData, setMasterNavData] = useState(site_template.masterNavBarData)
   const [socialMedias, setSocialMedias] = useState(site_template.socialMedias)
   const [pages, setPages] = useState(site_template.pages)
   const [promoCodes, setPromoCodes] = useState(site_template.pages)
   const [cart, setCart] = useState({})
+  const [siteIsDraft, setSiteIsDraft] = useState(false)
   const [msgPort,setMsgPort] = useState("")
   const [savedData, setSavedData] = useState({})
   const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
   const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable"]
 
+  const apiMethods = {
+    getFromDatabase:  (id,componentState) =>{
+      if (props.getFromDatabase){
+        props.getFromDatabase(id)
+      }
+    },
+    setValueInDatabase: (id,componentState) =>{
+      if (props.saveComponentToDB){
+        props.saveComponentDataToDB(id,componentState)
+      }
+    },
+
+    setSiteIsDraft: (state) => setSiteIsDraft(state),
+
+    
+  }
   const appMethods = {
     setWebStyle: (state) => setWebStyle(state),
     setMasterNavData: (state) => setMasterNavData(state),
+    setStorageSettings: (state) => setStorageSettings(state),
     setCart: (state) => setCart(state),
     setSocialMedias: (state) => setSocialMedias(state),
     setPages: (state) => setPages(state),
@@ -142,6 +166,8 @@ export default function Website() {
     setSavedData: (state) => setSavedData(state),
     setPromoCodes: (state) => setPromoCodes(state),
     
+    
+
     addToCart: (cartItem) =>{
       // Check if we already have it in the cart
       if (cartItem.name in cart){
@@ -275,7 +301,22 @@ export default function Website() {
       setSocialMedias([...socialMedias, newSocialMedia]);
     },
     saveWebsite:()=>{
-      appMethods.sendMsgPortMsg("save")
+      // Check if user really wants to publish edits
+      if(window.confirm("Are you sure you want to publish your edits?")){
+        
+        // If the site-creator is connected to a database
+        if (props.saveComponentToDB){
+          appMethods.sendMsgPortMsg("save")
+          setSiteIsDraft(false)
+        }
+        else{
+          if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
+            appMethods.sendMsgPortMsg("save")
+            setSiteIsDraft(false)
+          }
+        }
+      }
+
     },
 
     toggleStyleEditor:()=>{
@@ -368,6 +409,7 @@ export default function Website() {
             <DynamicPage   
               key = {id} 
               pageName = {name}
+              pageID = {id}
               components = {components}
               defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}
             />
@@ -375,6 +417,8 @@ export default function Website() {
             <StaticPage   
               key = {id+"static"} 
               pageName = {name}
+              pageID = {id}
+
               components = {components}
             />
             }
@@ -395,12 +439,14 @@ export default function Website() {
           pages: pages,
           promoCodes: promoCodes,
           cart: cart, 
+          storageSettings,storageSettings,
+          siteIsDraft: siteIsDraft,
           msgPort: msgPort,
           savedData: savedData, 
           flatComponents: flatComponents,
           componentOptions: componentOptions,
-
-          appMethods: appMethods
+          appMethods: appMethods,
+          apiMethods: apiMethods
         }
       }>
       {/* {pages.map((page,index)=><><span>{JSON.stringify(page)}</span><br></br></> )} */}

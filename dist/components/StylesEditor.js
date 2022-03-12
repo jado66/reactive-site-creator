@@ -397,9 +397,9 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               className: "form-check-input me-2",
               type: "checkbox",
-              checked: webStyle.autoSaveEdits,
+              checked: webStyle.autoSaveEditsLocally,
               onClick: function onClick(evt) {
-                handleCheckBox(evt, "autoSaveEdits");
+                handleCheckBox(evt, "autoSaveEditsLocally");
               }
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               className: "form-check-label",

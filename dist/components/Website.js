@@ -130,7 +130,7 @@ function Website() {
     isEditMode: true,
     isShowEditor: true,
     isAdmin: true,
-    autoSaveEdits: true,
+    autoSaveEditsLocally: true,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)

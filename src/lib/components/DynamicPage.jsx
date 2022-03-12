@@ -147,7 +147,7 @@ export default function DynamicPage(props) {
         className={"py-3 "}
       >
         <Component 
-          key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} 
+          key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} pageID = {props.pageID}
           content = {el.content} componentName = {el.name} style={{ cursor: "auto"}}
         />     
       </AdminWrapper>

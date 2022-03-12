@@ -48,7 +48,7 @@ function Header(props) {
 
   var setContent = function setContent(content) {
     // Save in local browser
-    if (webStyle.autoSaveEdits) {
+    if (webStyle.autoSaveEditsLocally) {
       var _html = localStorage.getItem(props.id);
 
       if (_html) {
@@ -89,7 +89,7 @@ function Header(props) {
   var handleChange = function handleChange(evt) {
     setHtml(evt.target.value);
 
-    if (webStyle.autoSaveEdits) {
+    if (webStyle.autoSaveEditsLocally) {
       localStorage.setItem(props.id, evt.target.value);
     }
   };

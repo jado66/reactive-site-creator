@@ -35,6 +35,7 @@ import { WebContext } from "../Website";
 import {
   Link
 } from "react-router-dom";
+import  useComponentStorage  from "../helpers/useStorage";
 
 
 // TODO dropdowns need to open only their dropdowns
@@ -47,83 +48,23 @@ export default function NavigationBar(props) {
   const [isShowDropdownDeleteSpot, showDropdownDeleteSpot] = useState(false);
   const [isShowButtons, showButtons] = useState(false);
 
-  const {webStyle, msgPort, appMethods, socialMedias, cart, masterNavData} = useContext(WebContext)
+  const {webStyle, msgPort, appMethods, apiMethods, socialMedias, cart, masterNavData} = useContext(WebContext)
   const [homeLinkText, setHomeLinkText] = useState("Site Creator")
   const [uniqueNavData, setUniqueNavData] = useState([]);
 
-  const setNavData = (state) => {
-    if (isUnique){
-      setUniqueNavData(state)
-    }
-    else{
-      appMethods.setMasterNavData(state)
-    }
-  }
-
-  const setContent = (content) =>{
-
-    // TODO integrate me
-    setIsUnique(true)
-
-     // Save in local browser
-    if (webStyle.autoSaveEdits){
-      const homeLinkText = localStorage.getItem(props.id+"-homeLinkText");
-      const navData = localStorage.getItem(props.id+"-navData");
-     
-      if (homeLinkText){
-        setHomeLinkText(homeLinkText)
-      }
-      if (navData){
-        setUniqueNavData(navData)
-      }
-
-      if (homeLinkText || navData){
-        return
-      }
-    }
-
-    setHomeLinkText(content.homeLinkText)
-    setUniqueNavData(content.navData)
-  } 
-
-  const getContent = () =>{
-    let content = {}
-
-    if (isUnique){
-      content.homeLinkText = homeLinkText
-      content.navData = uniqueNavData
-      return content
-    }
-    else{
-      return {}
-    }
-  }
-
-  const makeNavbarUnique = () => {
-    setIsUnique(true)
-
-    setNavData(masterNavData)
-  }
+  const [content, setContent] = useComponentStorage(props.pageName+props.id,{
+    isUnique: false,
+    homeLinkText: "home",
+    naveData: []
+  })
 
   useEffect(() => {
     if (msgPort == "save"){
-
-      const componentData = { 
-        name: props.componentName,
-        id: props.id,
-        content: getContent()
+      if (isUnique){
+        apiMethods.setValueInDatabase(props.pageID+props.id,content)
       }
-
-      appMethods.saveComponentData(props.pageName,props.index,componentData)
     }
-  }, [msgPort]);
-
-  useEffect(() => {
-    if (Object.keys(props.content).length > 0){
-
-      setContent(props.content)
-    }
-  }, []);
+  }, [msgPort]); 
 
   const componentMapping = {
     Email:faEnvelope,
@@ -146,7 +87,6 @@ export default function NavigationBar(props) {
     Snapchat: faSnapchatGhost
   };
 
-
   const sensors = useSensors(useSensor(MouseSensor,{
     activationConstraint: {
       delay: 100,
@@ -155,12 +95,11 @@ export default function NavigationBar(props) {
 
   }));
 
-  let navData = (isUnique?uniqueNavData:masterNavData)
+  let navData = (isUnique?content.navData:masterNavData.navData)
 
   if (!navData){
     navData = []
   }
-
 
   let navItems = [];
 
@@ -575,7 +514,15 @@ export default function NavigationBar(props) {
         </nav>
       </div>
   );
-  
+
+  function saveNavData(value){
+    if (isUnique){
+      setContent((prevState) => ({
+        ...prevState,
+        navData: value,
+      }));
+    }
+  }
 
   function addLink(isDropdown) {
     const newLink = isDropdown
@@ -586,11 +533,12 @@ export default function NavigationBar(props) {
         }
       : { id: Math.random() * 10000, name: "New Link", path: "/" };
 
-    setNavData([...navData, newLink]);
+    
+    saveNavData([...navData, newLink]);
   }
 
   function addDropdownlink(event, index) {
-    setNavData((prevData) => {
+    saveNavData((prevData) => {
       // alert(index);
       let newData = [...prevData];
 
@@ -599,7 +547,7 @@ export default function NavigationBar(props) {
         { id: Math.random() * 10000, name: "New Link", path: "/" }
       ];
 
-      setNavData(newData);
+      saveNavData(newData);
     });
     event.stopPropagation();
   }
@@ -607,14 +555,14 @@ export default function NavigationBar(props) {
   function removeLink(index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      setNavData((prevData) => {
+      saveNavData((prevData) => {
         // alert(index);
         let newData = [
           ...prevData.slice(0, index),
           ...prevData.slice(index + 1)
         ];
 
-        setNavData(newData);
+        saveNavData(newData);
       });
     }
   }
@@ -622,7 +570,7 @@ export default function NavigationBar(props) {
   function removeDropdownLink(parentIndex, index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      setNavData((prevData) => {
+      saveNavData((prevData) => {
         // alert(index);
         let newData = [...prevData];
         let newDropdown = [
@@ -630,44 +578,30 @@ export default function NavigationBar(props) {
           ...newData[parentIndex].dropdown.slice(index + 1)
         ];
         newData[parentIndex].dropdown = newDropdown;
-        setNavData(newData);
+        saveNavData(newData);
       });
     }
   }
 
   function handleLinkChange(event, index, type) {
-    setNavData((prevData) => {
-      let newData = [...prevData];
+    // TODO ensure theses don't get out of sync
+    let newData = [...navData];
 
-      newData[index][type] = event.target.value;
+    newData[index][type] = event.target.value;
 
-      if (webStyle.autoSaveEdits){
-        localStorage.setItem(props.id+"-navData",newData);
-      }
-
-      return newData;
-    });
+    saveNavData(newData)
   }
 
   function handleLinkDropdownChange(event, parentIndex, index, type) {
-    setNavData((prevData) => {
-      let newData = [...prevData];
+    let newData = [...navData];
 
-      newData[parentIndex].dropdown[index][type] = event.target.value;
+    newData[parentIndex].dropdown[index][type] = event.target.value;
 
-      if (webStyle.autoSaveEdits){
-        localStorage.setItem(props.id+"-navData",newData);
-      }
-
-      return newData;
-    });
+    saveNavData(newData)
   }
 
   function handleDragEnd(event) {
     const { active, over } = event;
-
-        // event.preventDefault();
-
 
     if (active.id !== over.id) {
       const oldIndex = active.data.current.sortable.index;
@@ -680,17 +614,9 @@ export default function NavigationBar(props) {
       const newIndex = over.data.current.sortable.index;
 
       // removeLink
+      let newData = arrayMove(navData, oldIndex, newIndex)
 
-      setNavData((prevData) => {
-
-        let newData = arrayMove(prevData, oldIndex, newIndex)
-
-        if (webStyle.autoSaveEdits){
-          localStorage.setItem(props.id+"-navData",newData);
-        }
-
-        return newData;
-      });
+      saveNavData(newData);
     }
 
   }
@@ -709,21 +635,15 @@ export default function NavigationBar(props) {
 
       const newIndex = over.data.current.sortable.index;
 
-      setNavData((prevData) => {
-        let newData = [...prevData];
+      let newData = [...navData];
 
-        newData[index].dropdown = arrayMove(
-          newData[index].dropdown,
-          oldIndex,
-          newIndex
-        );
+      newData[index].dropdown = arrayMove(
+        newData[index].dropdown,
+        oldIndex,
+        newIndex
+      );
 
-        if (webStyle.autoSaveEdits){
-          localStorage.setItem(props.id+"-navData",newData);
-        }
-
-        return newData;
-      });
+      saveNavData(newData);
     }
     // event.preventDefault();
 
