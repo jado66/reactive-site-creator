@@ -147,6 +147,7 @@ function DynamicPage(props) {
         id: el.id + "c",
         index: index,
         pageName: props.pageName,
+        pageID: props.pageID,
         content: el.content,
         componentName: el.name,
         style: {

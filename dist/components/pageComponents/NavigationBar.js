@@ -31,6 +31,8 @@ var _Website = require("../Website");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -38,6 +40,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -95,6 +103,7 @@ function NavigationBar(props) {
       webStyle = _useContext.webStyle,
       msgPort = _useContext.msgPort,
       appMethods = _useContext.appMethods,
+      apiMethods = _useContext.apiMethods,
       socialMedias = _useContext.socialMedias,
       cart = _useContext.cart,
       masterNavData = _useContext.masterNavData;
@@ -109,72 +118,22 @@ function NavigationBar(props) {
       uniqueNavData = _useState16[0],
       setUniqueNavData = _useState16[1];
 
-  var setNavData = function setNavData(state) {
-    if (isUnique) {
-      setUniqueNavData(state);
-    } else {
-      appMethods.setMasterNavData(state);
-    }
-  };
-
-  var setContent = function setContent(content) {
-    // TODO integrate me
-    setIsUnique(true); // Save in local browser
-
-    if (webStyle.autoSaveEditsLocally) {
-      var _homeLinkText = localStorage.getItem(props.id + "-homeLinkText");
-
-      var _navData = localStorage.getItem(props.id + "-navData");
-
-      if (_homeLinkText) {
-        setHomeLinkText(_homeLinkText);
-      }
-
-      if (_navData) {
-        setUniqueNavData(_navData);
-      }
-
-      if (_homeLinkText || _navData) {
-        return;
-      }
-    }
-
-    setHomeLinkText(content.homeLinkText);
-    setUniqueNavData(content.navData);
-  };
-
-  var getContent = function getContent() {
-    var content = {};
-
-    if (isUnique) {
-      content.homeLinkText = homeLinkText;
-      content.navData = uniqueNavData;
-      return content;
-    } else {
-      return {};
-    }
-  };
-
-  var makeNavbarUnique = function makeNavbarUnique() {
-    setIsUnique(true);
-    setNavData(masterNavData);
-  };
+  var _useComponentStorage = (0, _useStorage.default)(props.pageName + props.id, {
+    isUnique: false,
+    homeLinkText: "home",
+    naveData: []
+  }),
+      _useComponentStorage2 = _slicedToArray(_useComponentStorage, 2),
+      content = _useComponentStorage2[0],
+      setContent = _useComponentStorage2[1];
 
   (0, _react.useEffect)(function () {
     if (msgPort == "save") {
-      var componentData = {
-        name: props.componentName,
-        id: props.id,
-        content: getContent()
-      };
-      appMethods.saveComponentData(props.pageName, props.index, componentData);
+      if (isUnique) {
+        apiMethods.setValueInDatabase(props.pageID + props.id, content);
+      }
     }
   }, [msgPort]);
-  (0, _react.useEffect)(function () {
-    if (Object.keys(props.content).length > 0) {
-      setContent(props.content);
-    }
-  }, []);
   var componentMapping = {
     Email: _freeSolidSvgIcons.faEnvelope,
     Facebook: _freeBrandsSvgIcons.faFacebookSquare,
@@ -201,7 +160,7 @@ function NavigationBar(props) {
       tolerance: 5
     }
   }));
-  var navData = isUnique ? uniqueNavData : masterNavData;
+  var navData = isUnique ? content.navData : masterNavData.navData;
 
   if (!navData) {
     navData = [];
@@ -664,6 +623,16 @@ function NavigationBar(props) {
     })
   });
 
+  function saveNavData(value) {
+    if (isUnique) {
+      setContent(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          navData: value
+        });
+      });
+    }
+  }
+
   function addLink(isDropdown) {
     var newLink = isDropdown ? {
       id: Math.random() * 10000,
@@ -678,11 +647,11 @@ function NavigationBar(props) {
       name: "New Link",
       path: "/"
     };
-    setNavData([].concat(_toConsumableArray(navData), [newLink]));
+    saveNavData([].concat(_toConsumableArray(navData), [newLink]));
   }
 
   function addDropdownlink(event, index) {
-    setNavData(function (prevData) {
+    saveNavData(function (prevData) {
       // alert(index);
       var newData = _toConsumableArray(prevData);
 
@@ -691,7 +660,7 @@ function NavigationBar(props) {
         name: "New Link",
         path: "/"
       }]);
-      setNavData(newData);
+      saveNavData(newData);
     });
     event.stopPropagation();
   }
@@ -699,10 +668,10 @@ function NavigationBar(props) {
   function removeLink(index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      setNavData(function (prevData) {
+      saveNavData(function (prevData) {
         // alert(index);
         var newData = [].concat(_toConsumableArray(prevData.slice(0, index)), _toConsumableArray(prevData.slice(index + 1)));
-        setNavData(newData);
+        saveNavData(newData);
       });
     }
   }
@@ -710,48 +679,35 @@ function NavigationBar(props) {
   function removeDropdownLink(parentIndex, index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      setNavData(function (prevData) {
+      saveNavData(function (prevData) {
         // alert(index);
         var newData = _toConsumableArray(prevData);
 
         var newDropdown = [].concat(_toConsumableArray(newData[parentIndex].dropdown.slice(0, index)), _toConsumableArray(newData[parentIndex].dropdown.slice(index + 1)));
         newData[parentIndex].dropdown = newDropdown;
-        setNavData(newData);
+        saveNavData(newData);
       });
     }
   }
 
   function handleLinkChange(event, index, type) {
-    setNavData(function (prevData) {
-      var newData = _toConsumableArray(prevData);
+    // TODO ensure theses don't get out of sync
+    var newData = _toConsumableArray(navData);
 
-      newData[index][type] = event.target.value;
-
-      if (webStyle.autoSaveEditsLocally) {
-        localStorage.setItem(props.id + "-navData", newData);
-      }
-
-      return newData;
-    });
+    newData[index][type] = event.target.value;
+    saveNavData(newData);
   }
 
   function handleLinkDropdownChange(event, parentIndex, index, type) {
-    setNavData(function (prevData) {
-      var newData = _toConsumableArray(prevData);
+    var newData = _toConsumableArray(navData);
 
-      newData[parentIndex].dropdown[index][type] = event.target.value;
-
-      if (webStyle.autoSaveEditsLocally) {
-        localStorage.setItem(props.id + "-navData", newData);
-      }
-
-      return newData;
-    });
+    newData[parentIndex].dropdown[index][type] = event.target.value;
+    saveNavData(newData);
   }
 
   function handleDragEnd(event) {
     var active = event.active,
-        over = event.over; // event.preventDefault();
+        over = event.over;
 
     if (active.id !== over.id) {
       var oldIndex = active.data.current.sortable.index;
@@ -763,15 +719,8 @@ function NavigationBar(props) {
 
       var newIndex = over.data.current.sortable.index; // removeLink
 
-      setNavData(function (prevData) {
-        var newData = (0, _sortable.arrayMove)(prevData, oldIndex, newIndex);
-
-        if (webStyle.autoSaveEditsLocally) {
-          localStorage.setItem(props.id + "-navData", newData);
-        }
-
-        return newData;
-      });
+      var newData = (0, _sortable.arrayMove)(navData, oldIndex, newIndex);
+      saveNavData(newData);
     }
   }
 
@@ -788,17 +737,11 @@ function NavigationBar(props) {
       }
 
       var newIndex = over.data.current.sortable.index;
-      setNavData(function (prevData) {
-        var newData = _toConsumableArray(prevData);
 
-        newData[index].dropdown = (0, _sortable.arrayMove)(newData[index].dropdown, oldIndex, newIndex);
+      var newData = _toConsumableArray(navData);
 
-        if (webStyle.autoSaveEditsLocally) {
-          localStorage.setItem(props.id + "-navData", newData);
-        }
-
-        return newData;
-      });
+      newData[index].dropdown = (0, _sortable.arrayMove)(newData[index].dropdown, oldIndex, newIndex);
+      saveNavData(newData);
     } // event.preventDefault();
 
   }

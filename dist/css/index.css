@@ -220,9 +220,6 @@ ul.topnav {
   th.font-shrink {
     font-size: small !important;
   }
-  span.font-shrink-md {
-    font-size: small !important;
-  }
 
   .font-shrink > * {
     font-size: small !important;

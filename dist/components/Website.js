@@ -124,13 +124,14 @@ var site_template = {
 var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
-function Website() {
+function Website(props) {
+  var _ref2;
+
   var _useState = (0, _react.useState)({
     siteName: site_template.siteName,
     isEditMode: true,
     isShowEditor: true,
     isAdmin: true,
-    autoSaveEditsLocally: true,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)
@@ -139,49 +140,81 @@ function Website() {
       webStyle = _useState2[0],
       _setWebStyle = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(site_template.masterNavBarData),
+  var _useState3 = (0, _react.useState)({
+    viewDraftEdits: true,
+    autoSaveEditsLocally: true,
+    autoUpdateLiveWebsite: false
+  }),
       _useState4 = _slicedToArray(_useState3, 2),
-      masterNavData = _useState4[0],
-      _setMasterNavData = _useState4[1];
+      storageSettings = _useState4[0],
+      _setStorageSettings = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(site_template.socialMedias),
+  var _useState5 = (0, _react.useState)(site_template.masterNavBarData),
       _useState6 = _slicedToArray(_useState5, 2),
-      socialMedias = _useState6[0],
-      _setSocialMedias = _useState6[1];
+      masterNavData = _useState6[0],
+      _setMasterNavData = _useState6[1];
 
-  var _useState7 = (0, _react.useState)(site_template.pages),
+  var _useState7 = (0, _react.useState)(site_template.socialMedias),
       _useState8 = _slicedToArray(_useState7, 2),
-      pages = _useState8[0],
-      _setPages = _useState8[1];
+      socialMedias = _useState8[0],
+      _setSocialMedias = _useState8[1];
 
   var _useState9 = (0, _react.useState)(site_template.pages),
       _useState10 = _slicedToArray(_useState9, 2),
-      promoCodes = _useState10[0],
-      _setPromoCodes = _useState10[1];
+      pages = _useState10[0],
+      _setPages = _useState10[1];
 
-  var _useState11 = (0, _react.useState)({}),
+  var _useState11 = (0, _react.useState)(site_template.pages),
       _useState12 = _slicedToArray(_useState11, 2),
-      cart = _useState12[0],
-      _setCart = _useState12[1];
+      promoCodes = _useState12[0],
+      _setPromoCodes = _useState12[1];
 
-  var _useState13 = (0, _react.useState)(""),
+  var _useState13 = (0, _react.useState)({}),
       _useState14 = _slicedToArray(_useState13, 2),
-      msgPort = _useState14[0],
-      setMsgPort = _useState14[1];
+      cart = _useState14[0],
+      _setCart = _useState14[1];
 
-  var _useState15 = (0, _react.useState)({}),
+  var _useState15 = (0, _react.useState)(false),
       _useState16 = _slicedToArray(_useState15, 2),
-      savedData = _useState16[0],
-      _setSavedData = _useState16[1];
+      siteIsDraft = _useState16[0],
+      _setSiteIsDraft = _useState16[1];
+
+  var _useState17 = (0, _react.useState)(""),
+      _useState18 = _slicedToArray(_useState17, 2),
+      msgPort = _useState18[0],
+      setMsgPort = _useState18[1];
+
+  var _useState19 = (0, _react.useState)({}),
+      _useState20 = _slicedToArray(_useState19, 2),
+      savedData = _useState20[0],
+      _setSavedData = _useState20[1];
 
   var componentOptions = ["Product Comparison Table", "Walk Through", "Product Comparison Cards", "Paragraph", "Paragraph Backed", "Quick Link", "Navigation Bar", "Header", "Footer", "Mosaic", "Captioned Picture", "Video Frame", "Slide Show"].sort();
   var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable"];
+  var apiMethods = {
+    getFromDatabase: function getFromDatabase(id, componentState) {
+      if (props.getFromDatabase) {
+        props.getFromDatabase(id);
+      }
+    },
+    setValueInDatabase: function setValueInDatabase(id, componentState) {
+      if (props.saveComponentToDB) {
+        props.saveComponentDataToDB(id, componentState);
+      }
+    },
+    setSiteIsDraft: function setSiteIsDraft(state) {
+      return _setSiteIsDraft(state);
+    }
+  };
   var appMethods = {
     setWebStyle: function setWebStyle(state) {
       return _setWebStyle(state);
     },
     setMasterNavData: function setMasterNavData(state) {
       return _setMasterNavData(state);
+    },
+    setStorageSettings: function setStorageSettings(state) {
+      return _setStorageSettings(state);
     },
     setCart: function setCart(state) {
       return _setCart(state);
@@ -327,7 +360,21 @@ function Website() {
       _setSocialMedias([].concat(_toConsumableArray(socialMedias), [newSocialMedia]));
     },
     saveWebsite: function saveWebsite() {
-      appMethods.sendMsgPortMsg("save");
+      // Check if user really wants to publish edits
+      if (window.confirm("Are you sure you want to publish your edits?")) {
+        // If the site-creator is connected to a database
+        if (props.saveComponentToDB) {
+          appMethods.sendMsgPortMsg("save");
+
+          _setSiteIsDraft(false);
+        } else {
+          if (window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")) {
+            appMethods.sendMsgPortMsg("save");
+
+            _setSiteIsDraft(false);
+          }
+        }
+      }
     },
     toggleStyleEditor: function toggleStyleEditor() {
       var newWebstyle = _objectSpread({}, webStyle);
@@ -416,29 +463,27 @@ function Website() {
       path: path + "/:pathParam?",
       children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), webStyle.isEditMode === true ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
         pageName: name,
+        pageID: id,
         components: components,
         defaultComponentList: ["Header", "Navbar"],
         componentOptions: componentOptions
       }, id) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_StaticPage.default, {
         pageName: name,
+        pageID: id,
         components: components
       }, id + "static")]
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
-    value: {
+    value: (_ref2 = {
       webStyle: webStyle,
       socialMedias: socialMedias,
       masterNavData: masterNavData,
       pages: pages,
       promoCodes: promoCodes,
       cart: cart,
-      msgPort: msgPort,
-      savedData: savedData,
-      flatComponents: flatComponents,
-      componentOptions: componentOptions,
-      appMethods: appMethods
-    },
+      storageSettings: storageSettings
+    }, _defineProperty(_ref2, "storageSettings", storageSettings), _defineProperty(_ref2, "siteIsDraft", siteIsDraft), _defineProperty(_ref2, "msgPort", msgPort), _defineProperty(_ref2, "savedData", savedData), _defineProperty(_ref2, "flatComponents", flatComponents), _defineProperty(_ref2, "componentOptions", componentOptions), _defineProperty(_ref2, "appMethods", appMethods), _defineProperty(_ref2, "apiMethods", apiMethods), _ref2),
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "App",
       style: {

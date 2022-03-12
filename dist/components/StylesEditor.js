@@ -41,10 +41,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function StylesEditor(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
+      siteIsDraft = _useContext.siteIsDraft,
       webStyle = _useContext.webStyle,
       pages = _useContext.pages,
       socialMedias = _useContext.socialMedias,
       appMethods = _useContext.appMethods,
+      apiMethods = _useContext.apiMethods,
+      storageSettings = _useContext.storageSettings,
       promoCodes = _useContext.promoCodes;
 
   var handleInputChange = function handleInputChange(e) {
@@ -397,9 +400,30 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               className: "form-check-input me-2",
               type: "checkbox",
-              checked: webStyle.autoSaveEditsLocally,
+              checked: storageSettings.showDraftEdits,
               onClick: function onClick(evt) {
-                handleCheckBox(evt, "autoSaveEditsLocally");
+                appMethods.setStorageSettings(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    showDraftEdits: !prevState.showDraftEdits
+                  });
+                });
+              }
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+              className: "form-check-label",
+              children: "Show Draft Edits"
+            })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+            className: "form-check",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              className: "form-check-input me-2",
+              type: "checkbox",
+              checked: storageSettings.autoSaveEditsLocally,
+              onClick: function onClick(evt) {
+                appMethods.setStorageSettings(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    autoSaveEditsLocally: !prevState.autoSaveEditsLocally
+                  });
+                });
               }
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               className: "form-check-label",
@@ -410,7 +434,14 @@ function StylesEditor(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               className: "form-check-input me-2",
               type: "checkbox",
-              checked: false
+              checked: storageSettings.autoUpdateLiveWebsite,
+              onClick: function onClick(evt) {
+                appMethods.setStorageSettings(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    autoUpdateLiveWebsite: !prevState.autoUpdateLiveWebsite
+                  });
+                });
+              }
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               className: "form-check-label",
               children: "Auto Save To DB"
@@ -531,6 +562,12 @@ function StylesEditor(props) {
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             icon: _freeSolidSvgIcons.faTimes
           })
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "col text-center align-self-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+          className: " font-shrink fw-bold m-0",
+          children: siteIsDraft ? "Draft Site" : "Live Site"
         })
       })]
     })
