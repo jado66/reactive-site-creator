@@ -24,6 +24,8 @@ var _DynamicPage = _interopRequireDefault(require("./DynamicPage"));
 
 var _StaticPage = _interopRequireDefault(require("./StaticPage"));
 
+var _delayCallback = _interopRequireDefault(require("./helpers/delayCallback"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -54,12 +56,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// Pages
-// import CheckoutPage from "./pages/checkoutPage";
-// import AdminPage from "./pages/AdminPage"
-// import AdminLogin from "./pages/AdminLogin"
-// import Page404 from "./pages/Page404"
-// Data
 // import {site_template} from "./websiteVersions/current"
 var site_template = {
   siteName: "New Website",
@@ -136,71 +132,11 @@ exports.WebContext = WebContext;
 function Website(props) {
   var _ref2;
 
-  var _useState = (0, _react.useState)({
-    siteName: site_template.siteName,
-    isEditMode: true,
-    isShowEditor: true,
-    isAdmin: true,
-    // Website colors
-    colors: _objectSpread({}, site_template.colors),
-    promoCodes: _objectSpread({}, site_template.promoCodes)
-  }),
+  var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
-      webStyle = _useState2[0],
-      _setWebStyle = _useState2[1];
+      siteIsDraft = _useState2[0],
+      _setSiteIsDraft = _useState2[1];
 
-  var _useState3 = (0, _react.useState)({
-    viewDraftEdits: true,
-    autoSaveEditsLocally: true,
-    autoUpdateLiveWebsite: false
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      storageSettings = _useState4[0],
-      _setStorageSettings = _useState4[1];
-
-  var _useState5 = (0, _react.useState)(site_template.masterNavBarData),
-      _useState6 = _slicedToArray(_useState5, 2),
-      masterNavData = _useState6[0],
-      _setMasterNavData = _useState6[1];
-
-  var _useState7 = (0, _react.useState)(site_template.socialMedias),
-      _useState8 = _slicedToArray(_useState7, 2),
-      socialMedias = _useState8[0],
-      _setSocialMedias = _useState8[1];
-
-  var _useState9 = (0, _react.useState)(site_template.pages),
-      _useState10 = _slicedToArray(_useState9, 2),
-      pages = _useState10[0],
-      _setPages = _useState10[1];
-
-  var _useState11 = (0, _react.useState)(site_template.pages),
-      _useState12 = _slicedToArray(_useState11, 2),
-      promoCodes = _useState12[0],
-      _setPromoCodes = _useState12[1];
-
-  var _useState13 = (0, _react.useState)({}),
-      _useState14 = _slicedToArray(_useState13, 2),
-      cart = _useState14[0],
-      _setCart = _useState14[1];
-
-  var _useState15 = (0, _react.useState)(false),
-      _useState16 = _slicedToArray(_useState15, 2),
-      siteIsDraft = _useState16[0],
-      _setSiteIsDraft = _useState16[1];
-
-  var _useState17 = (0, _react.useState)(""),
-      _useState18 = _slicedToArray(_useState17, 2),
-      msgPort = _useState18[0],
-      setMsgPort = _useState18[1];
-
-  var _useState19 = (0, _react.useState)({}),
-      _useState20 = _slicedToArray(_useState19, 2),
-      savedData = _useState20[0],
-      _setSavedData = _useState20[1];
-
-  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
-
-  var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable", "Subscriber Box"];
   var apiMethods = {
     getFromDatabase: function getFromDatabase(id, componentState) {
       if (props.getFromDatabase) {
@@ -228,6 +164,67 @@ function Website(props) {
       return _setSiteIsDraft(state);
     }
   };
+
+  var _useState3 = (0, _react.useState)({
+    viewDraftEdits: true,
+    autoSaveEditsLocally: true,
+    autoUpdateLiveWebsite: false
+  }),
+      _useState4 = _slicedToArray(_useState3, 2),
+      storageSettings = _useState4[0],
+      _setStorageSettings = _useState4[1];
+
+  var _useContextStorage = useContextStorage(storageSettings, apiMethods, "webStyle", {
+    siteName: site_template.siteName,
+    isEditMode: true,
+    isShowEditor: true,
+    isAdmin: true,
+    // Website colors
+    colors: _objectSpread({}, site_template.colors),
+    promoCodes: _objectSpread({}, site_template.promoCodes)
+  }),
+      _useContextStorage2 = _slicedToArray(_useContextStorage, 2),
+      webStyle = _useContextStorage2[0],
+      _setWebStyle = _useContextStorage2[1];
+
+  var _useContextStorage3 = useContextStorage(storageSettings, apiMethods, "masterNavData", site_template.masterNavBarData),
+      _useContextStorage4 = _slicedToArray(_useContextStorage3, 2),
+      masterNavData = _useContextStorage4[0],
+      _setMasterNavData = _useContextStorage4[1];
+
+  var _useContextStorage5 = useContextStorage(storageSettings, apiMethods, "socialMedias", site_template.socialMedias),
+      _useContextStorage6 = _slicedToArray(_useContextStorage5, 2),
+      socialMedias = _useContextStorage6[0],
+      _setSocialMedias = _useContextStorage6[1];
+
+  var _useContextStorage7 = useContextStorage(storageSettings, apiMethods, "pages", site_template.pages),
+      _useContextStorage8 = _slicedToArray(_useContextStorage7, 2),
+      pages = _useContextStorage8[0],
+      _setPages = _useContextStorage8[1];
+
+  var _useContextStorage9 = useContextStorage(storageSettings, apiMethods, "promoCodes", site_template.pages),
+      _useContextStorage10 = _slicedToArray(_useContextStorage9, 2),
+      promoCodes = _useContextStorage10[0],
+      _setPromoCodes = _useContextStorage10[1];
+
+  var _useState5 = (0, _react.useState)({}),
+      _useState6 = _slicedToArray(_useState5, 2),
+      cart = _useState6[0],
+      _setCart = _useState6[1];
+
+  var _useState7 = (0, _react.useState)(""),
+      _useState8 = _slicedToArray(_useState7, 2),
+      msgPort = _useState8[0],
+      setMsgPort = _useState8[1];
+
+  var _useState9 = (0, _react.useState)({}),
+      _useState10 = _slicedToArray(_useState9, 2),
+      savedData = _useState10[0],
+      _setSavedData = _useState10[1];
+
+  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
+
+  var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable", "Subscriber Box"];
   var appMethods = {
     setWebStyle: function setWebStyle(state) {
       return _setWebStyle(state);
@@ -523,4 +520,74 @@ function Website(props) {
       })
     })
   });
+
+  function useContextStorage(storageSettings, apiMethods, contextName, initialState) {
+    var _useState11 = (0, _react.useState)(false),
+        _useState12 = _slicedToArray(_useState11, 2),
+        hasBeenMounted = _useState12[0],
+        setHasBeenMounted = _useState12[1];
+
+    var _useState13 = (0, _react.useState)(function () {
+      return getStoredComponent(contextName, initialState, storageSettings, apiMethods);
+    }),
+        _useState14 = _slicedToArray(_useState13, 2),
+        value = _useState14[0],
+        setValue = _useState14[1];
+
+    (0, _react.useEffect)(function () {
+      // The use of has been mounted skips the first render.
+      // Since we are programatically changing value we don't need to update our storage
+      if (hasBeenMounted) {
+        // Set live content from database
+        if (storageSettings.autoUpdateLiveWebsite) {
+          if (apiMethods.isAthenticated()) {
+            apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
+          }
+        } // Store draft data locally
+        else if (storageSettings.autoSaveEditsLocally) {
+          localStorage.setItem(contextName, JSON.stringify(value)); // TODO get this to work
+
+          informSiteOfDraftEdits(apiMethods);
+        }
+      } else {
+        setHasBeenMounted(true);
+      }
+    }, [value]);
+    return [value, setValue];
+  }
+}
+
+function getStoredComponent(contextName, initialValue, storageSettings, apiMethods) {
+  var savedData = null; // If we are viewing the draft load the draft
+
+  if (storageSettings.viewDraftEdits) {
+    savedData = JSON.parse(localStorage.getItem(contextName));
+
+    if (savedData) {
+      informSiteOfDraftEdits(apiMethods);
+      return savedData;
+    }
+  } // Load any values from database
+
+
+  if (apiMethods.getFromDataBase instanceof Function) {
+    savedData = JSON.stringify(apiMethods.getFromDataBase(contextName));
+
+    if (savedData) {
+      return savedData;
+    }
+  } // If nothing is stored load the prop data from the template
+
+
+  if (initialValue instanceof Function) {
+    return initialValue();
+  }
+
+  return initialValue;
+}
+
+function informSiteOfDraftEdits(apiMethods) {
+  (0, _delayCallback.default)(function () {
+    apiMethods.setSiteIsDraft(true);
+  }, 500);
 }

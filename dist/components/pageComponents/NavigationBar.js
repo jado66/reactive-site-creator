@@ -186,7 +186,7 @@ function NavigationBar(props) {
         });
       }
 
-      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(NavItem, {
+      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(EditableNavItem, {
         el: el,
         webStyle: webStyle,
         handleLinkChange: handleLinkChange,
@@ -731,9 +731,8 @@ var DeleteDrop = function DeleteDrop(props) {
 }; //  I really need to consolidate this....
 
 
-var NavItem = function NavItem(props) {
-  /*#__PURE__*/
-  (0, _jsxRuntime.jsx)("li", {
+var EditableNavItem = function EditableNavItem(props) {
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
     className: "nav-item " + (props.webStyle.isMobile ? "ms-2" : "mx-4"),
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       children: "dropdown" in props.el ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {

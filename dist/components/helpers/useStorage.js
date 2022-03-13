@@ -9,6 +9,10 @@ var _react = require("react");
 
 var _Website = require("../Website");
 
+var _delayCallback = _interopRequireDefault(require("./delayCallback"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -51,7 +55,8 @@ function useComponentStorage(componentID, initialState) {
       } // Store draft data locally
       else if (storageSettings.autoSaveEditsLocally) {
         localStorage.setItem(componentID, JSON.stringify(value)); // TODO get this to work
-        // apiMethods.setSiteIsDraft(true)
+
+        informSiteOfDraftEdits(apiMethods);
       }
     } else {
       setHasBeenMounted(true);
@@ -67,7 +72,7 @@ function getStoredComponent(componentID, initialValue, storageSettings, apiMetho
     savedData = JSON.parse(localStorage.getItem(componentID));
 
     if (savedData) {
-      // apiMethods.setSiteIsDraft(true)
+      informSiteOfDraftEdits(apiMethods);
       return savedData;
     }
   } // Load any values from database
@@ -87,4 +92,10 @@ function getStoredComponent(componentID, initialValue, storageSettings, apiMetho
   }
 
   return initialValue;
+}
+
+function informSiteOfDraftEdits(apiMethods) {
+  (0, _delayCallback.default)(function () {
+    apiMethods.setSiteIsDraft(true);
+  }, 500);
 }
