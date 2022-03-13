@@ -128,7 +128,7 @@ export default function NavigationBar(props) {
       }
 
       navItems.push(
-        <NavItem 
+        <EditableNavItem 
           key = {el.name+el.path+"Link"}
           el = {el}
           webStyle = {webStyle}
@@ -136,7 +136,7 @@ export default function NavigationBar(props) {
           index = {index}
         >
           {dropdownItems}
-        </NavItem>
+        </EditableNavItem>
       );
     });
 
@@ -635,7 +635,8 @@ const DeleteDrop = (props) => {
 
 //  I really need to consolidate this....
 
-const NavItem = (props) => {
+const EditableNavItem = (props) => {
+  return(
   <li className={"nav-item "+(props.webStyle.isMobile?"ms-2":"mx-4")} >
     <div>
       {"dropdown" in props.el ? (
@@ -690,7 +691,7 @@ const NavItem = (props) => {
         </div>
       )}
     </div>
-  </li>
+  </li>)
 }
 
 const DropDownLink = (props) =>{

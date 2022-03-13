@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { WebContext } from "../Website";
-
+import delayCallback from "./delayCallback";
 // Needs a pageID as a parent object
 export default function useComponentStorage(componentID, initialState){
     
@@ -24,7 +24,7 @@ export default function useComponentStorage(componentID, initialState){
             else if (storageSettings.autoSaveEditsLocally){
                 localStorage.setItem(componentID,JSON.stringify(value))
                 // TODO get this to work
-                // apiMethods.setSiteIsDraft(true)
+                informSiteOfDraftEdits(apiMethods)
             }
         }
         else{
@@ -45,7 +45,7 @@ function getStoredComponent(componentID, initialValue, storageSettings, apiMetho
         savedData = JSON.parse(localStorage.getItem(componentID))
         
         if (savedData){
-            // apiMethods.setSiteIsDraft(true)
+            informSiteOfDraftEdits(apiMethods)
             return savedData
         } 
     }
@@ -63,3 +63,10 @@ function getStoredComponent(componentID, initialValue, storageSettings, apiMetho
     return initialValue
    
 }
+
+function informSiteOfDraftEdits(apiMethods){
+    delayCallback(()=>{
+        apiMethods.setSiteIsDraft(true)
+    },500)
+}
+

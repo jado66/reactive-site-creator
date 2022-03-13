@@ -16,6 +16,7 @@ import '../css/bootstrapOverrides.css'
 import StylesEditor from "./StylesEditor";
 import DynamicPage from "./DynamicPage";
 import StaticPage from "./StaticPage";
+
 // Pages
 // import CheckoutPage from "./pages/checkoutPage";
 // import AdminPage from "./pages/AdminPage"
@@ -25,7 +26,7 @@ import StaticPage from "./StaticPage";
 
 // Data
 
-
+import delayCallback from "./helpers/delayCallback";
 
 // import {site_template} from "./websiteVersions/current"
 
@@ -124,35 +125,7 @@ export const WebContext = createContext()
 
 export default function Website(props) {
 
-  const [webStyle, setWebStyle] = useState({
-    siteName: site_template.siteName,
-    isEditMode: true,
-    isShowEditor: true,
-    isAdmin: true,
-    
-    // Website colors
-    colors: {...site_template.colors},
-    promoCodes: {...site_template.promoCodes}
-  } )
-  const [storageSettings,setStorageSettings] = useState(
-    {
-      viewDraftEdits: true, 
-      autoSaveEditsLocally: true,
-      autoUpdateLiveWebsite: false
-    }
-  )
-  const [masterNavData, setMasterNavData] = useState(site_template.masterNavBarData)
-  const [socialMedias, setSocialMedias] = useState(site_template.socialMedias)
-  const [pages, setPages] = useState(site_template.pages)
-  const [promoCodes, setPromoCodes] = useState(site_template.pages)
-  const [cart, setCart] = useState({})
   const [siteIsDraft, setSiteIsDraft] = useState(false)
-  const [msgPort,setMsgPort] = useState("")
-  const [savedData, setSavedData] = useState({})
-    const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box"].sort()
-
-  // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
-  const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]
 
   const apiMethods = {
     getFromDatabase:  (id,componentState) =>{
@@ -183,6 +156,37 @@ export default function Website(props) {
 
     
   }
+  const [storageSettings,setStorageSettings] = useState(
+    {
+      viewDraftEdits: true, 
+      autoSaveEditsLocally: true,
+      autoUpdateLiveWebsite: false
+    }
+  )
+  const [webStyle, setWebStyle] = useContextStorage(storageSettings,apiMethods,"webStyle",{
+    siteName: site_template.siteName,
+    isEditMode: true,
+    isShowEditor: true,
+    isAdmin: true,
+    
+    // Website colors
+    colors: {...site_template.colors},
+    promoCodes: {...site_template.promoCodes}
+  } )
+  
+  const [masterNavData, setMasterNavData] =  useContextStorage(storageSettings,apiMethods,"masterNavData",site_template.masterNavBarData)
+  const [socialMedias, setSocialMedias] = useContextStorage(storageSettings,apiMethods,"socialMedias",site_template.socialMedias)
+  const [pages, setPages] = useContextStorage(storageSettings,apiMethods,"pages",site_template.pages)
+  const [promoCodes, setPromoCodes] = useContextStorage(storageSettings,apiMethods,"promoCodes",site_template.pages)
+  const [cart, setCart] = useState({})
+  const [msgPort,setMsgPort] = useState("")
+  const [savedData, setSavedData] = useState({})
+  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box"].sort()
+
+  // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
+  const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]
+
+  
   const appMethods = {
     setWebStyle: (state) => setWebStyle(state),
     setMasterNavData: (state) => setMasterNavData(state),
@@ -427,6 +431,8 @@ export default function Website(props) {
     }
   }, [msgPort]);
 
+  
+
 
   let sitePages  = pages.map(({id, name, path, components})=> {
     
@@ -528,5 +534,71 @@ export default function Website(props) {
       </div>
     </WebContext.Provider>
   );
+
+  function useContextStorage(storageSettings, apiMethods, contextName, initialState){
+    const [hasBeenMounted, setHasBeenMounted] = useState(false)
+    const [value, setValue] = useState(()=>{
+        return getStoredComponent(contextName,initialState,storageSettings,apiMethods)
+    })
+
+    useEffect(() => {
+        // The use of has been mounted skips the first render.
+        // Since we are programatically changing value we don't need to update our storage
+        if (hasBeenMounted){ 
+            // Set live content from database
+            if (storageSettings.autoUpdateLiveWebsite){
+                if (apiMethods.isAthenticated()){
+                    apiMethods.setValueInDatabase(contextName,JSON.stringify(value))
+                }
+            }
+            // Store draft data locally
+            else if (storageSettings.autoSaveEditsLocally){
+                localStorage.setItem(contextName,JSON.stringify(value))
+                // TODO get this to work
+                informSiteOfDraftEdits(apiMethods)
+            }
+        }
+        else{
+            setHasBeenMounted(true)
+        }
+        
+    },[value])
+
+    return [value, setValue]
+  }
+  
+}
+
+function getStoredComponent(contextName, initialValue, storageSettings, apiMethods){
+  let savedData = null
+  
+  // If we are viewing the draft load the draft
+  if (storageSettings.viewDraftEdits){
+      savedData = JSON.parse(localStorage.getItem(contextName))
+      
+      if (savedData){
+          informSiteOfDraftEdits(apiMethods)
+          return savedData
+      } 
+  }
+  
+  // Load any values from database
+  if (apiMethods.getFromDataBase instanceof Function ){
+      savedData = JSON.stringify(apiMethods.getFromDataBase(contextName))
+      if (savedData){
+          return savedData
+      } 
+  }
+
+  // If nothing is stored load the prop data from the template
+  if (initialValue instanceof Function){ return initialValue()}
+  return initialValue
+ 
+}
+
+function informSiteOfDraftEdits(apiMethods){
+    delayCallback(()=>{
+        apiMethods.setSiteIsDraft(true)
+    },500)
 }
 
