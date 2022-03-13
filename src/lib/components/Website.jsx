@@ -123,7 +123,7 @@ const site_template = {
 
 export const WebContext = createContext()
 
-export default function Website(props) {
+export default function Website({isAdmin = true,...props}) {
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
 
@@ -136,14 +136,6 @@ export default function Website(props) {
     setValueInDatabase: (id,componentState) =>{
       if (props.saveComponentToDB){
         props.saveComponentDataToDB(id,componentState)
-      }
-    },
-    isAuthenticated: ()=>{
-      if (props.isAuthenticated){
-        return props.isAuthenticated()
-      }
-      else{
-        return true
       }
     },
     addNewSubscriber: (formState)=>{
@@ -165,9 +157,9 @@ export default function Website(props) {
   )
   const [webStyle, setWebStyle] = useContextStorage(storageSettings,apiMethods,"webStyle",{
     siteName: site_template.siteName,
-    isEditMode: true,
-    isShowEditor: true,
-    isAdmin: true,
+    isEditMode: props.isAdmin,
+    isShowEditor: props.isAdmin,
+    isAdmin: props.isAdmin,
     
     // Website colors
     colors: {...site_template.colors},
@@ -334,19 +326,17 @@ export default function Website(props) {
     },
     saveWebsite:()=>{
       // Check if user really wants to publish edits
-      if (apiMethods.isAuthenticated()){
-        if(window.confirm("Are you sure you want to publish your edits?")){
-        
-          // If the site-creator is connected to a database
-          if (props.saveComponentToDB){
+      if(window.confirm("Are you sure you want to publish your edits?")){
+      
+        // If the site-creator is connected to a database
+        if (props.saveComponentToDB){
+          appMethods.sendMsgPortMsg("save")
+          setSiteIsDraft(false)
+        }
+        else{
+          if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
             appMethods.sendMsgPortMsg("save")
             setSiteIsDraft(false)
-          }
-          else{
-            if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
-              appMethods.sendMsgPortMsg("save")
-              setSiteIsDraft(false)
-            }
           }
         }
       }
