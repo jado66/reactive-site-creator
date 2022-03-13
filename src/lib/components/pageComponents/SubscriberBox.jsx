@@ -42,7 +42,7 @@ export default function SubscriberBox(props){
             alert("Email isn't a valid email")
         }
         else{
-            apiMethods.addSubscriber(formState)
+            apiMethods.addNewSubscriber(formState)
             setFormState({name:"",email:""})
         }
     }
