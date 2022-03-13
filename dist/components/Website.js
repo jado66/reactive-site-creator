@@ -179,9 +179,9 @@ function Website(_ref) {
 
   var _useContextStorage = useContextStorage(storageSettings, apiMethods, "webStyle", {
     siteName: site_template.siteName,
-    isEditMode: props.isAdmin,
-    isShowEditor: props.isAdmin,
-    isAdmin: props.isAdmin,
+    isEditMode: props.isAdmin || false,
+    isShowEditor: props.isAdmin || false,
+    isAdmin: props.isAdmin || false,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)
@@ -437,6 +437,14 @@ function Website(_ref) {
       window.removeEventListener('resize', handleWindowSizeChange);
     };
   }, []);
+  (0, _react.useEffect)(function () {
+    _setWebStyle(function (prevState) {
+      return _objectSpread(_objectSpread({}, prevState), {}, {
+        isShowEditor: props.isAdmin,
+        isAdmin: props.isAdmin
+      });
+    });
+  }, [props.isAdmin]);
 
   var setCartFromStorage = function setCartFromStorage() {
     // This stays as a local storage item

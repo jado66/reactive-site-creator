@@ -157,9 +157,9 @@ export default function Website({isAdmin = true,...props}) {
   )
   const [webStyle, setWebStyle] = useContextStorage(storageSettings,apiMethods,"webStyle",{
     siteName: site_template.siteName,
-    isEditMode: props.isAdmin,
-    isShowEditor: props.isAdmin,
-    isAdmin: props.isAdmin,
+    isEditMode: props.isAdmin||false,
+    isShowEditor: props.isAdmin||false,
+    isAdmin: props.isAdmin||false,
     
     // Website colors
     colors: {...site_template.colors},
@@ -383,7 +383,18 @@ export default function Website({isAdmin = true,...props}) {
     return () => {
         window.removeEventListener('resize', handleWindowSizeChange);
     }
+
   }, []);
+
+  useEffect(() => {
+    setWebStyle(prevState => ({
+      ...prevState,
+      isShowEditor: props.isAdmin,
+      isAdmin: props.isAdmin
+    }))
+
+  }, [props.isAdmin]);
+
 
   const setCartFromStorage = () => {
     // This stays as a local storage item
