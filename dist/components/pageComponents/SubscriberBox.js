@@ -92,7 +92,7 @@ function SubscriberBox(props) {
     if (!validateEmail(formState.email)) {
       alert("Email isn't a valid email");
     } else {
-      apiMethods.addSubscriber(formState);
+      apiMethods.addNewSubscriber(formState);
       setFormState({
         name: "",
         email: ""
