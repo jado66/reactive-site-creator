@@ -48,7 +48,7 @@ const site_template = {
               { 
                   name: "Header",
                   id: `Home-Header-0-000`,
-                  content: { html: "New Website Home" }
+                  content: { header: "New Website Home" }
               },
               {
                   name: "NavigationBar",
@@ -77,18 +77,31 @@ const site_template = {
         }  
       ],
     masterNavBarData: 
+      {
+        homeLinkText: "home",
+        navData: 
         [
           {
             id:1,
             name:"Blog",
             path:"/blog"
           }
-        ],
+        ]
+      },
     socialMedias:[
         {
-            location  :"Github",
-            link:"https://github.com"
-        }],
+            location  :"Youtube",
+            link:"https://youtube.com"
+        },
+        {
+          location  :"Instagram",
+          link:"https://instagram.com"
+        },
+        {
+          location  :"Twitter",
+          link:"https://instagram.com"
+        }
+        ],
     promoCodes:{},
     pageData:{
       ["Home"]: 
@@ -136,8 +149,10 @@ export default function Website(props) {
   const [siteIsDraft, setSiteIsDraft] = useState(false)
   const [msgPort,setMsgPort] = useState("")
   const [savedData, setSavedData] = useState({})
-  const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
-  const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable"]
+    const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box"].sort()
+
+  // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
+  const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]
 
   const apiMethods = {
     getFromDatabase:  (id,componentState) =>{
@@ -150,7 +165,20 @@ export default function Website(props) {
         props.saveComponentDataToDB(id,componentState)
       }
     },
-
+    isAuthenticated: ()=>{
+      if (props.isAuthenticated){
+        return props.isAuthenticated()
+      }
+      else{
+        return true
+      }
+    },
+    addNewSubscriber: (formState)=>{
+      if (props.addNewSubscriber){
+        props.addNewSubscriber(formState)
+      }
+      
+    },
     setSiteIsDraft: (state) => setSiteIsDraft(state),
 
     
@@ -302,19 +330,24 @@ export default function Website(props) {
     },
     saveWebsite:()=>{
       // Check if user really wants to publish edits
-      if(window.confirm("Are you sure you want to publish your edits?")){
+      if (apiMethods.isAuthenticated()){
+        if(window.confirm("Are you sure you want to publish your edits?")){
         
-        // If the site-creator is connected to a database
-        if (props.saveComponentToDB){
-          appMethods.sendMsgPortMsg("save")
-          setSiteIsDraft(false)
-        }
-        else{
-          if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
+          // If the site-creator is connected to a database
+          if (props.saveComponentToDB){
             appMethods.sendMsgPortMsg("save")
             setSiteIsDraft(false)
           }
+          else{
+            if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
+              appMethods.sendMsgPortMsg("save")
+              setSiteIsDraft(false)
+            }
+          }
         }
+      }
+      else{
+        alert("Please sign in as Admin to save")
       }
 
     },

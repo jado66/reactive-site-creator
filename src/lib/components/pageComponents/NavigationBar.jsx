@@ -21,7 +21,7 @@ import {
 
 
 
-import { faCaretSquareDown,  faPencilAlt, faArrowsAlt, faShoppingCart, faBars, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faCaretSquareDown,  faPencilAlt, faArrowsAlt, faShoppingCart, faBars, faCog, faL } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookSquare, faTwitter, faInstagram, faYoutube, faTiktok, faDiscord, faEtsy, faGithub, faImdb, faLinkedinIn,faPatreon, faPinterestP, faReddit, faShopify, faSpotify, faSoundcloud, faSnapchatGhost } from "@fortawesome/free-brands-svg-icons"
@@ -42,7 +42,6 @@ import  useComponentStorage  from "../helpers/useStorage";
 
 export default function NavigationBar(props) {
   const [isSettingsMode,setIsSettingsMode] = useState(false);
-  const [isUnique, setIsUnique] = useState(false)
   const [isEdit, setIsEdit] = useState(false);
   const [isShowDeleteSpot, showDeleteSpot] = useState(false);
   const [isShowDropdownDeleteSpot, showDropdownDeleteSpot] = useState(false);
@@ -52,7 +51,7 @@ export default function NavigationBar(props) {
   const [homeLinkText, setHomeLinkText] = useState("Site Creator")
   const [uniqueNavData, setUniqueNavData] = useState([]);
 
-  const [content, setContent] = useComponentStorage(props.pageName+props.id,{
+  const [content, setContent] = useComponentStorage(props.pageID+props.id,{
     isUnique: false,
     homeLinkText: "home",
     naveData: []
@@ -60,7 +59,7 @@ export default function NavigationBar(props) {
 
   useEffect(() => {
     if (msgPort == "save"){
-      if (isUnique){
+      if (content.isUnique){
         apiMethods.setValueInDatabase(props.pageID+props.id,content)
       }
     }
@@ -95,7 +94,7 @@ export default function NavigationBar(props) {
 
   }));
 
-  let navData = (isUnique?content.navData:masterNavData.navData)
+  let navData = (content.isUnique?content.navData:masterNavData.navData)
 
   if (!navData){
     navData = []
@@ -129,76 +128,15 @@ export default function NavigationBar(props) {
       }
 
       navItems.push(
-        <li className={"nav-item "+(webStyle.isMobile?"ms-2":"mx-4")} 
-            key={"edit"+el.name+"input2"}
+        <NavItem 
+          key = {el.name+el.path+"Link"}
+          el = {el}
+          webStyle = {webStyle}
+          handleLinkChange = {handleLinkChange}
+          index = {index}
         >
-          <div key={"edit"+el.name+"div"}>
-            {"dropdown" in el ? (
-              <div  key={"edit"+el.name+"div2"}
-                    className= {"position-relative "+(webStyle.isMobile ? "input-group" : "")}>
-                <input
-                  key={"edit"+el.name+"input"}
-                  className={
-                    "form-control-plaintext" + (webStyle.isMobile ? " w-50" : "")
-                  }
-                  onChange={(evt) => {
-                    handleLinkChange(evt, index, "text");
-                  }}
-                  style ={{width:`${el.name.length+2}ch`,color:webStyle.colors.lightShade}}
-
-                  value={el.name}
-                />
-                <Link
-                  key={"edit"+el.name+"dropToggle"}
-                  className={
-                    "nav-link dropdown-toggle" + (webStyle.isMobile ? " w-50" : "")
-                  }
-                  style ={{color:webStyle.colors.lightShade}}
-                  data-no-dnd="true"
-                  data-bs-toggle="dropdown"
-                  id="navbarDropdown"
-                  role="button"
-                  aria-expanded="false"
-                  path="javascript:void(0)"
-                >
-                  Dropdown
-                </Link>
-                <ul key={"edit"+el.name+"ul"} className={"dropdown-menu "+(webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.colors.darkAccent}} aria-labelledby="navbarDropdown">
-                  <div>
-                  {dropdownItems}
-
-                  </div>
-                </ul>
-              </div>
-            ) : (
-              <div key={"edit"+el.name+"div"} className={webStyle.isMobile ? "input-group" : ""} >
-                <input
-                  key={"edit"+el.name+"input1"}
-                  className={
-                    "form-control-plaintext" + (webStyle.isMobile ? " w-50" : "")
-                  }
-                  onChange={(evt) => {
-                    handleLinkChange(evt, index, "name");
-                  }}
-                  style ={{width:`${el.name.length+2}ch`,color:webStyle.colors.lightShade}}
-
-                  value={el.name}
-                />
-                <input
-                  key={"edit"+el.name+"input2"}
-                  className={
-                    "form-control-plaintext" + (webStyle.isMobile ? " w-50" : "")
-                  }
-                  onChange={(evt) => {
-                    handleLinkChange(evt, index, "path");
-                  }}
-                  style ={{width:`${el.path.length+2}ch`,color:webStyle.colors.lightShade}}
-                  value={el.path}
-                />
-              </div>
-            )}
-          </div>
-        </li>
+          {dropdownItems}
+        </NavItem>
       );
     });
 
@@ -342,11 +280,12 @@ export default function NavigationBar(props) {
         showButtons(false);
       }}
     >
+      {/* <span>{content.isUnique?"Unique":"Master"}</span> */}
       {/* style={{backgroundColor:webStyle.colors.lightShade}} */}
         <nav className="navbar navbar-expand-lg mx-4 p-0 container mx-auto">
           
           {!isSettingsMode?
-            <div className={"container-fluid g-0 "+(webStyle.isMobile?" ms-3":"")}>
+            <div className={"container-fluid g-0 "+(webStyle.isMobile?" ms-3":"")} >
             {isEdit?
             <div data-no-dnd="true">
               <input
@@ -490,17 +429,17 @@ export default function NavigationBar(props) {
             </div>
             </div>
             :
-            <div className="text-center w-100 py-3">
+            <div className="text-center w-100 py-3" data-no-dnd = "true">
               <h3>Navigation Bar Settings</h3>
               <form className="text-start">
               <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
+                <input class="form-check-input" type="checkbox" checked = {content.isUnique} onClick = {toggleUnique} id="flexCheckDefault"/>
                 <label class="form-check-label" for="flexCheckDefault">
                   Is this Navigation Bar unique?
                 </label>
               </div>
                 <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Below will be other settings:</label>
+                  <label class="form-label">Below will be other settings:</label>
                   {/* <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> */}
                 </div>
               </form>
@@ -515,12 +454,37 @@ export default function NavigationBar(props) {
       </div>
   );
 
+  function toggleUnique(){
+    if (content.isUnique){
+      if (window.confirm("Are you sure you want to make this Navigation bar a copy of the master Navigation bar? This will remove any unique links?")){
+        setContent((prevState) => ({
+          ...prevState,
+          isUnique: false,
+        }));
+      }
+    }
+    else{
+      setContent((prevState) => ({
+        ...prevState,
+        ...masterNavData,
+        isUnique: true
+      }));
+    }
+  }
   function saveNavData(value){
-    if (isUnique){
+    if (content.isUnique){
       setContent((prevState) => ({
         ...prevState,
         navData: value,
       }));
+    }
+    else{
+      appMethods.setMasterNavData(
+        (prevState) => ({
+          ...prevState,
+          navData: value,
+        })
+      )
     }
   }
 
@@ -671,8 +635,66 @@ const DeleteDrop = (props) => {
 
 //  I really need to consolidate this....
 
+const NavItem = (props) => {
+  <li className={"nav-item "+(props.webStyle.isMobile?"ms-2":"mx-4")} >
+    <div>
+      {"dropdown" in props.el ? (
+        <div className= {"position-relative "+(props.webStyle.isMobile ? "input-group" : "")}>
+          <input  
+            className={"form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : "")}
+            onChange={(evt) => 
+              {
+                props.handleLinkChange(evt, props.index, "text");
+              }}
+            style ={{width:`${props.el.name.length+2}ch`,color:props.webStyle.colors.lightShade}}
+            value={props.el.name}
+          />
+          <Link
+            className={"nav-link dropdown-toggle" + (props.webStyle.isMobile ? " w-50" : "")}
+            style ={{color:props.webStyle.colors.lightShade}}
+            data-no-dnd="true"
+            data-bs-toggle="dropdown"
+            id="navbarDropdown"
+            role="button"
+            aria-expanded="false"
+            path="javascript:void(0)"
+          >
+            Dropdown
+          </Link>
+          <ul className={"dropdown-menu "+(props.webStyle.isMobile?"":"boxShadow")} style={{backgroundColor:props.webStyle.colors.darkAccent}} aria-labelledby="navbarDropdown">
+            <div>
+              {props.children}
+            </div>
+          </ul>
+        </div>
+      ) : (
+        <div className={props.webStyle.isMobile ? "input-group" : ""} >
+          <input
+            className={"form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : "")}
+            onChange={(evt) => 
+              {
+                props.handleLinkChange(evt, props.index, "name");
+              }}
+            style ={{width:`${props.el.name.length+2}ch`,color:props.webStyle.colors.lightShade}}
+            value={props.el.name}
+          />
+          <input    
+            className={"form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : "")}
+            onChange={(evt) => 
+              {
+                props.handleLinkChange(evt, props.index, "path");
+              }}
+              style ={{width:`${props.el.path.length+2}ch`,color:props.webStyle.colors.lightShade}}
+              value={props.el.path}
+          />
+        </div>
+      )}
+    </div>
+  </li>
+}
+
 const DropDownLink = (props) =>{
-    const { webStyle } = useContext(WebContext);
+  const { webStyle } = useContext(WebContext);
 
   if (props.isEdit)
     return (
@@ -700,3 +722,4 @@ const DropDownLink = (props) =>{
     return(<div></div>)
   }
 }
+

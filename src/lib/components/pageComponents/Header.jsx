@@ -1,20 +1,27 @@
 import React, {useEffect, useContext} from 'react'
 import ContentEditable from 'react-contenteditable'
 import useComponentStorage from '../helpers/useStorage';
-import saveContent from '../helpers/saveContent';
 import { WebContext } from "../Website";
 
 export default function Header(props){
   const contentEditable = React.createRef();
-  const [content, setContent] = useComponentStorage(props.pageName+props.id,props.content);
+
+  let initialState = props.content
+    if (Object.keys(initialState).length === 0){
+        initialState = {
+            header: props.pageName
+        }
+    }
+
+  const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
   
   const {webStyle, msgPort, apiMethods} = useContext(WebContext)
 
   // Save data
   useEffect(() => {
     if (msgPort == "save"){
-      apiMethods.setValueInDatabase(props.pageName+props.id,JSON.stringify(content))
-      localStorage.removeItem(props.pageName+props.id)
+      apiMethods.setValueInDatabase(props.pageID+props.id,JSON.stringify(content))
+      localStorage.removeItem(props.pageID+props.id)
     }
   }, [msgPort]);
 
@@ -25,10 +32,7 @@ export default function Header(props){
     }));
   };
 
-  let headerHTML = `No Content`
-  if (content){
-    headerHTML = content.html
-  }
+  let value = content
 
   return(
 
@@ -38,9 +42,9 @@ export default function Header(props){
         style={{color:webStyle.colors.darkShade}}
         spellCheck = "false"
         innerRef={contentEditable}
-        html={headerHTML} // innerHTML of the editable div
+        html={content.header} // innerHTML of the editable div
         disabled={!webStyle.isEditMode}      // use true to disable editing
-        onChange={evt=>handleContentChange("html",evt.target.value)} // handle innerHTML change
+        onChange={evt=>handleContentChange("header",evt.target.value)} // handle innerHTML change
         tagName='h1' // Use a custom HTML tag (uses a div by default)
         /> 
     </div>

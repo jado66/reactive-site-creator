@@ -30,7 +30,7 @@ import NavigationBar from "./pageComponents/NavigationBar";
 // import DynamicForm from "./pageComponents/DynamicForm";
 // import CardPaymentBlock from "./CardPaymentBlock";
 // import Mosaic from "./pageComponents/Mosaic";
-// import Footer from "./pageComponents/Footer";
+import Footer from "./pageComponents/Footer";
 // import VideoFrame from "./pageComponents/VideoFrame";
 // import SlideShow from "./pageComponents/SlideShow";
 // import PictureFrame from "./PictureFrame";
@@ -44,13 +44,19 @@ import NavigationBar from "./pageComponents/NavigationBar";
 // import Appointments from "./pageComponents/Appointments";
 // import PhotoGallery from "./pageComponents/PhotoGallery";
 import AdminWrapper from "./wrappers/AdminWrapper";
-
+import useComponentStorage from './helpers/useStorage';
 import { WebContext } from "./Website";
+import SubscriberBox from "./pageComponents/SubscriberBox";
 
 export default function DynamicPage(props) {
   const {flatComponents, webStyle} = useContext(WebContext);
 
-  const [ components, setComponents] = useState([]);
+  const initialState = props.components
+  if (!props.components){
+      initialState = []
+  }
+
+  const [ components, setComponents] = useComponentStorage(props.pageID+"-page",initialState);
   const [ activeID, setActiveID ] = useState(null)
 
   const sensors = useSensors(useSensor(MouseSensor));
@@ -86,9 +92,10 @@ export default function DynamicPage(props) {
 
   const componentMap = {
     Header:Header,
-    // Footer:Footer,
+    Footer:Footer,
     // Mosaic:Mosaic,
     NavigationBar:NavigationBar,
+    SubscriberBox:SubscriberBox,
     // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
@@ -105,32 +112,33 @@ export default function DynamicPage(props) {
     // CountDown:CountDown,
     // Appointments:Appointments,
     // PhotoGallery:PhotoGallery
+
   
   };
 
-  useEffect(() => {
+  // useEffect(() => {
         
-    if(props.components){
-        const components = props.components;
+  //   if(props.components){
+  //       const components = props.components;
        
-        setComponents(components)
+  //       setComponents(components)
     
-    }
-    else{
+  //   }
+  //   else{
         
-        let components = []
-        for (var i = 0; i < props.defaultComponentList.length; i++){
-            components.push(
-                {
-                    name: props.defaultComponentList[i],
-                    id: generateKey(props.defaultComponentList[i],i)
-                })
-        }
-        setComponents(components)
+  //       let components = []
+  //       for (var i = 0; i < props.defaultComponentList.length; i++){
+  //           components.push(
+  //               {
+  //                   name: props.defaultComponentList[i],
+  //                   id: generateKey(props.defaultComponentList[i],i)
+  //               })
+  //       }
+  //       setComponents(components)
 
-    }
+  //   }
 
-  },[]);
+  // },[]);
 
   let pagecomponents = [];
 
