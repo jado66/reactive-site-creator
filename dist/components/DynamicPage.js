@@ -21,9 +21,15 @@ var _Header = _interopRequireDefault(require("./pageComponents/Header"));
 
 var _NavigationBar = _interopRequireDefault(require("./pageComponents/NavigationBar"));
 
+var _Footer = _interopRequireDefault(require("./pageComponents/Footer"));
+
 var _AdminWrapper = _interopRequireDefault(require("./wrappers/AdminWrapper"));
 
+var _useStorage = _interopRequireDefault(require("./helpers/useStorage"));
+
 var _Website = require("./Website");
+
+var _SubscriberBox = _interopRequireDefault(require("./pageComponents/SubscriberBox"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -49,27 +55,35 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-only"); }
+
 function DynamicPage(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       flatComponents = _useContext.flatComponents,
       webStyle = _useContext.webStyle;
 
-  var _useState = (0, _react.useState)([]),
-      _useState2 = _slicedToArray(_useState, 2),
-      components = _useState2[0],
-      setComponents = _useState2[1];
+  var initialState = props.components;
 
-  var _useState3 = (0, _react.useState)(null),
-      _useState4 = _slicedToArray(_useState3, 2),
-      activeID = _useState4[0],
-      setActiveID = _useState4[1];
+  if (!props.components) {
+    [], _readOnlyError("initialState");
+  }
+
+  var _useComponentStorage = (0, _useStorage.default)(props.pageID + "-page", initialState),
+      _useComponentStorage2 = _slicedToArray(_useComponentStorage, 2),
+      components = _useComponentStorage2[0],
+      setComponents = _useComponentStorage2[1];
+
+  var _useState = (0, _react.useState)(null),
+      _useState2 = _slicedToArray(_useState, 2),
+      activeID = _useState2[0],
+      setActiveID = _useState2[1];
 
   var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor));
 
-  var _useState5 = (0, _react.useState)([]),
-      _useState6 = _slicedToArray(_useState5, 2),
-      selectedComponents = _useState6[0],
-      setSelectedComponents = _useState6[1];
+  var _useState3 = (0, _react.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      selectedComponents = _useState4[0],
+      setSelectedComponents = _useState4[1];
 
   var insertComponent = function insertComponent(option, index) {
     var newComponent = {
@@ -97,9 +111,10 @@ function DynamicPage(props) {
 
   var componentMap = {
     Header: _Header.default,
-    // Footer:Footer,
+    Footer: _Footer.default,
     // Mosaic:Mosaic,
-    NavigationBar: _NavigationBar.default // VideoFrame:VideoFrame,
+    NavigationBar: _NavigationBar.default,
+    SubscriberBox: _SubscriberBox.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,
@@ -116,24 +131,24 @@ function DynamicPage(props) {
     // Appointments:Appointments,
     // PhotoGallery:PhotoGallery
 
-  };
-  (0, _react.useEffect)(function () {
-    if (props.components) {
-      var _components = props.components;
-      setComponents(_components);
-    } else {
-      var _components2 = [];
+  }; // useEffect(() => {
+  //   if(props.components){
+  //       const components = props.components;
+  //       setComponents(components)
+  //   }
+  //   else{
+  //       let components = []
+  //       for (var i = 0; i < props.defaultComponentList.length; i++){
+  //           components.push(
+  //               {
+  //                   name: props.defaultComponentList[i],
+  //                   id: generateKey(props.defaultComponentList[i],i)
+  //               })
+  //       }
+  //       setComponents(components)
+  //   }
+  // },[]);
 
-      for (var i = 0; i < props.defaultComponentList.length; i++) {
-        _components2.push({
-          name: props.defaultComponentList[i],
-          id: generateKey(props.defaultComponentList[i], i)
-        });
-      }
-
-      setComponents(_components2);
-    }
-  }, []);
   var pagecomponents = [];
   components.forEach(function (el, index) {
     var Component = componentMap[el.name];

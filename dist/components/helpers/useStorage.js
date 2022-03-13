@@ -45,11 +45,13 @@ function useComponentStorage(componentID, initialState) {
     if (hasBeenMounted) {
       // Set live content from database
       if (storageSettings.autoUpdateLiveWebsite) {
-        apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
+        if (apiMethods.isAthenticated()) {
+          apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
+        }
       } // Store draft data locally
       else if (storageSettings.autoSaveEditsLocally) {
-        localStorage.setItem(componentID, JSON.stringify(value));
-        apiMethods.setSiteIsDraft(true);
+        localStorage.setItem(componentID, JSON.stringify(value)); // TODO get this to work
+        // apiMethods.setSiteIsDraft(true)
       }
     } else {
       setHasBeenMounted(true);
@@ -65,7 +67,7 @@ function getStoredComponent(componentID, initialValue, storageSettings, apiMetho
     savedData = JSON.parse(localStorage.getItem(componentID));
 
     if (savedData) {
-      apiMethods.setSiteIsDraft(true);
+      // apiMethods.setSiteIsDraft(true)
       return savedData;
     }
   } // Load any values from database

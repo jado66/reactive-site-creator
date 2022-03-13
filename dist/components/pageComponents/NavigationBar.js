@@ -76,28 +76,23 @@ function NavigationBar(props) {
 
   var _useState3 = (0, _react.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      isUnique = _useState4[0],
-      setIsUnique = _useState4[1];
+      isEdit = _useState4[0],
+      setIsEdit = _useState4[1];
 
   var _useState5 = (0, _react.useState)(false),
       _useState6 = _slicedToArray(_useState5, 2),
-      isEdit = _useState6[0],
-      setIsEdit = _useState6[1];
+      isShowDeleteSpot = _useState6[0],
+      showDeleteSpot = _useState6[1];
 
   var _useState7 = (0, _react.useState)(false),
       _useState8 = _slicedToArray(_useState7, 2),
-      isShowDeleteSpot = _useState8[0],
-      showDeleteSpot = _useState8[1];
+      isShowDropdownDeleteSpot = _useState8[0],
+      showDropdownDeleteSpot = _useState8[1];
 
   var _useState9 = (0, _react.useState)(false),
       _useState10 = _slicedToArray(_useState9, 2),
-      isShowDropdownDeleteSpot = _useState10[0],
-      showDropdownDeleteSpot = _useState10[1];
-
-  var _useState11 = (0, _react.useState)(false),
-      _useState12 = _slicedToArray(_useState11, 2),
-      isShowButtons = _useState12[0],
-      showButtons = _useState12[1];
+      isShowButtons = _useState10[0],
+      showButtons = _useState10[1];
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
@@ -108,17 +103,17 @@ function NavigationBar(props) {
       cart = _useContext.cart,
       masterNavData = _useContext.masterNavData;
 
-  var _useState13 = (0, _react.useState)("Site Creator"),
+  var _useState11 = (0, _react.useState)("Site Creator"),
+      _useState12 = _slicedToArray(_useState11, 2),
+      homeLinkText = _useState12[0],
+      setHomeLinkText = _useState12[1];
+
+  var _useState13 = (0, _react.useState)([]),
       _useState14 = _slicedToArray(_useState13, 2),
-      homeLinkText = _useState14[0],
-      setHomeLinkText = _useState14[1];
+      uniqueNavData = _useState14[0],
+      setUniqueNavData = _useState14[1];
 
-  var _useState15 = (0, _react.useState)([]),
-      _useState16 = _slicedToArray(_useState15, 2),
-      uniqueNavData = _useState16[0],
-      setUniqueNavData = _useState16[1];
-
-  var _useComponentStorage = (0, _useStorage.default)(props.pageName + props.id, {
+  var _useComponentStorage = (0, _useStorage.default)(props.pageID + props.id, {
     isUnique: false,
     homeLinkText: "home",
     naveData: []
@@ -129,7 +124,7 @@ function NavigationBar(props) {
 
   (0, _react.useEffect)(function () {
     if (msgPort == "save") {
-      if (isUnique) {
+      if (content.isUnique) {
         apiMethods.setValueInDatabase(props.pageID + props.id, content);
       }
     }
@@ -160,7 +155,7 @@ function NavigationBar(props) {
       tolerance: 5
     }
   }));
-  var navData = isUnique ? content.navData : masterNavData.navData;
+  var navData = content.isUnique ? content.navData : masterNavData.navData;
 
   if (!navData) {
     navData = [];
@@ -191,69 +186,13 @@ function NavigationBar(props) {
         });
       }
 
-      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-        className: "nav-item " + (webStyle.isMobile ? "ms-2" : "mx-4"),
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          children: "dropdown" in el ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-            className: "position-relative " + (webStyle.isMobile ? "input-group" : ""),
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-control-plaintext" + (webStyle.isMobile ? " w-50" : ""),
-              onChange: function onChange(evt) {
-                handleLinkChange(evt, index, "text");
-              },
-              style: {
-                width: "".concat(el.name.length + 2, "ch"),
-                color: webStyle.colors.lightShade
-              },
-              value: el.name
-            }, "edit" + el.name + "input"), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-              className: "nav-link dropdown-toggle" + (webStyle.isMobile ? " w-50" : ""),
-              style: {
-                color: webStyle.colors.lightShade
-              },
-              "data-no-dnd": "true",
-              "data-bs-toggle": "dropdown",
-              id: "navbarDropdown",
-              role: "button",
-              "aria-expanded": "false",
-              path: "javascript:void(0)",
-              children: "Dropdown"
-            }, "edit" + el.name + "dropToggle"), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-              className: "dropdown-menu " + (webStyle.isMobile ? "" : "boxShadow"),
-              style: {
-                backgroundColor: webStyle.colors.darkAccent
-              },
-              "aria-labelledby": "navbarDropdown",
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-                children: dropdownItems
-              })
-            }, "edit" + el.name + "ul")]
-          }, "edit" + el.name + "div2") : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-            className: webStyle.isMobile ? "input-group" : "",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-control-plaintext" + (webStyle.isMobile ? " w-50" : ""),
-              onChange: function onChange(evt) {
-                handleLinkChange(evt, index, "name");
-              },
-              style: {
-                width: "".concat(el.name.length + 2, "ch"),
-                color: webStyle.colors.lightShade
-              },
-              value: el.name
-            }, "edit" + el.name + "input1"), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-control-plaintext" + (webStyle.isMobile ? " w-50" : ""),
-              onChange: function onChange(evt) {
-                handleLinkChange(evt, index, "path");
-              },
-              style: {
-                width: "".concat(el.path.length + 2, "ch"),
-                color: webStyle.colors.lightShade
-              },
-              value: el.path
-            }, "edit" + el.name + "input2")]
-          }, "edit" + el.name + "div")
-        }, "edit" + el.name + "div")
-      }, "edit" + el.name + "input2"));
+      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(NavItem, {
+        el: el,
+        webStyle: webStyle,
+        handleLinkChange: handleLinkChange,
+        index: index,
+        children: dropdownItems
+      }, el.name + el.path + "Link"));
     }); // Move Mode
 
   } else {
@@ -578,6 +517,7 @@ function NavigationBar(props) {
         })]
       }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "text-center w-100 py-3",
+        "data-no-dnd": "true",
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
           children: "Navigation Bar Settings"
         }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
@@ -587,7 +527,8 @@ function NavigationBar(props) {
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               class: "form-check-input",
               type: "checkbox",
-              value: "",
+              checked: content.isUnique,
+              onClick: toggleUnique,
               id: "flexCheckDefault"
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               class: "form-check-label",
@@ -597,7 +538,6 @@ function NavigationBar(props) {
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
             class: "mb-3",
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              for: "exampleFormControlTextarea1",
               class: "form-label",
               children: "Below will be other settings:"
             })
@@ -623,9 +563,33 @@ function NavigationBar(props) {
     })
   });
 
-  function saveNavData(value) {
-    if (isUnique) {
+  function toggleUnique() {
+    if (content.isUnique) {
+      if (window.confirm("Are you sure you want to make this Navigation bar a copy of the master Navigation bar? This will remove any unique links?")) {
+        setContent(function (prevState) {
+          return _objectSpread(_objectSpread({}, prevState), {}, {
+            isUnique: false
+          });
+        });
+      }
+    } else {
       setContent(function (prevState) {
+        return _objectSpread(_objectSpread(_objectSpread({}, prevState), masterNavData), {}, {
+          isUnique: true
+        });
+      });
+    }
+  }
+
+  function saveNavData(value) {
+    if (content.isUnique) {
+      setContent(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          navData: value
+        });
+      });
+    } else {
+      appMethods.setMasterNavData(function (prevState) {
         return _objectSpread(_objectSpread({}, prevState), {}, {
           navData: value
         });
@@ -766,6 +730,73 @@ var DeleteDrop = function DeleteDrop(props) {
   });
 }; //  I really need to consolidate this....
 
+
+var NavItem = function NavItem(props) {
+  /*#__PURE__*/
+  (0, _jsxRuntime.jsx)("li", {
+    className: "nav-item " + (props.webStyle.isMobile ? "ms-2" : "mx-4"),
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      children: "dropdown" in props.el ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "position-relative " + (props.webStyle.isMobile ? "input-group" : ""),
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
+          onChange: function onChange(evt) {
+            props.handleLinkChange(evt, props.index, "text");
+          },
+          style: {
+            width: "".concat(props.el.name.length + 2, "ch"),
+            color: props.webStyle.colors.lightShade
+          },
+          value: props.el.name
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+          className: "nav-link dropdown-toggle" + (props.webStyle.isMobile ? " w-50" : ""),
+          style: {
+            color: props.webStyle.colors.lightShade
+          },
+          "data-no-dnd": "true",
+          "data-bs-toggle": "dropdown",
+          id: "navbarDropdown",
+          role: "button",
+          "aria-expanded": "false",
+          path: "javascript:void(0)",
+          children: "Dropdown"
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
+          className: "dropdown-menu " + (props.webStyle.isMobile ? "" : "boxShadow"),
+          style: {
+            backgroundColor: props.webStyle.colors.darkAccent
+          },
+          "aria-labelledby": "navbarDropdown",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+            children: props.children
+          })
+        })]
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: props.webStyle.isMobile ? "input-group" : "",
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
+          onChange: function onChange(evt) {
+            props.handleLinkChange(evt, props.index, "name");
+          },
+          style: {
+            width: "".concat(props.el.name.length + 2, "ch"),
+            color: props.webStyle.colors.lightShade
+          },
+          value: props.el.name
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
+          onChange: function onChange(evt) {
+            props.handleLinkChange(evt, props.index, "path");
+          },
+          style: {
+            width: "".concat(props.el.path.length + 2, "ch"),
+            color: props.webStyle.colors.lightShade
+          },
+          value: props.el.path
+        })]
+      })
+    })
+  });
+};
 
 var DropDownLink = function DropDownLink(props) {
   var _useContext2 = (0, _react.useContext)(_Website.WebContext),

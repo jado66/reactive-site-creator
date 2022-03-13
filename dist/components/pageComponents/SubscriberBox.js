@@ -5,7 +5,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = Header;
+exports.default = SubscriberBox;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -41,14 +41,14 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function Header(props) {
+function SubscriberBox(props) {
   var contentEditable = /*#__PURE__*/_react.default.createRef();
 
   var initialState = props.content;
 
   if (Object.keys(initialState).length === 0) {
     initialState = {
-      header: props.pageName
+      header: "Subscribe to our newsletter!"
     };
   }
 
@@ -56,6 +56,14 @@ function Header(props) {
       _useComponentStorage2 = _slicedToArray(_useComponentStorage, 2),
       content = _useComponentStorage2[0],
       setContent = _useComponentStorage2[1];
+
+  var _useState = (0, _react.useState)({
+    name: "",
+    email: ""
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      formState = _useState2[0],
+      setFormState = _useState2[1];
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
@@ -76,27 +84,89 @@ function Header(props) {
     });
   };
 
-  var value = content;
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "px-5 text-center ",
-    "data-no-dnd": "true",
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
-      className: "apply-font-primary mb-0",
-      style: {
-        color: webStyle.colors.darkShade
-      },
-      spellCheck: "false",
-      innerRef: contentEditable,
-      html: content.header // innerHTML of the editable div
-      ,
-      disabled: !webStyle.isEditMode // use true to disable editing
-      ,
-      onChange: function onChange(evt) {
-        return handleContentChange("header", evt.target.value);
-      } // handle innerHTML change
-      ,
-      tagName: "h1" // Use a custom HTML tag (uses a div by default)
+  var handleFormChange = function handleFormChange(key, value) {
+    setFormState(_objectSpread(_objectSpread({}, formState), {}, _defineProperty({}, key, value)));
+  };
 
+  var addNewSubscriber = function addNewSubscriber() {
+    if (!validateEmail(formState.email)) {
+      alert("Email isn't a valid email");
+    } else {
+      apiMethods.addSubscriber(formState);
+      setFormState({
+        name: "",
+        email: ""
+      });
+    }
+  };
+
+  var validateEmail = function validateEmail(email) {
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    className: "px-5",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "px-5 text-center mx-auto boxShadow py-3 rounded " + (webStyle.isMobile ? "" : "w-75"),
+      "data-no-dnd": "true",
+      style: {
+        backgroundColor: webStyle.colors.darkShade
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
+        className: "apply-font-primary mb-4",
+        style: {
+          color: webStyle.colors.lightShade
+        },
+        spellCheck: "false",
+        innerRef: contentEditable,
+        html: content.header // innerHTML of the editable div
+        ,
+        disabled: !webStyle.isEditMode // use true to disable editing
+        ,
+        onChange: function onChange(evt) {
+          handleContentChange("header", evt.target.value);
+        } // handle innerHTML change
+        ,
+        tagName: "h3" // Use a custom HTML tag (uses a div by default)
+
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("form", {
+        className: " rounded mb-3",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "row",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+            className: "form-group col",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              type: "text",
+              className: "form-control mb-2",
+              id: "name",
+              placeholder: "Name",
+              value: formState.name,
+              onChange: function onChange(event) {
+                return handleFormChange("name", event.target.value);
+              }
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              type: "email",
+              className: "form-control",
+              id: "email",
+              "aria-describedby": "emailHelp",
+              placeholder: "Enter Email",
+              value: formState.email,
+              onChange: function onChange(event) {
+                return handleFormChange("email", event.target.value);
+              }
+            })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+            className: "form-group d-flex " + (webStyle.isMobile ? "col-5" : "col-3"),
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+              type: "button",
+              className: "btn btn-light my-auto text-nowrap",
+              onClick: addNewSubscriber,
+              children: "Sign Me Up"
+            })
+          })]
+        })
+      })]
     })
   });
 }
