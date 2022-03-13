@@ -28,6 +28,8 @@ var _delayCallback = _interopRequireDefault(require("./helpers/delayCallback"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
+var _excluded = ["isAdmin"];
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -53,6 +55,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -129,8 +135,12 @@ var site_template = {
 var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
-function Website(props) {
-  var _ref2;
+function Website(_ref) {
+  var _ref3;
+
+  var _ref$isAdmin = _ref.isAdmin,
+      isAdmin = _ref$isAdmin === void 0 ? true : _ref$isAdmin,
+      props = _objectWithoutProperties(_ref, _excluded);
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -146,13 +156,6 @@ function Website(props) {
     setValueInDatabase: function setValueInDatabase(id, componentState) {
       if (props.saveComponentToDB) {
         props.saveComponentDataToDB(id, componentState);
-      }
-    },
-    isAuthenticated: function isAuthenticated() {
-      if (props.isAuthenticated) {
-        return props.isAuthenticated();
-      } else {
-        return true;
       }
     },
     addNewSubscriber: function addNewSubscriber(formState) {
@@ -176,9 +179,9 @@ function Website(props) {
 
   var _useContextStorage = useContextStorage(storageSettings, apiMethods, "webStyle", {
     siteName: site_template.siteName,
-    isEditMode: true,
-    isShowEditor: true,
-    isAdmin: true,
+    isEditMode: props.isAdmin,
+    isShowEditor: props.isAdmin,
+    isAdmin: props.isAdmin,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     promoCodes: _objectSpread({}, site_template.promoCodes)
@@ -380,19 +383,17 @@ function Website(props) {
     },
     saveWebsite: function saveWebsite() {
       // Check if user really wants to publish edits
-      if (apiMethods.isAuthenticated()) {
-        if (window.confirm("Are you sure you want to publish your edits?")) {
-          // If the site-creator is connected to a database
-          if (props.saveComponentToDB) {
+      if (window.confirm("Are you sure you want to publish your edits?")) {
+        // If the site-creator is connected to a database
+        if (props.saveComponentToDB) {
+          appMethods.sendMsgPortMsg("save");
+
+          _setSiteIsDraft(false);
+        } else {
+          if (window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")) {
             appMethods.sendMsgPortMsg("save");
 
             _setSiteIsDraft(false);
-          } else {
-            if (window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")) {
-              appMethods.sendMsgPortMsg("save");
-
-              _setSiteIsDraft(false);
-            }
           }
         }
       } else {
@@ -476,11 +477,11 @@ function Website(props) {
       appMethods.sendMsgPortMsg("");
     }
   }, [msgPort]);
-  var sitePages = pages.map(function (_ref) {
-    var id = _ref.id,
-        name = _ref.name,
-        path = _ref.path,
-        components = _ref.components;
+  var sitePages = pages.map(function (_ref2) {
+    var id = _ref2.id,
+        name = _ref2.name,
+        path = _ref2.path,
+        components = _ref2.components;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       exact: true,
       path: path + "/:pathParam?",
@@ -498,7 +499,7 @@ function Website(props) {
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
-    value: (_ref2 = {
+    value: (_ref3 = {
       webStyle: webStyle,
       socialMedias: socialMedias,
       masterNavData: masterNavData,
@@ -506,7 +507,7 @@ function Website(props) {
       promoCodes: promoCodes,
       cart: cart,
       storageSettings: storageSettings
-    }, _defineProperty(_ref2, "storageSettings", storageSettings), _defineProperty(_ref2, "siteIsDraft", siteIsDraft), _defineProperty(_ref2, "msgPort", msgPort), _defineProperty(_ref2, "savedData", savedData), _defineProperty(_ref2, "flatComponents", flatComponents), _defineProperty(_ref2, "componentOptions", componentOptions), _defineProperty(_ref2, "appMethods", appMethods), _defineProperty(_ref2, "apiMethods", apiMethods), _ref2),
+    }, _defineProperty(_ref3, "storageSettings", storageSettings), _defineProperty(_ref3, "siteIsDraft", siteIsDraft), _defineProperty(_ref3, "msgPort", msgPort), _defineProperty(_ref3, "savedData", savedData), _defineProperty(_ref3, "flatComponents", flatComponents), _defineProperty(_ref3, "componentOptions", componentOptions), _defineProperty(_ref3, "appMethods", appMethods), _defineProperty(_ref3, "apiMethods", apiMethods), _ref3),
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "App",
       style: {

@@ -49,9 +49,7 @@ function useComponentStorage(componentID, initialState) {
     if (hasBeenMounted) {
       // Set live content from database
       if (storageSettings.autoUpdateLiveWebsite) {
-        if (apiMethods.isAthenticated()) {
-          apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
-        }
+        apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
       } // Store draft data locally
       else if (storageSettings.autoSaveEditsLocally) {
         localStorage.setItem(componentID, JSON.stringify(value)); // TODO get this to work
