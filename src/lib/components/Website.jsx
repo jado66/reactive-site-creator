@@ -387,7 +387,6 @@ export default function Website(props) {
   }, []);
 
   useEffect(() => {
-    alert(`Change is props admin to ${props.isAdmin}`)
     setWebStyle(prevState => ({
       ...prevState,
       isShowEditor: props.isAdmin,

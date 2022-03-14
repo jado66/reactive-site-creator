@@ -428,8 +428,6 @@ function Website(props) {
     };
   }, []);
   (0, _react.useEffect)(function () {
-    alert("Change is props admin to ".concat(props.isAdmin));
-
     _setWebStyle(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, {
         isShowEditor: props.isAdmin,
