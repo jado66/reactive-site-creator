@@ -539,7 +539,8 @@ function Website(props) {
       if (hasBeenMounted) {
         // Set live content from database
         if (storageSettings.autoUpdateLiveWebsite) {
-          apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
+            apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
+          
         } // Store draft data locally
         else if (storageSettings.autoSaveEditsLocally) {
           localStorage.setItem(contextName, JSON.stringify(value)); // TODO get this to work
