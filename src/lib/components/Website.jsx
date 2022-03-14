@@ -123,7 +123,7 @@ const site_template = {
 
 export const WebContext = createContext()
 
-export default function Website({isAdmin = true,...props}) {
+export default function Website(props) {
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
 
@@ -387,6 +387,7 @@ export default function Website({isAdmin = true,...props}) {
   }, []);
 
   useEffect(() => {
+    alert(`Change is props admin to ${props.isAdmin}`)
     setWebStyle(prevState => ({
       ...prevState,
       isShowEditor: props.isAdmin,

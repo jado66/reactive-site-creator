@@ -28,8 +28,6 @@ var _delayCallback = _interopRequireDefault(require("./helpers/delayCallback"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
-var _excluded = ["isAdmin"];
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -55,10 +53,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
-
-function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -135,12 +129,8 @@ var site_template = {
 var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
-function Website(_ref) {
-  var _ref3;
-
-  var _ref$isAdmin = _ref.isAdmin,
-      isAdmin = _ref$isAdmin === void 0 ? true : _ref$isAdmin,
-      props = _objectWithoutProperties(_ref, _excluded);
+function Website(props) {
+  var _ref2;
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -438,6 +428,8 @@ function Website(_ref) {
     };
   }, []);
   (0, _react.useEffect)(function () {
+    alert("Change is props admin to ".concat(props.isAdmin));
+
     _setWebStyle(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, {
         isShowEditor: props.isAdmin,
@@ -485,11 +477,11 @@ function Website(_ref) {
       appMethods.sendMsgPortMsg("");
     }
   }, [msgPort]);
-  var sitePages = pages.map(function (_ref2) {
-    var id = _ref2.id,
-        name = _ref2.name,
-        path = _ref2.path,
-        components = _ref2.components;
+  var sitePages = pages.map(function (_ref) {
+    var id = _ref.id,
+        name = _ref.name,
+        path = _ref.path,
+        components = _ref.components;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       exact: true,
       path: path + "/:pathParam?",
@@ -507,7 +499,7 @@ function Website(_ref) {
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
-    value: (_ref3 = {
+    value: (_ref2 = {
       webStyle: webStyle,
       socialMedias: socialMedias,
       masterNavData: masterNavData,
@@ -515,7 +507,7 @@ function Website(_ref) {
       promoCodes: promoCodes,
       cart: cart,
       storageSettings: storageSettings
-    }, _defineProperty(_ref3, "storageSettings", storageSettings), _defineProperty(_ref3, "siteIsDraft", siteIsDraft), _defineProperty(_ref3, "msgPort", msgPort), _defineProperty(_ref3, "savedData", savedData), _defineProperty(_ref3, "flatComponents", flatComponents), _defineProperty(_ref3, "componentOptions", componentOptions), _defineProperty(_ref3, "appMethods", appMethods), _defineProperty(_ref3, "apiMethods", apiMethods), _ref3),
+    }, _defineProperty(_ref2, "storageSettings", storageSettings), _defineProperty(_ref2, "siteIsDraft", siteIsDraft), _defineProperty(_ref2, "msgPort", msgPort), _defineProperty(_ref2, "savedData", savedData), _defineProperty(_ref2, "flatComponents", flatComponents), _defineProperty(_ref2, "componentOptions", componentOptions), _defineProperty(_ref2, "appMethods", appMethods), _defineProperty(_ref2, "apiMethods", apiMethods), _ref2),
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "App",
       style: {
