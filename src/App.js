@@ -9,7 +9,7 @@ function App() {
     async function fetchMyAPI() {
       checkIP().then(response =>{
         setIsAthenticated(true)
-        alert(response)
+        // alert(response)
 
       })
     }

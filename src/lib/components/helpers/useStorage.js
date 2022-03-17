@@ -4,23 +4,39 @@ import delayCallback from "./delayCallback";
 // Needs a pageID as a parent object
 export default function useComponentStorage(componentID, initialState){
     
-    const { storageSettings, apiMethods  } = useContext(WebContext)
+    const { adminSettings, apiMethods, msgPort  } = useContext(WebContext)
     const [hasBeenMounted, setHasBeenMounted] = useState(false)
     const [value, setValue] = useState(()=>{
-        return getStoredComponent(componentID,initialState,storageSettings,apiMethods)
+        return getStoredComponent(componentID,initialState,adminSettings,apiMethods)
     })
+
+    // Save data
+    useEffect(() => {
+        if (msgPort === "save"){
+            alert("Saving ")
+            apiMethods.setValueInDatabase(componentID,JSON.stringify(value))
+            localStorage.removeItem(componentID)
+        }
+        if (msgPort === "reload"){
+            setHasBeenMounted(false)
+            setValue(()=>{
+                return getStoredComponent(componentID,initialState,adminSettings,apiMethods)
+            })
+        }
+
+    }, [msgPort]);
 
     useEffect(() => {
         // The use of has been mounted skips the first render.
         // Since we are programatically changing value we don't need to update our storage
         if (hasBeenMounted){ 
             // Set live content from database
-            if (storageSettings.autoUpdateLiveWebsite){
+            if (adminSettings.autoUpdateLiveWebsite){
                 apiMethods.setValueInDatabase(componentID,JSON.stringify(value))
             
             }
             // Store draft data locally
-            else if (storageSettings.autoSaveEditsLocally){
+            else if (adminSettings.autoSaveEditsLocally){
                 localStorage.setItem(componentID,JSON.stringify(value))
                 // TODO get this to work
                 informSiteOfDraftEdits(apiMethods)
@@ -36,11 +52,11 @@ export default function useComponentStorage(componentID, initialState){
 }
 
 
-function getStoredComponent(componentID, initialValue, storageSettings, apiMethods){
+function getStoredComponent(componentID, initialValue, adminSettings, apiMethods){
     let savedData = null
     
     // If we are viewing the draft load the draft
-    if (storageSettings.viewDraftEdits){
+    if (adminSettings.viewDraftEdits){
         savedData = JSON.parse(localStorage.getItem(componentID))
         
         if (savedData){

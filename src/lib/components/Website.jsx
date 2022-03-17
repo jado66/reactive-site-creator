@@ -14,9 +14,8 @@ import '../css/bootstrapOverrides.css'
 
 // High level components
 import StylesEditor from "./StylesEditor";
-import DynamicPage from "./DynamicPage";
-import StaticPage from "./StaticPage";
-
+import DynamicPage from "./pages/DynamicPage";
+import Page404 from "./pages/Page404";
 // Pages
 // import CheckoutPage from "./pages/checkoutPage";
 // import AdminPage from "./pages/AdminPage"
@@ -79,7 +78,8 @@ const site_template = {
       ],
     masterNavBarData: 
       {
-        homeLinkText: "home",
+        isUnique: false,
+        homeLinkText: "Home",
         navData: 
         [
           {
@@ -148,30 +148,31 @@ export default function Website(props) {
 
     
   }
-  const [storageSettings,setStorageSettings] = useState(
-    {
-      viewDraftEdits: true, 
-      autoSaveEditsLocally: true,
-      autoUpdateLiveWebsite: false
-    }
-  )
-  const [webStyle, setWebStyle] = useContextStorage(storageSettings,apiMethods,"webStyle",{
-    siteName: site_template.siteName,
+  const [adminSettings, setAdminSettings] = useState({
     isEditMode: props.isAdmin||false,
     isShowEditor: props.isAdmin||false,
     isAdmin: props.isAdmin||false,
-    
+    viewDraftEdits: true, 
+    autoSaveEditsLocally: true,
+    autoUpdateLiveWebsite: false
+  })
+  const [localDisplaySettings,setLocalDisplaySettings] = useState({
+    isMobile: false
+  })
+
+  const [msgPort,setMsgPort] = useState("")
+
+  const [webStyle, setWebStyle] = useContextStorage(adminSettings,apiMethods,msgPort,"webStyle",{
+    siteName: site_template.siteName,
     // Website colors
     colors: {...site_template.colors},
-    promoCodes: {...site_template.promoCodes}
   } )
   
-  const [masterNavData, setMasterNavData] =  useContextStorage(storageSettings,apiMethods,"masterNavData",site_template.masterNavBarData)
-  const [socialMedias, setSocialMedias] = useContextStorage(storageSettings,apiMethods,"socialMedias",site_template.socialMedias)
-  const [pages, setPages] = useContextStorage(storageSettings,apiMethods,"pages",site_template.pages)
-  const [promoCodes, setPromoCodes] = useContextStorage(storageSettings,apiMethods,"promoCodes",site_template.pages)
+  const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",site_template.masterNavBarData)
+  const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",site_template.socialMedias)
+  const [pages, setPages] = useContextStorage(adminSettings,apiMethods,msgPort,"pages",site_template.pages)
+  const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",site_template.pages)
   const [cart, setCart] = useState({})
-  const [msgPort,setMsgPort] = useState("")
   const [savedData, setSavedData] = useState({})
   const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box"].sort()
 
@@ -182,7 +183,7 @@ export default function Website(props) {
   const appMethods = {
     setWebStyle: (state) => setWebStyle(state),
     setMasterNavData: (state) => setMasterNavData(state),
-    setStorageSettings: (state) => setStorageSettings(state),
+    setAdminSettings: (state) => setAdminSettings(state),
     setCart: (state) => setCart(state),
     setSocialMedias: (state) => setSocialMedias(state),
     setPages: (state) => setPages(state),
@@ -258,22 +259,24 @@ export default function Website(props) {
       return pageExists;
     },
   
-    deletePage: (pageName, index) => {
-      let sureDelete = prompt(`Are you sure you would like to delete the page ${pageName}? This action is irreversible. Type "YES" to delete this page:`, "");
-  
-      if (sureDelete === "YES"){
-        setPages([...pages.slice(0,index) ,...pages.slice(index+1)]);
-      }
-    },
-  
-    addPage: () => {
+    addPage: (name, path) => {
       // alert("New Page")
       const newID = generatePageKey()
 
+      let newName = name;
+      let newPath = path;
+
+      if (!name){
+        newName = "New Page" 
+      }
+      if (!path){
+        newPath = "/"
+      }
+
       let newPage = {
         id: newID,
-        path: "/new-page",
-        name: "New Page",
+        path: newPath,
+        name: newName,
         components:
           [
             { 
@@ -324,6 +327,18 @@ export default function Website(props) {
 
       setSocialMedias([...socialMedias, newSocialMedia]);
     },
+    toggleViewDraftEdits:(toggleOn)=>{
+        
+        appMethods.setAdminSettings((prevState) => ({
+          ...prevState,
+          viewDraftEdits: toggleOn,
+        }))
+        if (!toggleOn){
+          setSiteIsDraft(false)
+        }
+        appMethods.sendMsgPortMsg("reload")
+
+    },
     saveWebsite:()=>{
       // Check if user really wants to publish edits
       if(window.confirm("Are you sure you want to publish your edits?")){
@@ -349,7 +364,7 @@ export default function Website(props) {
     toggleStyleEditor:()=>{
       let newWebstyle = {...webStyle}
       newWebstyle.isShowEditor = !newWebstyle.isShowEditor
-      setWebStyle(newWebstyle)
+      setAdminSettings(newWebstyle)
      
     },
 
@@ -371,7 +386,7 @@ export default function Website(props) {
 
   function handleWindowSizeChange() {
     const isMobile = window.innerWidth <= 991
-    setWebStyle({...webStyle, isMobile:isMobile})
+    setLocalDisplaySettings({...localDisplaySettings, isMobile:isMobile})
   }
 
   // Website init
@@ -387,8 +402,9 @@ export default function Website(props) {
   }, []);
 
   useEffect(() => {
-    setWebStyle(prevState => ({
+    setAdminSettings(prevState => ({
       ...prevState,
+      isEditMode: props.isAdmin,
       isShowEditor: props.isAdmin,
       isAdmin: props.isAdmin
     }))
@@ -407,7 +423,7 @@ export default function Website(props) {
 
   function handleWindowSizeChange() {
     const isMobile = window.innerWidth <= 991
-    setWebStyle({...webStyle, isMobile:isMobile})
+    setLocalDisplaySettings({...localDisplaySettings, isMobile:isMobile})
   }
 
   function generatePageKey(){
@@ -430,6 +446,9 @@ export default function Website(props) {
     if (msgPort == "save"){
       appMethods.sendMsgPortMsg("")
     }
+    if (msgPort == "reload"){
+      appMethods.sendMsgPortMsg("")
+    }
   }, [msgPort]);
 
   
@@ -439,11 +458,10 @@ export default function Website(props) {
     
     return(
         <Route exact path = {path+"/:pathParam?"} key = {name+"Route"}>
-            {webStyle.isAdmin && webStyle.isShowEditor &&
+            {adminSettings.isAdmin && adminSettings.isShowEditor &&
                 <StylesEditor/>
             }   
             
-            {webStyle.isEditMode === true?      
             
             
             <DynamicPage   
@@ -453,15 +471,7 @@ export default function Website(props) {
               components = {components}
               defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}
             />
-            :
-            <StaticPage   
-              key = {id+"static"} 
-              pageName = {name}
-              pageID = {id}
-
-              components = {components}
-            />
-            }
+            
         </Route>
         )
     }
@@ -473,13 +483,14 @@ export default function Website(props) {
   return (
     <WebContext.Provider value = {
         {
+          localDisplaySettings: localDisplaySettings,
           webStyle: webStyle,
           socialMedias: socialMedias,
           masterNavData: masterNavData,
           pages: pages,
           promoCodes: promoCodes,
           cart: cart, 
-          storageSettings,storageSettings,
+          adminSettings: adminSettings,
           siteIsDraft: siteIsDraft,
           msgPort: msgPort,
           savedData: savedData, 
@@ -489,7 +500,7 @@ export default function Website(props) {
           apiMethods: apiMethods
         }
       }>
-      {/* {pages.map((page,index)=><><span>{JSON.stringify(page)}</span><br></br></> )} */}
+      {/* {JSON.stringify(adminSettings)} */}
       <div className="App" style={{minHeight:"100vh", overflowX: "hidden"}}>
 
         <Router>
@@ -525,9 +536,21 @@ export default function Website(props) {
             {/* <Route path="/checkout">
                 <CheckoutPage promoCodes = {promoCodes} cart = {cart} cartCallbacks = {cartCallbacks} pages = {pages} pageCallbacks = {pageCallbacks} socialMedias = {socialMedias} webStyle = {webStyle}/>
             </Route>
-            <Route>
-              <Page404 cart = {cart} cartCallbacks = {cartCallbacks} pages = {pages} pageCallbacks = {pageCallbacks} socialMedias = {socialMedias} webStyle = {webStyle}/>
-            </Route> */}
+             */}
+             <Route path = "*">
+               <>
+               {adminSettings.isAdmin && adminSettings.isShowEditor &&
+                <StylesEditor/>
+            }  
+                <Page404
+                  key = {"404Page"} 
+                  pageName = {"404"}
+                  pageID = {"404Page"}
+                  components = {[]}
+                  defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}   
+                />
+                </>
+            </Route>
           </Switch>
           {/* </Fade> */}
         </Router>
@@ -536,30 +559,46 @@ export default function Website(props) {
     </WebContext.Provider>
   );
 
-  function useContextStorage(storageSettings, apiMethods, contextName, initialState){
-    const [hasBeenMounted, setHasBeenMounted] = useState(false)
-    const [value, setValue] = useState(()=>{
-        return getStoredComponent(contextName,initialState,storageSettings,apiMethods)
-    })
+function useContextStorage(adminSettings, apiMethods, msgPort, contextName, initialState){
+  const [hasBeenMounted, setHasBeenMounted] = useState(false)
+  const [value, setValue] = useState(()=>{
+      return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
+  })
 
-    useEffect(() => {
-        // The use of has been mounted skips the first render.
-        // Since we are programatically changing value we don't need to update our storage
-        if (hasBeenMounted){ 
-            // Set live content from database
-            if (storageSettings.autoUpdateLiveWebsite){
-              apiMethods.setValueInDatabase(contextName,JSON.stringify(value))  
-            }
-            // Store draft data locally
-            else if (storageSettings.autoSaveEditsLocally){
-                localStorage.setItem(contextName,JSON.stringify(value))
-                // TODO get this to work
-                informSiteOfDraftEdits(apiMethods)
-            }
-        }
-        else{
-            setHasBeenMounted(true)
-        }
+  // Save data
+  useEffect(() => {
+    if (msgPort === "save"){
+        alert("Saving ")
+        apiMethods.setValueInDatabase(contextName,JSON.stringify(value))
+        localStorage.removeItem(contextName)
+    }
+    if (msgPort === "reload"){
+        setHasBeenMounted(false)
+        setValue(()=>{
+            return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
+        })
+    }
+
+}, [msgPort]);
+
+  useEffect(() => {
+      // The use of has been mounted skips the first render.
+      // Since we are programatically changing value we don't need to update our storage
+      if (hasBeenMounted){ 
+          // Set live content from database
+          if (adminSettings.autoUpdateLiveWebsite){
+            apiMethods.setValueInDatabase(contextName,JSON.stringify(value))  
+          }
+          // Store draft data locally
+          else if (adminSettings.autoSaveEditsLocally){
+              localStorage.setItem(contextName,JSON.stringify(value))
+              // TODO get this to work
+              informSiteOfDraftEdits(apiMethods)
+          }
+      }
+      else{
+          setHasBeenMounted(true)
+      }
         
     },[value])
 
@@ -568,11 +607,11 @@ export default function Website(props) {
   
 }
 
-function getStoredComponent(contextName, initialValue, storageSettings, apiMethods){
+function getStoredComponent(contextName, initialValue, adminSettings, apiMethods){
   let savedData = null
   
   // If we are viewing the draft load the draft
-  if (storageSettings.viewDraftEdits){
+  if (adminSettings.viewDraftEdits){
       savedData = JSON.parse(localStorage.getItem(contextName))
       
       if (savedData){

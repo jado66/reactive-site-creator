@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useContext } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPalette, faTimes, faSave, faPlus, faUserCog, faShoppingBag } from '@fortawesome/free-solid-svg-icons'
+import { faPalette, faTimes, faSave, faPlus, faUserCog, faShoppingBag, faTowerBroadcast, faTriangleExclamation, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter} from "@fortawesome/free-brands-svg-icons"
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { Menu, MenuItem, MenuButton, MenuHeader,
@@ -12,11 +12,95 @@ import {
   Link
 } from "react-router-dom";
 
+import { useLocation, useHistory } from 'react-router-dom'
+
 import { WebContext } from "./Website";
 
 export default function StylesEditor(props) {
-    
-  const { siteIsDraft, webStyle, pages, socialMedias, appMethods, apiMethods, storageSettings, promoCodes } = useContext(WebContext);
+
+  const { siteIsDraft, webStyle, localDisplaySettings, pages, socialMedias, appMethods, apiMethods, adminSettings, promoCodes } = useContext(WebContext);
+  const [tempPages, setTempPages] = useState(pages)
+  const [isShowSavePagesButton, showSavePagesButton] = useState(false);
+  const [lastPathChange, setLastPathChange] = useState(["NA",-1]);
+  const location = useLocation();
+  let history = useHistory();
+
+  useEffect(() => {
+    setTempPages(pages)
+    // alert("Page change")
+  },[pages])
+
+  const updateTempPage = (key, value, index) => {
+    let newPage = {
+      ...tempPages[index],
+      [key]: value
+    }
+    showSavePagesButton(true)
+    setTempPages([...tempPages.slice(0,index), newPage ,...tempPages.slice(index+1)]);
+  }
+
+  const savePageChanges = () => {
+    appMethods.setPages(tempPages)
+    showSavePagesButton(false)
+
+    // 
+    if (location.pathname === lastPathChange[0]){
+      const newRoute = tempPages[lastPathChange[1]].path
+      history.push(newRoute);
+
+    }
+
+  }
+
+  const deletePage = (pageName, index) => {
+    let sureDelete = prompt(`Are you sure you would like to delete the page ${pageName}? This action is irreversible. Type "YES" to delete this page:`, "");
+
+    if (sureDelete === "YES"){
+      setTempPages([...tempPages.slice(0,index) ,...tempPages.slice(index+1)]);
+      appMethods.setPages([...pages.slice(0,index) ,...pages.slice(index+1)])
+
+    }
+  }
+
+  const addPage = () =>{
+    const newID = generatePageKey()
+
+      let newPage = {
+        id: newID,
+        path: "/new-page",
+        name: "New Page",
+        components:
+          [
+            { 
+                name: "Header",
+                id: `Page-${newID}-Header-0-000`,
+                content: {}
+            },
+            {
+              name: "NavigationBar",
+              id: `Page-${newID}-NavBar-1-001`,
+              content:{}
+            }
+          ]
+      }
+      setTempPages([...tempPages,newPage])
+      appMethods.setPages([...pages, newPage])
+  }
+  const generatePageKey = () =>{
+    let newID = -1
+
+    while (newID === -1){
+      newID = String(new Date().getTime()).slice(-3)
+
+      // Check if newID exists
+      pages.forEach((page)=>{
+        if (newID === page.id){
+          newID = -1
+        }
+      })
+    }
+    return newID
+  }
 
   const handleInputChange = (e) => {
     appMethods.setWebStyle(
@@ -82,14 +166,20 @@ const socialMediaSelectOptions = [
   <option>Soundcloud</option>,
   <option>Snapchat</option>]
 
-  let pageMenus = pages.map(({name, path},index)=> 
+  let pageMenus = tempPages.map(({name, path},index)=> 
   (
     <SubMenu label={name}>
-        <FocusableItem>Name: <input type={"text"} value={name} onChange = {(e)=>{appMethods.handlePageNameChange(index,e.target.value)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
-        <FocusableItem>Path: <input type={"text"} value={path} onChange = {(e)=>{appMethods.handlePagePathChange(index,e.target.value)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
-        <MenuItem><Link to={path}>Visit Page</Link></MenuItem>
-        <MenuDivider />
-        <MenuItem><a onClick={()=>{appMethods.deletePage(name,index)}}>Delete Page</a></MenuItem>
+      <FocusableItem>Name: <input type={"text"} value={name} onChange = {(e)=>{updateTempPage("name",e.target.value,index)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
+      <FocusableItem>Path: <input type={"text"} value={path} onChange = {(e)=>{
+        updateTempPage("path",e.target.value,index);
+        setLastPathChange([path,index])
+        }} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
+      {isShowSavePagesButton ?
+      <MenuItem onClick={()=>{savePageChanges()}}>Save Page Changes</MenuItem>
+      :
+      <MenuItem><Link to={path}>Visit Page</Link></MenuItem>}
+      <MenuDivider />
+      <MenuItem><a onClick={()=>{deletePage(name,index)}}>Delete Page</a></MenuItem>
     </SubMenu>
   ))
 
@@ -136,13 +226,13 @@ const socialMediaSelectOptions = [
     )
   })
 
-  let showRibbonClass = (webStyle.isAdmin && webStyle.isShowEditor? "" :"hidden")
-
+  let showRibbonClass = ""
+// 
   return (
     
     <div className={"nav nav-fill container-fluid border-bottom border-dark g-0 bg-light  "+showRibbonClass} style={{position: "sticky",top: 0, alignSelf: "flex-start",zIndex:999}} >
       <div className={"row m-auto w-100 "} style={{zIndex:2}}>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
           <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon   icon={faPalette} /></MenuButton>} transition>
             <MenuHeader>Colors</MenuHeader>
             <MenuDivider />
@@ -152,79 +242,142 @@ const socialMediaSelectOptions = [
             <FocusableItem><input type={"color"} value ={webStyle.colors.mainBrandColor} onChange = {handleColorChange} name = {"mainBrandColor"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Main Brand Color</FocusableItem>
             <FocusableItem><input type={"color"} value ={webStyle.colors.darkAccent} onChange = {handleColorChange} name = {"darkAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Accent</FocusableItem>
             <FocusableItem><input type={"color"} value ={webStyle.colors.darkShade} onChange = {handleColorChange} name = {"darkShade"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Shade (Font) </FocusableItem>
-            <FocusableItem><button onClick={invertColors}>Invert Color Scheme</button> </FocusableItem>
+            <MenuDivider />
+            <FocusableItem><a onClick={invertColors}>Invert Color Scheme</a> </FocusableItem>
           </Menu>
         </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             {/* Admin Menu */}
             <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faUserCog} /></MenuButton>} transition>
-                <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {webStyle.isEditMode} onClick={(evt)=>{handleCheckBox(evt,"isEditMode")}} />
-                    <label className="form-check-label" >Admin Edit Mode</label> 
-                </FocusableItem>
-                <FocusableItem className="form-check">
+                <MenuHeader>Mode</MenuHeader>
+                <FocusableItem className="form-check ms-3">
+                      <input 
+                      
+                        className="form-check-input me-2" type={"radio"}  checked = {adminSettings.isEditMode} 
+                        onClick={(evt)=>
+                          {
+                            appMethods.toggleViewDraftEdits(true)
+                            appMethods.setAdminSettings((prevState) => ({
+                              ...prevState,
+                              isEditMode: true
+                            })
+                        )}
+                        }
+                      />
+                      <label className="form-check-label" >Edit Site</label> 
+                    </FocusableItem>   
+                    <FocusableItem className="form-check ms-3">
+                      <input 
+                        className="form-check-input me-2" type={"radio"} checked = {!adminSettings.isEditMode} 
+                        onClick={(evt)=>
+                          {
+                            appMethods.setAdminSettings((prevState) => ({
+                              ...prevState,
+                              isEditMode: false,
+                            })
+                        )}
+                        }
+                      />
+                      <label className="form-check-label" >View As Guest</label> 
+                    </FocusableItem>                         
+
+                {/* <FocusableItem className="form-check">
                     <input className="form-check-input me-2" type={"checkbox"} checked = {webStyle.isShowEditor} onClick={(evt)=>{handleCheckBox(evt,"isShowEditor")}} />
                     <label className="form-check-label" >Show Admin Editor</label> 
-                </FocusableItem>
-                <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.showDraftEdits} 
-                           onClick={(evt)=>
-                              {
-                                appMethods.setStorageSettings((prevState) => ({
-                                  ...prevState,
-                                  showDraftEdits: !prevState.showDraftEdits,
-                                })
-                            )}
-                            } 
-                    />
-                    <label className="form-check-label" >Show Draft Edits</label> 
-                </FocusableItem>
-                <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.autoSaveEditsLocally} 
-                           onClick={(evt)=>
-                              {
-                                appMethods.setStorageSettings((prevState) => ({
+                </FocusableItem> */}
+                <MenuDivider />
+                {
+                  adminSettings.isEditMode?
+                  <>
+                    <MenuHeader>{adminSettings.autoUpdateLiveWebsite?"Auto publishing to":"You are editing"}</MenuHeader>
+                    <FocusableItem className="form-check">
+                      {
+                        adminSettings.autoSaveEditsLocally &&
+                        <label className="form-check-label mx-auto" >Current Draft</label> 
+                      }
+                      {
+                        adminSettings.autoUpdateLiveWebsite &&
+                        <label className="form-check-label mx-auto" >Live Website</label> 
+                      }
+                    </FocusableItem>
+                    <MenuDivider />
+                    <FocusableItem className="form-check ms-3">
+                        <input 
+                          className="form-check-input me-2" 
+                          type={"checkbox"} 
+                          checked = {adminSettings.autoUpdateLiveWebsite}
+                          onClick={(evt)=>
+                            {
+                              if (window.confirm("Are you sure you would like to auto publish ALL edits?")){
+                              
+                                appMethods.setAdminSettings((prevState) => ({
                                   ...prevState,
                                   autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
-                                })
-                            )}
-                            } 
-                    />
-                    <label className="form-check-label" >Auto Save Locally</label> 
-                </FocusableItem>
-                <FocusableItem className="form-check">
-                    <input className="form-check-input me-2" type={"checkbox"} checked = {storageSettings.autoUpdateLiveWebsite} 
-                          onClick={(evt)=>
-                              {
-                                appMethods.setStorageSettings((prevState) => ({
-                                  ...prevState,
-                                  autoUpdateLiveWebsite: !prevState.autoUpdateLiveWebsite,
-                                })
-                            )}
-                            } />
-                    <label className="form-check-label" >Auto Save To DB</label> 
-                </FocusableItem>
+                                  autoUpdateLiveWebsite: prevState.autoSaveEditsLocally,
+
+                                }))
+                              } 
+                            } }
+                        />
+                        <label className="form-check-label" >Auto Publish</label> 
+                    </FocusableItem>
+                  </>
+                :
+                <>
+                  <MenuHeader>You are viewing</MenuHeader>
+                    <FocusableItem className="form-check ms-3">
+                      <input 
+                        className="form-check-input me-2" type={"radio"} checked = {adminSettings.viewDraftEdits} 
+                        onClick={()=>appMethods.toggleViewDraftEdits(true)}
+                      />
+                      <label className="form-check-label" >Current Draft</label> 
+                    </FocusableItem>   
+                    <FocusableItem className="form-check ms-3">
+                      <input 
+                        className="form-check-input me-2" type={"radio"} checked = {!adminSettings.viewDraftEdits} 
+                        onClick={()=>appMethods.toggleViewDraftEdits(false)}
+                      />
+                      <label className="form-check-label" >Live Website</label> 
+                    </FocusableItem>                         
+                </>
+                }
+                
+                <MenuDivider />
                 <MenuItem>
-                    <Link to={"/admin"}>Visit Admin Page</Link>
-                </MenuItem>
+                <a onClick={(evt)=>
+                  {
+                    appMethods.setAdminSettings((prevState) => ({
+                      ...prevState,
+                      isShowEditor: false,
+                    })
+                  )}}
+                >
+                  Hide Editor Ribbon
+                </a>
+                  </MenuItem>
+
+                
             </Menu>
         </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             {/* Pages Menu */}
             <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faFile} /></MenuButton>} transition>
                 <MenuHeader>Your Website Pages</MenuHeader>
                 {pageMenus}
-                <MenuButton className={"styleEditorSubmenuIcon "} onClick = {()=>appMethods.addPage()}><FontAwesomeIcon  icon={faPlus} /></MenuButton>
+                <MenuButton className={"styleEditorSubmenuIcon "} onClick = {()=>addPage()}><FontAwesomeIcon  icon={faPlus} /></MenuButton>
                 <MenuDivider />
-                <SubMenu label={"Checkout Page"}>
-                    <MenuItem><Link to={"/checkout"}>Visit Page</Link></MenuItem>
-                    </SubMenu>
-                    <SubMenu label={"Admin Page"}>
-                    <MenuItem><Link to={"/admin"}>Visit Admin Page</Link></MenuItem>
+                <SubMenu label={"Error Page (404)"}>
+                  <MenuItem><Link to={"/404"}>Visit Page</Link></MenuItem>
                 </SubMenu>
+                {/* <SubMenu label={"Checkout Page"}>
+                  <MenuItem><Link to={"/checkout"}>Visit Page</Link></MenuItem>
+                </SubMenu>
+                <SubMenu label={"Admin Page"}>
+                  <MenuItem><Link to={"/admin"}>Visit Admin Page</Link></MenuItem>
+                </SubMenu> */}
             </Menu>
         </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             {/* Socials Pages */}
             <Menu className="nav-item dropdown " menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faTwitter} /></MenuButton>} transition>
                 <MenuHeader>Your Social Media Links</MenuHeader>
@@ -232,25 +385,34 @@ const socialMediaSelectOptions = [
                 <MenuButton className={"styleEditorSubmenuIcon"} onClick = {()=>appMethods.addSocialMedia()}><FontAwesomeIcon  icon={faPlus} /></MenuButton>
             </Menu>
         </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
-            {/* Shop Page */}
+        
+        {/* Shop Page */}
+        {/* <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faShoppingBag} /></MenuButton>} transition>
                 <SubMenu label={"Promo Codes"}>
                 {promoCodeMenus}
                 <MenuItem className = "justify-content-center"><a onClick={()=>{alert("Add Promo Code")}}><FontAwesomeIcon icon={faPlus}/></a></MenuItem>
                 </SubMenu>
             </Menu>
-        </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        </div> */}
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             {/* Socials Pages */}
-            <MenuButton className={"styleEditorIcon font-shrink-md m-0"} onClick = {()=>appMethods.saveWebsite()}><FontAwesomeIcon  icon={faSave} /></MenuButton>
+            <MenuButton className={"styleEditorIcon font-shrink-md m-0"} onClick = {()=>appMethods.saveWebsite()}><FontAwesomeIcon  icon={faUpload} /></MenuButton>
         </div>
-        <div className={"col text-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
+        <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
           {/* Socials Pages */}
           <MenuButton className={"styleEditorIcon font-shrink-md m-0"} onClick = {()=>{appMethods.toggleStyleEditor()}}><FontAwesomeIcon  icon={faTimes} /></MenuButton>
         </div>
-        <div className={"col text-center align-self-center "+(webStyle.isMobile?"mx-1 g-0":"mx-4")}>
-          <span className={" font-shrink fw-bold m-0"}>{siteIsDraft?"Draft Site":"Live Site"}</span>
+        <div className={"col text-center align-self-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
+
+          {
+            siteIsDraft ?
+              <FontAwesomeIcon  icon={faTriangleExclamation} />
+            :
+              <FontAwesomeIcon  icon={faTowerBroadcast} />
+          }
+          <span style={{whiteSpace: "nowrap"}} className={" font-shrink fw-bold mx-3"}>{siteIsDraft?"Draft Site":"Live Site"}</span>
+
         </div>
       </div>
     </div>   

@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import Fade from 'react-reveal/Fade'; // Importing Zoom effect
 
 import {
   DndContext,
@@ -21,16 +22,16 @@ import {
 } from '@dnd-kit/modifiers';
 
 // import "bootstrap/dist/css/bootstrap.css";
-import { MouseSensor } from "./helpers/DndSensors";
-import Spacer from "./pageComponents/Spacer"
-import Header from "./pageComponents/Header";
-import NavigationBar from "./pageComponents/NavigationBar";
+import { MouseSensor } from "../helpers/DndSensors";
+import Spacer from "../pageComponents/Spacer"
+import Header from "../pageComponents/Header";
+import NavigationBar from "../pageComponents/NavigationBar";
 // import BlogPreview from "./BlogPreview";
 // import CaptionedPicture from "./pageComponents/CaptionedPicture";
 // import DynamicForm from "./pageComponents/DynamicForm";
 // import CardPaymentBlock from "./CardPaymentBlock";
 // import Mosaic from "./pageComponents/Mosaic";
-import Footer from "./pageComponents/Footer";
+import Footer from "../pageComponents/Footer";
 // import VideoFrame from "./pageComponents/VideoFrame";
 // import SlideShow from "./pageComponents/SlideShow";
 // import PictureFrame from "./PictureFrame";
@@ -43,13 +44,13 @@ import Footer from "./pageComponents/Footer";
 // import CountDown from "./pageComponents/CountDown";
 // import Appointments from "./pageComponents/Appointments";
 // import PhotoGallery from "./pageComponents/PhotoGallery";
-import AdminWrapper from "./wrappers/AdminWrapper";
-import useComponentStorage from './helpers/useStorage';
-import { WebContext } from "./Website";
-import SubscriberBox from "./pageComponents/SubscriberBox";
+import AdminWrapper from "../wrappers/AdminWrapper";
+import useComponentStorage from '../helpers/useStorage';
+import { WebContext } from "../Website";
+import SubscriberBox from "../pageComponents/SubscriberBox";
 
 export default function DynamicPage(props) {
-  const {flatComponents, webStyle} = useContext(WebContext);
+  const {flatComponents, webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
 
   const initialState = props.components
   if (!props.components){
@@ -145,31 +146,50 @@ export default function DynamicPage(props) {
   components.forEach((el, index) => {
 
     const Component = componentMap[el.name];
-    pagecomponents.push(
-      <AdminWrapper
-        key={el.id}
-        isFlat ={flatComponents.includes(el.name)}
-        id={el.id}
-        addSelected={addSelected}
-        removeSelected={removeSelected}
-        className={"py-3 "}
-      >
-        <Component 
-          key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} pageID = {props.pageID}
-          content = {el.content} componentName = {el.name} style={{ cursor: "auto"}}
-        />     
-      </AdminWrapper>
-    );
-
-    pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {index}/>);
     
+    if (adminSettings.isEditMode){
+      pagecomponents.push(
+        <AdminWrapper
+          key={el.id}
+          isFlat ={flatComponents.includes(el.name)}
+          id={el.id}
+          addSelected={addSelected}
+          removeSelected={removeSelected}
+          className={"py-3 "}
+        >
+          <Component 
+            key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} pageID = {props.pageID}
+            content = {el.content} componentName = {el.name} style={{ cursor: "auto"}}
+          />     
+        </AdminWrapper>
+      );
+      pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {index}/>);
+    }
+
+    
+
+    else{
+      pagecomponents.push(
+        <Fade>
+        <div
+          className={"py-3 "}
+        >
+          <Component 
+            key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} pageID = {props.pageID}
+            content = {el.content} componentName = {el.name} style={{ cursor: "auto"}}
+          />     
+        </div>
+        </Fade>
+      );
+      pagecomponents.push(<div style={{height:".5em"}}></div>)
+    }
   });
 
   return (
     <div style ={{backgroundColor:webStyle.colors.lightShade}}>
-      <div id = "outerSection" className={"min-vh-100"+(webStyle.isMobile?" ":" container")} >
+      <div id = "outerSection" className={"min-vh-100"+(localDisplaySettings.isMobile?" ":" container")} >
         <div id = "innerSection" className="col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4" style={{backgroundColor:webStyle.colors.lightAccent}}>
-
+          {adminSettings.isEditMode === true?  
           <DndContext
             sensors={sensors}
             modifiers = {[restrictToVerticalAxis]}
@@ -186,6 +206,11 @@ export default function DynamicPage(props) {
             <DragOverlay>{activeID ? <OverlaySpot id = {activeID}/> : null}</DragOverlay>
 
           </DndContext>
+          :
+          <>
+          {pagecomponents}
+          </>
+        }
         </div>
       </div>
     </div>

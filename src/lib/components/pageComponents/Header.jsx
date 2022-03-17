@@ -7,23 +7,17 @@ export default function Header(props){
   const contentEditable = React.createRef();
 
   let initialState = props.content
-    if (Object.keys(initialState).length === 0){
-        initialState = {
-            header: props.pageName
-        }
-    }
+  if (Object.keys(initialState).length === 0){
+      initialState = {
+          header: props.pageName
+      }
+  }
 
   const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
   
-  const {webStyle, msgPort, apiMethods} = useContext(WebContext)
+  const {webStyle, adminSettings, msgPort, apiMethods} = useContext(WebContext)
 
-  // Save data
-  useEffect(() => {
-    if (msgPort == "save"){
-      apiMethods.setValueInDatabase(props.pageID+props.id,JSON.stringify(content))
-      localStorage.removeItem(props.pageID+props.id)
-    }
-  }, [msgPort]);
+  
 
   const handleContentChange = (key,value) => {
     setContent((prevState) => ({
@@ -43,7 +37,7 @@ export default function Header(props){
         spellCheck = "false"
         innerRef={contentEditable}
         html={content.header} // innerHTML of the editable div
-        disabled={!webStyle.isEditMode}      // use true to disable editing
+        disabled={!adminSettings.isEditMode}      // use true to disable editing
         onChange={evt=>handleContentChange("header",evt.target.value)} // handle innerHTML change
         tagName='h1' // Use a custom HTML tag (uses a div by default)
         /> 

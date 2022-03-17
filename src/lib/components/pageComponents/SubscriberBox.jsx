@@ -16,15 +16,15 @@ export default function SubscriberBox(props){
 
     const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
     const [formState,setFormState] = useState({name:"",email:""})
-    const {webStyle, msgPort, apiMethods} = useContext(WebContext)
+    const {webStyle, msgPort, adminSettings, localDisplaySettings, apiMethods} = useContext(WebContext)
   
     // Save data
-    useEffect(() => {
-      if (msgPort == "save"){
-        apiMethods.setValueInDatabase(props.pageID+props.id,JSON.stringify(content))
-        localStorage.removeItem(props.pageID+props.id)
-      }
-    }, [msgPort]);
+    // useEffect(() => {
+    //   if (msgPort == "save"){
+    //     apiMethods.setValueInDatabase(props.pageID+props.id,JSON.stringify(content))
+    //     localStorage.removeItem(props.pageID+props.id)
+    //   }
+    // }, [msgPort]);
   
     const handleContentChange = (key,value) => {
       setContent((prevState) => ({
@@ -54,14 +54,14 @@ export default function SubscriberBox(props){
 
     return(
     <div className='px-5'>
-      <div className={"px-5 text-center mx-auto boxShadow py-3 rounded "+(webStyle.isMobile?"":"w-75")} data-no-dnd="true" style={{backgroundColor:webStyle.colors.darkShade}}>
+      <div className={"px-5 text-center mx-auto boxShadow py-3 rounded "+(localDisplaySettings.isMobile?"":"w-75")} data-no-dnd="true" style={{backgroundColor:webStyle.colors.darkShade}}>
         <ContentEditable
           className='apply-font-primary mb-4'
           style={{color:webStyle.colors.lightShade}}
           spellCheck = "false"
           innerRef={contentEditable}
           html={content.header} // innerHTML of the editable div
-          disabled={!webStyle.isEditMode}      // use true to disable editing
+          disabled={!adminSettings.isEditMode}      // use true to disable editing
           onChange={evt=>{handleContentChange("header",evt.target.value)}} // handle innerHTML change
           tagName='h3' // Use a custom HTML tag (uses a div by default)
           /> 
