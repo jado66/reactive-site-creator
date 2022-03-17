@@ -33,22 +33,126 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function StylesEditor(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       siteIsDraft = _useContext.siteIsDraft,
       webStyle = _useContext.webStyle,
+      localDisplaySettings = _useContext.localDisplaySettings,
       pages = _useContext.pages,
       socialMedias = _useContext.socialMedias,
       appMethods = _useContext.appMethods,
       apiMethods = _useContext.apiMethods,
-      storageSettings = _useContext.storageSettings,
+      adminSettings = _useContext.adminSettings,
       promoCodes = _useContext.promoCodes;
+
+  var _useState = (0, _react.useState)(pages),
+      _useState2 = _slicedToArray(_useState, 2),
+      tempPages = _useState2[0],
+      setTempPages = _useState2[1];
+
+  var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isShowSavePagesButton = _useState4[0],
+      showSavePagesButton = _useState4[1];
+
+  var _useState5 = (0, _react.useState)(["NA", -1]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      lastPathChange = _useState6[0],
+      setLastPathChange = _useState6[1];
+
+  var location = (0, _reactRouterDom.useLocation)();
+  var history = (0, _reactRouterDom.useHistory)();
+  (0, _react.useEffect)(function () {
+    setTempPages(pages); // alert("Page change")
+  }, [pages]);
+
+  var updateTempPage = function updateTempPage(key, value, index) {
+    var newPage = _objectSpread(_objectSpread({}, tempPages[index]), {}, _defineProperty({}, key, value));
+
+    showSavePagesButton(true);
+    setTempPages([].concat(_toConsumableArray(tempPages.slice(0, index)), [newPage], _toConsumableArray(tempPages.slice(index + 1))));
+  };
+
+  var savePageChanges = function savePageChanges() {
+    appMethods.setPages(tempPages);
+    showSavePagesButton(false); // 
+
+    if (location.pathname === lastPathChange[0]) {
+      var newRoute = tempPages[lastPathChange[1]].path;
+      history.push(newRoute);
+    }
+  };
+
+  var deletePage = function deletePage(pageName, index) {
+    var sureDelete = prompt("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), "");
+
+    if (sureDelete === "YES") {
+      setTempPages([].concat(_toConsumableArray(tempPages.slice(0, index)), _toConsumableArray(tempPages.slice(index + 1))));
+      appMethods.setPages([].concat(_toConsumableArray(pages.slice(0, index)), _toConsumableArray(pages.slice(index + 1))));
+    }
+  };
+
+  var addPage = function addPage() {
+    var newID = generatePageKey();
+    var newPage = {
+      id: newID,
+      path: "/new-page",
+      name: "New Page",
+      components: [{
+        name: "Header",
+        id: "Page-".concat(newID, "-Header-0-000"),
+        content: {}
+      }, {
+        name: "NavigationBar",
+        id: "Page-".concat(newID, "-NavBar-1-001"),
+        content: {}
+      }]
+    };
+    setTempPages([].concat(_toConsumableArray(tempPages), [newPage]));
+    appMethods.setPages([].concat(_toConsumableArray(pages), [newPage]));
+  };
+
+  var generatePageKey = function generatePageKey() {
+    var newID = -1;
+
+    while (newID === -1) {
+      newID = String(new Date().getTime()).slice(-3); // Check if newID exists
+
+      pages.forEach(function (page) {
+        if (newID === page.id) {
+          newID = -1;
+        }
+      });
+    }
+
+    return newID;
+  };
 
   var handleInputChange = function handleInputChange(e) {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, _defineProperty({}, e.target.name, e.target.value)));
@@ -110,7 +214,7 @@ function StylesEditor(props) {
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Snapchat"
   })];
-  var pageMenus = pages.map(function (_ref, index) {
+  var pageMenus = tempPages.map(function (_ref, index) {
     var name = _ref.name,
         path = _ref.path;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
@@ -120,7 +224,7 @@ function StylesEditor(props) {
           type: "text",
           value: name,
           onChange: function onChange(e) {
-            appMethods.handlePageNameChange(index, e.target.value);
+            updateTempPage("name", e.target.value, index);
           },
           style: {
             width: "90px",
@@ -133,7 +237,8 @@ function StylesEditor(props) {
           type: "text",
           value: path,
           onChange: function onChange(e) {
-            appMethods.handlePagePathChange(index, e.target.value);
+            updateTempPage("path", e.target.value, index);
+            setLastPathChange([path, index]);
           },
           style: {
             width: "90px",
@@ -141,7 +246,12 @@ function StylesEditor(props) {
             background: "none"
           }
         })]
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+      }), isShowSavePagesButton ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+        onClick: function onClick() {
+          savePageChanges();
+        },
+        children: "Save Page Changes"
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
           to: path,
           children: "Visit Page"
@@ -149,7 +259,7 @@ function StylesEditor(props) {
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
           onClick: function onClick() {
-            appMethods.deletePage(name, index);
+            deletePage(name, index);
           },
           children: "Delete Page"
         })
@@ -254,7 +364,8 @@ function StylesEditor(props) {
       })]
     });
   });
-  var showRibbonClass = webStyle.isAdmin && webStyle.isShowEditor ? "" : "hidden";
+  var showRibbonClass = ""; // 
+
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "nav nav-fill container-fluid border-bottom border-dark g-0 bg-light  " + showRibbonClass,
     style: {
@@ -269,7 +380,7 @@ function StylesEditor(props) {
         zIndex: 2
       },
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
           className: "nav-item dropdown",
           menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
@@ -351,15 +462,15 @@ function StylesEditor(props) {
                 padding: "0"
               }
             }), " - Secondary Shade (Font) "]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
               onClick: invertColors,
               children: "Invert Color Scheme"
             }), " "]
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
           className: "nav-item dropdown",
           menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
@@ -369,92 +480,121 @@ function StylesEditor(props) {
             })
           }),
           transition: true,
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            className: "form-check",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-check-input me-2",
-              type: "checkbox",
-              checked: webStyle.isEditMode,
-              onClick: function onClick(evt) {
-                handleCheckBox(evt, "isEditMode");
-              }
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              className: "form-check-label",
-              children: "Admin Edit Mode"
-            })]
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+            children: "Mode"
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            className: "form-check",
+            className: "form-check ms-3",
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               className: "form-check-input me-2",
-              type: "checkbox",
-              checked: webStyle.isShowEditor,
+              type: "radio",
+              checked: adminSettings.isEditMode,
               onClick: function onClick(evt) {
-                handleCheckBox(evt, "isShowEditor");
-              }
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              className: "form-check-label",
-              children: "Show Admin Editor"
-            })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            className: "form-check",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-check-input me-2",
-              type: "checkbox",
-              checked: storageSettings.showDraftEdits,
-              onClick: function onClick(evt) {
-                appMethods.setStorageSettings(function (prevState) {
+                appMethods.toggleViewDraftEdits(true);
+                appMethods.setAdminSettings(function (prevState) {
                   return _objectSpread(_objectSpread({}, prevState), {}, {
-                    showDraftEdits: !prevState.showDraftEdits
+                    isEditMode: true
                   });
                 });
               }
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               className: "form-check-label",
-              children: "Show Draft Edits"
+              children: "Edit Site"
             })]
           }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            className: "form-check",
+            className: "form-check ms-3",
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
               className: "form-check-input me-2",
-              type: "checkbox",
-              checked: storageSettings.autoSaveEditsLocally,
+              type: "radio",
+              checked: !adminSettings.isEditMode,
               onClick: function onClick(evt) {
-                appMethods.setStorageSettings(function (prevState) {
+                appMethods.setAdminSettings(function (prevState) {
                   return _objectSpread(_objectSpread({}, prevState), {}, {
-                    autoSaveEditsLocally: !prevState.autoSaveEditsLocally
+                    isEditMode: false
                   });
                 });
               }
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
               className: "form-check-label",
-              children: "Auto Save Locally"
+              children: "View As Guest"
             })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            className: "form-check",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              className: "form-check-input me-2",
-              type: "checkbox",
-              checked: storageSettings.autoUpdateLiveWebsite,
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), adminSettings.isEditMode ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+              children: adminSettings.autoUpdateLiveWebsite ? "Auto publishing to" : "You are editing"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              className: "form-check",
+              children: [adminSettings.autoSaveEditsLocally && /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                className: "form-check-label mx-auto",
+                children: "Current Draft"
+              }), adminSettings.autoUpdateLiveWebsite && /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                className: "form-check-label mx-auto",
+                children: "Live Website"
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              className: "form-check ms-3",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                className: "form-check-input me-2",
+                type: "checkbox",
+                checked: adminSettings.autoUpdateLiveWebsite,
+                onClick: function onClick(evt) {
+                  if (window.confirm("Are you sure you would like to auto publish ALL edits?")) {
+                    appMethods.setAdminSettings(function (prevState) {
+                      return _objectSpread(_objectSpread({}, prevState), {}, {
+                        autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
+                        autoUpdateLiveWebsite: prevState.autoSaveEditsLocally
+                      });
+                    });
+                  }
+                }
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                className: "form-check-label",
+                children: "Auto Publish"
+              })]
+            })]
+          }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+              children: "You are viewing"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              className: "form-check ms-3",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                className: "form-check-input me-2",
+                type: "radio",
+                checked: adminSettings.viewDraftEdits,
+                onClick: function onClick() {
+                  return appMethods.toggleViewDraftEdits(true);
+                }
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                className: "form-check-label",
+                children: "Current Draft"
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              className: "form-check ms-3",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                className: "form-check-input me-2",
+                type: "radio",
+                checked: !adminSettings.viewDraftEdits,
+                onClick: function onClick() {
+                  return appMethods.toggleViewDraftEdits(false);
+                }
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                className: "form-check-label",
+                children: "Live Website"
+              })]
+            })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
               onClick: function onClick(evt) {
-                appMethods.setStorageSettings(function (prevState) {
+                appMethods.setAdminSettings(function (prevState) {
                   return _objectSpread(_objectSpread({}, prevState), {}, {
-                    autoUpdateLiveWebsite: !prevState.autoUpdateLiveWebsite
+                    isShowEditor: false
                   });
                 });
-              }
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              className: "form-check-label",
-              children: "Auto Save To DB"
-            })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-              to: "/admin",
-              children: "Visit Admin Page"
+              },
+              children: "Hide Editor Ribbon"
             })
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
           className: "nav-item dropdown",
           menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
@@ -469,31 +609,23 @@ function StylesEditor(props) {
           }), pageMenus, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
             className: "styleEditorSubmenuIcon ",
             onClick: function onClick() {
-              return appMethods.addPage();
+              return addPage();
             },
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
               icon: _freeSolidSvgIcons.faPlus
             })
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
-            label: "Checkout Page",
+            label: "Error Page (404)",
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-                to: "/checkout",
+                to: "/404",
                 children: "Visit Page"
-              })
-            })
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
-            label: "Admin Page",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-                to: "/admin",
-                children: "Visit Admin Page"
               })
             })
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
           className: "nav-item dropdown ",
           menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
@@ -516,44 +648,18 @@ function StylesEditor(props) {
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.Menu, {
-          className: "nav-item dropdown",
-          menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
-            className: "styleEditorIcon dropdown-toggle font-shrink-md m-0",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-              icon: _freeSolidSvgIcons.faShoppingBag
-            })
-          }),
-          transition: true,
-          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
-            label: "Promo Codes",
-            children: [promoCodeMenus, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
-              className: "justify-content-center",
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-                onClick: function onClick() {
-                  alert("Add Promo Code");
-                },
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                  icon: _freeSolidSvgIcons.faPlus
-                })
-              })
-            })]
-          })
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
           className: "styleEditorIcon font-shrink-md m-0",
           onClick: function onClick() {
             return appMethods.saveWebsite();
           },
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faSave
+            icon: _freeSolidSvgIcons.faUpload
           })
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
+        className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
           className: "styleEditorIcon font-shrink-md m-0",
           onClick: function onClick() {
@@ -563,12 +669,19 @@ function StylesEditor(props) {
             icon: _freeSolidSvgIcons.faTimes
           })
         })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col text-center align-self-center " + (webStyle.isMobile ? "mx-1 g-0" : "mx-4"),
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-          className: " font-shrink fw-bold m-0",
+      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "col text-center align-self-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
+        children: [siteIsDraft ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+          icon: _freeSolidSvgIcons.faTriangleExclamation
+        }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+          icon: _freeSolidSvgIcons.faTowerBroadcast
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+          style: {
+            whiteSpace: "nowrap"
+          },
+          className: " font-shrink fw-bold mx-3",
           children: siteIsDraft ? "Draft Site" : "Live Site"
-        })
+        })]
       })]
     })
   });

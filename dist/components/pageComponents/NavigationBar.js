@@ -41,11 +41,9 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -54,6 +52,12 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -96,6 +100,8 @@ function NavigationBar(props) {
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
+      adminSettings = _useContext.adminSettings,
+      localDisplaySettings = _useContext.localDisplaySettings,
       msgPort = _useContext.msgPort,
       appMethods = _useContext.appMethods,
       apiMethods = _useContext.apiMethods,
@@ -103,32 +109,29 @@ function NavigationBar(props) {
       cart = _useContext.cart,
       masterNavData = _useContext.masterNavData;
 
-  var _useState11 = (0, _react.useState)("Site Creator"),
-      _useState12 = _slicedToArray(_useState11, 2),
-      homeLinkText = _useState12[0],
-      setHomeLinkText = _useState12[1];
+  var initialState = props.content;
 
-  var _useState13 = (0, _react.useState)([]),
-      _useState14 = _slicedToArray(_useState13, 2),
-      uniqueNavData = _useState14[0],
-      setUniqueNavData = _useState14[1];
+  if (Object.keys(initialState).length === 0) {
+    initialState = _objectSpread({}, masterNavData);
+  }
 
-  var _useComponentStorage = (0, _useStorage.default)(props.pageID + props.id, {
-    isUnique: false,
-    homeLinkText: "home",
-    naveData: []
-  }),
+  var _useComponentStorage = (0, _useStorage.default)(props.pageID + props.id, initialState),
       _useComponentStorage2 = _slicedToArray(_useComponentStorage, 2),
       content = _useComponentStorage2[0],
-      setContent = _useComponentStorage2[1];
+      setContent = _useComponentStorage2[1]; // useEffect(() => {
+  //   if (msgPort == "save"){
+  //     if (content.isUnique){
+  //       apiMethods.setValueInDatabase(props.pageID+props.id,content)
+  //     }
+  //   }
+  // }, [msgPort]);
+  // useEffect(() => {
+  //   if (!content.isUnique){
+  //     setContent(masterNavData)
+  //   }
+  // }, [masterNavData]);
 
-  (0, _react.useEffect)(function () {
-    if (msgPort == "save") {
-      if (content.isUnique) {
-        apiMethods.setValueInDatabase(props.pageID + props.id, content);
-      }
-    }
-  }, [msgPort]);
+
   var componentMapping = {
     Email: _freeSolidSvgIcons.faEnvelope,
     Facebook: _freeBrandsSvgIcons.faFacebookSquare,
@@ -155,159 +158,201 @@ function NavigationBar(props) {
       tolerance: 5
     }
   }));
-  var navData = content.isUnique ? content.navData : masterNavData.navData;
+  var navItems = []; // if (isEdit) {
+  // for(var index = 1; index < navData.length; index++){
 
-  if (!navData) {
-    navData = [];
-  }
+  _toConsumableArray(content.navData).forEach(function (el, index) {
+    // let el = navData[index]
+    var dropdownItems = [];
 
-  var navItems = [];
-
-  if (isEdit) {
-    // for(var index = 1; index < navData.length; index++){
-    _toConsumableArray(navData).forEach(function (el, index) {
-      // let el = navData[index]
-      var dropdownItems = [];
-
-      if ("dropdown" in el) {
-        el.dropdown.forEach(function (subEl, subIndex) {
-          dropdownItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(DropDownLink, {
-            isEdit: true,
+    if ("dropdown" in el) {
+      el.dropdown.forEach(function (subEl, subIndex) {
+        dropdownItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminNavWrapper.default, {
+          id: subEl.id // order = {el.or}
+          ,
+          className: "py-2 ",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DropDownLink, {
+            id: subEl.id + "DropDown",
+            isEdit: isEdit,
             webStyle: webStyle,
             name: subEl.name,
             path: subEl.path,
-            onChangeName: function onChangeName(evt) {
-              handleLinkDropdownChange(evt, index, subIndex, "name");
-            },
-            onChangePath: function onChangePath(evt) {
-              handleLinkDropdownChange(evt, index, subIndex, "path");
-            }
-          }, el.name + subEl.name + subEl.path + "DropDown"));
-        });
-      }
+            parentIndex: index,
+            index: subIndex,
+            handleLinkDropdownChange: handleLinkDropdownChange
+          }, subEl.id + "DropDown")
+        }, subEl.id + "admin"));
+      });
+    } // navItems.push(
+    // <EditableNavItem 
+    //   key = {el.name+el.path+"Link"}
+    //   el = {el}
+    //   webStyle = {webStyle}
+    //   handleLinkChange = {handleLinkChange}
+    //   index = {index}
+    //   isEdit = {isEdit}
+    // >
+    //   {dropdownItems}
+    // </EditableNavItem>
 
-      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(EditableNavItem, {
+
+    navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminNavWrapper.default, {
+      id: el.id // order = {el.or}
+      ,
+      className: "py-2 ",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(EditableNavItem, {
         el: el,
+        id: el.name + el.path + "Link",
         webStyle: webStyle,
+        localDisplaySettings: localDisplaySettings,
         handleLinkChange: handleLinkChange,
         index: index,
-        children: dropdownItems
-      }, el.name + el.path + "Link"));
-    }); // Move Mode
-
-  } else {
-    var _loop = function _loop() {
-      var el = navData[index];
-      var dropdownItems = [];
-
-      if ("dropdown" in el) {
-        el.dropdown.forEach(function (el, index) {
-          dropdownItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminNavWrapper.default, {
-            id: el.id // order = {el.or}
-            ,
-            className: webStyle.isMobile ? "ps-3" : "py-2 ",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-              className: "nav-item ms-2",
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-                style: {
-                  color: webStyle.colors.lightShade
-                },
-                "data-no-dnd": "true",
-                className: "nav-link ",
-                "aria-current": "page",
-                to: el.path,
-                children: el.name
-              })
-            })
-          }, el.id));
-        });
-      }
-
-      navItems.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminNavWrapper.default, {
-        id: el.id // order = {el.or}
-        ,
-        className: "py-2 ",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-          className: "nav-item " + (webStyle.isMobile ? "ms-2" : "mx-4"),
-          style: {
-            whiteSpace: "nowrap"
+        isEdit: isEdit,
+        handleDropdownDragEnd: handleDropdownDragEnd,
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
+          sensors: sensors,
+          collisionDetection: _core.closestCenter // modifiers = {[ verticalListSortingStrategy]}
+          ,
+          onDragStart: function onDragStart() {
+            showDropdownDeleteSpot(true);
           },
-          children: "dropdown" in el ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-            className: "position-relative ",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+          onDragEnd: function onDragEnd(evt) {
+            handleDropdownDragEnd(evt, index);
+            showDropdownDeleteSpot(false);
+          },
+          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
+            items: el.dropdown,
+            strategy: _sortable.verticalListSortingStrategy,
+            children: [dropdownItems, isShowDropdownDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
+              id: "".concat(index, ":deleteDrop")
+            }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+              className: "btn " + (localDisplaySettings.isMobile ? "ps-4" : "w-100"),
+              "data-no-dnd": "true",
+              type: "button",
               style: {
                 color: webStyle.colors.lightShade
               },
-              className: "  dropdown-toggle text-decoration-none",
-              "data-bs-toggle": "dropdown",
-              id: "navbarDropdown" + el.id,
-              role: "button",
-              "aria-expanded": "false",
-              path: "javascript:void(0)",
-              children: el.name
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-              className: "dropdown-menu border-0 rounded-0 mt-0 " + (webStyle.isMobile ? "" : "boxShadow"),
-              style: {
-                backgroundColor: webStyle.colors.darkAccent,
-                top: "2.5em",
-                opacity: "1 !important"
+              onClick: function onClick(evt) {
+                addDropdownlink(evt, index);
               },
-              "aria-labelledby": "navbarDropdown" + el.id,
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
-                  sensors: sensors,
-                  collisionDetection: _core.closestCenter // modifiers = {[ verticalListSortingStrategy]}
-                  ,
-                  onDragStart: function onDragStart() {
-                    showDropdownDeleteSpot(true);
-                  },
-                  onDragEnd: function onDragEnd(evt) {
-                    handleDropdownDragEnd(evt, index);
-                    showDropdownDeleteSpot(false);
-                  },
-                  children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
-                    items: el.dropdown,
-                    strategy: _sortable.verticalListSortingStrategy,
-                    children: [dropdownItems, isShowDropdownDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
-                      id: "".concat(index, ":deleteDrop")
-                    }), isShowButtons && webStyle.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                      className: "btn " + (webStyle.isMobile ? "ps-4" : "w-100"),
-                      "data-no-dnd": "true",
-                      type: "button",
-                      style: {
-                        color: webStyle.colors.lightShade
-                      },
-                      onClick: function onClick(evt) {
-                        addDropdownlink(evt, index);
-                      },
-                      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                        icon: _freeSolidSvgIcons.faPlusSquare
-                      })
-                    })]
-                  })
-                })
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                icon: _freeSolidSvgIcons.faPlusSquare
               })
             })]
-          }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-            "data-no-dnd": "true",
-            style: {
-              color: webStyle.colors.lightShade
-            },
-            className: "text-decoration-none ",
-            "aria-current": "page",
-            to: el.path,
-            children: el.name
           })
         })
-      }, el.id));
-    };
+      }, el.name + el.path + "Link")
+    }, el.id + "admin")); // }
+  }); //   // Move Mode
+  // } else {
+  //   for(var index = 0; index < content.navData.length; index++){
+  //     let el = content.navData[index]
+  //     let dropdownItems = [];
+  //     if ("dropdown" in el) {
+  //       el.dropdown.forEach((el) => {
+  //         dropdownItems.push(
+  //           <AdminNavWrapper
+  //             key={el.id}
+  //             id={el.id}
+  //             // order = {el.or}
+  //             className={(localDisplaySettings.isMobile?"ps-3":"py-2 ")}
+  //           >
+  //             <li className="nav-item ms-2" >
+  //               <Link
+  //                 style={{color:webStyle.colors.lightShade}}
+  //                 data-no-dnd="true"
+  //                 className="nav-link "
+  //                 aria-current="page"
+  //                 to={el.path}
+  //               >
+  //                 {el.name}
+  //               </Link>
+  //             </li>
+  //           </AdminNavWrapper>
+  //         );
+  //       });
+  //     }
+  // navItems.push(
+  //   <AdminNavWrapper
+  //     key={el.id}
+  //     id={el.id}
+  //     // order = {el.or}
+  //     className={"py-2 "}
+  //   >
+  // <li className={"nav-item "+(localDisplaySettings.isMobile?"ms-2":"mx-4")} style ={{whiteSpace: "nowrap"}}>
+  //   {"dropdown" in el ? (
+  //     <div className="position-relative ">
+  //       <a
+  //         style={{color:webStyle.colors.lightShade}}
+  //         className="  dropdown-toggle text-decoration-none"
+  //         data-bs-toggle="dropdown"
+  //         id={"navbarDropdown" + el.id}
+  //         role="button"
+  //         aria-expanded="false"
+  //         path="javascript:void(0)"
+  //       >
+  //         {el.name}
+  //       </a>
+  // <ul
+  //   className={"dropdown-menu border-0 rounded-0 mt-0 "+(localDisplaySettings.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.colors.darkAccent, top:"2.5em", opacity:"1 !important"}}
+  //   aria-labelledby={"navbarDropdown" + el.id}
+  // >                  
+  //   <div>
+  //   <DndContext
+  //   sensors={sensors}
+  //   collisionDetection={closestCenter}
+  //   // modifiers = {[ verticalListSortingStrategy]}
+  //   onDragStart={() => {
+  //     showDropdownDeleteSpot(true);
+  //   }}
+  //   onDragEnd={(evt) => {
+  //     handleDropdownDragEnd(evt, index);
+  //     showDropdownDeleteSpot(false);
+  //   }}
+  // >
+  //   <SortableContext
+  //   items={el.dropdown}
+  //   strategy={verticalListSortingStrategy}
+  // >
+  //   {dropdownItems}
+  //   {isShowDropdownDeleteSpot && (
+  //     <DeleteDrop id={`${index}:deleteDrop`} />
+  //   )}
+  //   {isShowButtons&& adminSettings.isEditMode &&<button
+  //     className={"btn "+(localDisplaySettings.isMobile?"ps-4":"w-100")}
+  //     data-no-dnd="true"
+  //                 type="button"
+  //                 style={{color:webStyle.colors.lightShade}}
+  //                 onClick={(evt) => {
+  //                   addDropdownlink(evt, index);
+  //                 }}
+  //               >
+  //                 <span>{index}</span>
+  //                 <FontAwesomeIcon icon={faPlusSquare}/>
+  //               </button>}
+  //             </SortableContext>
+  //           </DndContext>
+  //           </div>
+  //         </ul>
+  //       </div>
+  //     ) : (
+  //       <EditableNavItem
+  //         isEdit ={false}
+  //         key = {el.name+el.path+"Link"}
+  //         el = {el}
+  //         webStyle = {webStyle}
+  //         handleLinkChange = {handleLinkChange}
+  //         index = {index}
+  //       >
+  //         {dropdownItems}
+  //       />
+  //     )}  
+  //   </li>
+  // </AdminNavWrapper>
+  // ); 
+  //   };
+  // }
 
-    for (var index = 0; index < navData.length; index++) {
-      _loop();
-    }
-
-    ;
-  }
 
   var socialLinks = socialMedias.filter(function (_ref) {
     var location = _ref.location;
@@ -324,7 +369,9 @@ function NavigationBar(props) {
       className: "py-2",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
         className: 'nav-link social-link',
-        href: "".concat(link),
+        to: {
+          pathname: "".concat(link)
+        },
         style: {
           color: webStyle.colors.lightShade
         },
@@ -332,7 +379,7 @@ function NavigationBar(props) {
           className: "sm-icons",
           icon: componentMapping[location]
         })
-      }, location)
+      }, "Nav - ".concat(componentMapping[location]))
     });
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -343,7 +390,7 @@ function NavigationBar(props) {
       position: "sticky",
       top: 0,
       alignSelf: "flex-start",
-      zIndex: 1
+      zIndex: 5
     },
     onMouseEnter: function onMouseEnter() {
       showButtons(true);
@@ -354,28 +401,21 @@ function NavigationBar(props) {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("nav", {
       className: "navbar navbar-expand-lg mx-4 p-0 container mx-auto",
       children: !isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "container-fluid g-0 " + (webStyle.isMobile ? " ms-3" : ""),
-        children: [isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "container-fluid g-0 " + (localDisplaySettings.isMobile ? " ms-3" : ""),
+        children: [isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
           "data-no-dnd": "true",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+            // style ={{,color:props.webStyle.colors.lightShade}}
             style: {
-              color: webStyle.colors.lightShade
+              color: webStyle.colors.lightShade,
+              width: "".concat(content.homeLinkText.length + 2, "ch")
             },
-            className: "form-control-plaintext w-50",
-            value: homeLinkText,
+            className: "form-control-plaintext navbar-brand me-0",
+            value: content.homeLinkText,
             onChange: function onChange(evt) {
-              handleLinkChange(evt, 0, "name");
+              handleHomeLinkText(evt.target.value);
             }
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-            className: "form-control-plaintext w-50",
-            style: {
-              color: webStyle.colors.lightShade
-            },
-            value: "\\",
-            onChange: function onChange(evt) {
-              handleLinkChange(evt, 0, "path");
-            }
-          })]
+          })
         }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
           "data-no-dnd": "true",
           className: "navbar-brand",
@@ -383,7 +423,7 @@ function NavigationBar(props) {
           style: {
             color: webStyle.colors.lightShade
           },
-          children: homeLinkText
+          children: content.homeLinkText
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
           "data-no-dnd": "true",
           className: "navbar-toggler btn",
@@ -403,14 +443,10 @@ function NavigationBar(props) {
           className: "collapse navbar-collapse",
           id: "navbarSupportedContent",
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-            className: "navbar-nav me-auto mb-2 mb-lg-0 " + (webStyle.isMobile ? " " : "align-items-center"),
-            children: isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-              "data-no-dnd": "true",
-              className: "d-flex " + (webStyle.isMobile ? "flex-column " : "flex-direction-col"),
-              children: navItems
-            }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
+            className: "navbar-nav me-auto mb-2 mb-lg-0 " + (localDisplaySettings.isMobile ? " " : "align-items-center"),
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
               sensors: sensors,
-              modifiers: [webStyle.isMobile ? _modifiers.restrictToVerticalAxis : _modifiers.restrictToHorizontalAxis],
+              modifiers: [localDisplaySettings.isMobile ? _modifiers.restrictToVerticalAxis : _modifiers.restrictToHorizontalAxis],
               collisionDetection: _core.closestCenter,
               onDragStart: function onDragStart() {
                 showDeleteSpot(true);
@@ -420,8 +456,8 @@ function NavigationBar(props) {
                 showDeleteSpot(false);
               },
               children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
-                items: navData,
-                strategy: webStyle.isMobile ? _sortable.verticalListSortingStrategy : _sortable.horizontalListSortingStrategy,
+                items: content.navData,
+                strategy: localDisplaySettings.isMobile ? _sortable.verticalListSortingStrategy : _sortable.horizontalListSortingStrategy,
                 children: [navItems, isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
                   className: "py-2",
                   children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
@@ -430,7 +466,7 @@ function NavigationBar(props) {
                 })]
               })
             })
-          }), isShowButtons && webStyle.isEditMode && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          }), isShowButtons && adminSettings.isEditMode && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
             "data-no-dnd": "true",
             className: "btn-group  ",
             role: "group",
@@ -467,7 +503,7 @@ function NavigationBar(props) {
                 setIsEdit(!isEdit);
               },
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                icon: isEdit ? _freeSolidSvgIcons.faArrowsAlt : _freeSolidSvgIcons.faPencilAlt,
+                icon: isEdit ? _freeSolidSvgIcons.faCheck : _freeSolidSvgIcons.faPencilAlt,
                 style: {
                   color: webStyle.colors.lightShade
                 }
@@ -498,7 +534,7 @@ function NavigationBar(props) {
                 })]
               })]
             })]
-          }), isShowButtons && webStyle.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
             className: "relative-r btn",
             style: {
               marginRight: "-2.5em"
@@ -581,20 +617,43 @@ function NavigationBar(props) {
     }
   }
 
-  function saveNavData(value) {
-    if (content.isUnique) {
-      setContent(function (prevState) {
-        return _objectSpread(_objectSpread({}, prevState), {}, {
-          navData: value
-        });
-      });
-    } else {
-      appMethods.setMasterNavData(function (prevState) {
-        return _objectSpread(_objectSpread({}, prevState), {}, {
-          navData: value
-        });
-      });
-    }
+  function saveNavData(_x) {
+    return _saveNavData.apply(this, arguments);
+  }
+
+  function _saveNavData() {
+    _saveNavData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(value) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (content.isUnique) {
+                setContent(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    navData: value
+                  });
+                });
+              } else {
+                setContent(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    navData: value
+                  });
+                });
+                appMethods.setMasterNavData(function (prevState) {
+                  return _objectSpread(_objectSpread({}, prevState), {}, {
+                    navData: value
+                  });
+                });
+              }
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _saveNavData.apply(this, arguments);
   }
 
   function addLink(isDropdown) {
@@ -611,61 +670,75 @@ function NavigationBar(props) {
       name: "New Link",
       path: "/"
     };
-    saveNavData([].concat(_toConsumableArray(navData), [newLink]));
+    saveNavData([].concat(_toConsumableArray(content.navData), [newLink]));
   }
 
   function addDropdownlink(event, index) {
-    saveNavData(function (prevData) {
-      // alert(index);
-      var newData = _toConsumableArray(prevData);
+    // alert(index);
+    var newData = _toConsumableArray(content.navData);
 
-      newData[index].dropdown = [].concat(_toConsumableArray(newData[index].dropdown), [{
-        id: Math.random() * 10000,
-        name: "New Link",
-        path: "/"
-      }]);
-      saveNavData(newData);
-    });
+    newData[index].dropdown = [].concat(_toConsumableArray(newData[index].dropdown), [{
+      id: Math.random() * 10000,
+      name: "New Link",
+      path: "/"
+    }]);
+    saveNavData(newData);
     event.stopPropagation();
   }
 
   function removeLink(index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      saveNavData(function (prevData) {
-        // alert(index);
-        var newData = [].concat(_toConsumableArray(prevData.slice(0, index)), _toConsumableArray(prevData.slice(index + 1)));
-        saveNavData(newData);
-      });
+      // alert(index);
+      var newData = [].concat(_toConsumableArray(content.navData.slice(0, index)), _toConsumableArray(content.navData.slice(index + 1)));
+      saveNavData(newData);
     }
   }
 
   function removeDropdownLink(parentIndex, index) {
     // If dropdown be super sure because it will remove all the subdata
     if (window.confirm("Are you sure you want to remove this link?")) {
-      saveNavData(function (prevData) {
-        // alert(index);
-        var newData = _toConsumableArray(prevData);
+      // alert(index);
+      var newData = _toConsumableArray(content.navData);
 
-        var newDropdown = [].concat(_toConsumableArray(newData[parentIndex].dropdown.slice(0, index)), _toConsumableArray(newData[parentIndex].dropdown.slice(index + 1)));
-        newData[parentIndex].dropdown = newDropdown;
-        saveNavData(newData);
+      var newDropdown = [].concat(_toConsumableArray(newData[parentIndex].dropdown.slice(0, index)), _toConsumableArray(newData[parentIndex].dropdown.slice(index + 1)));
+      newData[parentIndex].dropdown = newDropdown;
+      saveNavData(newData);
+    }
+  }
+
+  function handleHomeLinkText(value) {
+    // TODO ensure theses don't get out of sync
+    if (content.isUnique) {
+      setContent(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          homeLinkText: value
+        });
+      });
+    } else {
+      appMethods.setMasterNavData(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          homeLinkText: value
+        });
       });
     }
   }
 
-  function handleLinkChange(event, index, type) {
+  function handleLinkChange(name, path, index) {
     // TODO ensure theses don't get out of sync
-    var newData = _toConsumableArray(navData);
+    var newData = _toConsumableArray(content.navData);
 
-    newData[index][type] = event.target.value;
+    newData[index].name = name;
+    newData[index].path = path;
     saveNavData(newData);
   }
 
-  function handleLinkDropdownChange(event, parentIndex, index, type) {
-    var newData = _toConsumableArray(navData);
+  function handleLinkDropdownChange(name, path, parentIndex, index) {
+    var newData = _toConsumableArray(content.navData);
 
-    newData[parentIndex].dropdown[index][type] = event.target.value;
+    newData[parentIndex].dropdown[index].name = name;
+    newData[parentIndex].dropdown[index].path = path; // newData[parentIndex].dropdown[index][type] = event.target.value;
+
     saveNavData(newData);
   }
 
@@ -683,7 +756,7 @@ function NavigationBar(props) {
 
       var newIndex = over.data.current.sortable.index; // removeLink
 
-      var newData = (0, _sortable.arrayMove)(navData, oldIndex, newIndex);
+      var newData = (0, _sortable.arrayMove)(content.navData, oldIndex, newIndex);
       saveNavData(newData);
     }
   }
@@ -702,7 +775,7 @@ function NavigationBar(props) {
 
       var newIndex = over.data.current.sortable.index;
 
-      var newData = _toConsumableArray(navData);
+      var newData = _toConsumableArray(content.navData);
 
       newData[index].dropdown = (0, _sortable.arrayMove)(newData[index].dropdown, oldIndex, newIndex);
       saveNavData(newData);
@@ -732,96 +805,204 @@ var DeleteDrop = function DeleteDrop(props) {
 
 
 var EditableNavItem = function EditableNavItem(props) {
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-    className: "nav-item " + (props.webStyle.isMobile ? "ms-2" : "mx-4"),
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      children: "dropdown" in props.el ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "position-relative " + (props.webStyle.isMobile ? "input-group" : ""),
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
-          onChange: function onChange(evt) {
-            props.handleLinkChange(evt, props.index, "text");
-          },
-          style: {
-            width: "".concat(props.el.name.length + 2, "ch"),
-            color: props.webStyle.colors.lightShade
-          },
-          value: props.el.name
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-          className: "nav-link dropdown-toggle" + (props.webStyle.isMobile ? " w-50" : ""),
+  var _useState11 = (0, _react.useState)(props.el.name),
+      _useState12 = _slicedToArray(_useState11, 2),
+      name = _useState12[0],
+      setName = _useState12[1];
+
+  var _useState13 = (0, _react.useState)(props.el.path),
+      _useState14 = _slicedToArray(_useState13, 2),
+      path = _useState14[0],
+      setPath = _useState14[1];
+
+  var _useState15 = (0, _react.useState)(false),
+      _useState16 = _slicedToArray(_useState15, 2),
+      isShowDeleteSpot = _useState16[0],
+      showDeleteSpot = _useState16[1];
+
+  (0, _react.useEffect)(function () {
+    // alert(props.isEdit)
+    if (props.isEdit) {
+      setName(props.el.name);
+      setPath(props.el.path);
+    } else {
+      if (name !== props.el.name || path !== props.el.path) {
+        props.handleLinkChange(name, path, props.index);
+      }
+    }
+  }, [props.isEdit]);
+
+  if ("dropdown" in props.el) {
+    var items = props.el.dropdown;
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+      className: "nav-item " + (props.localDisplaySettings.isMobile ? "ms-2" : "mx-4"),
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "position-relative " + (props.localDisplaySettings.isMobile ? "input-group" : ""),
+        children: [props.isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+            className: "form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
+            onChange: function onChange(evt) {
+              return setName(evt.target.value);
+            },
+            style: {
+              width: "".concat(name.length + 2, "ch"),
+              color: props.webStyle.colors.lightShade
+            },
+            value: name
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+            className: "nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
+            style: {
+              color: props.webStyle.colors.lightShade
+            },
+            "data-no-dnd": "true",
+            "data-bs-toggle": "dropdown",
+            id: "navbarDropdown-" + props.el.id,
+            role: "button",
+            "aria-expanded": "false",
+            path: "javascript:void(0)",
+            children: "Dropdown"
+          })]
+        }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+          className: "nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
           style: {
             color: props.webStyle.colors.lightShade
           },
           "data-no-dnd": "true",
           "data-bs-toggle": "dropdown",
-          id: "navbarDropdown",
+          id: "navbarDropdown-" + props.el.id,
           role: "button",
           "aria-expanded": "false",
           path: "javascript:void(0)",
-          children: "Dropdown"
+          children: name
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-          className: "dropdown-menu " + (props.webStyle.isMobile ? "" : "boxShadow"),
+          className: "dropdown-menu " + (props.localDisplaySettings.isMobile ? "" : "boxShadow"),
           style: {
-            backgroundColor: props.webStyle.colors.darkAccent
+            backgroundColor: props.webStyle.colors.darkAccent,
+            top: props.isEdit ? "5em" : "2.9em",
+            zIndex: 1
           },
-          "aria-labelledby": "navbarDropdown",
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            children: props.children
+          "aria-labelledby": "navbarDropdown-" + props.el.id,
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
+            sensors: props.sensors // modifiers = {[restrictToVerticalAxis]}
+            ,
+            collisionDetection: _core.closestCenter,
+            onDragStart: function onDragStart() {
+              showDeleteSpot(true);
+            },
+            onDragEnd: function onDragEnd(evt) {
+              props.handleDropdownDragEnd(evt);
+              showDeleteSpot(false);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
+              items: items,
+              strategy: _sortable.verticalListSortingStrategy,
+              children: [props.children, isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+                className: "py-2",
+                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
+                  id: "deleteDrop"
+                })
+              })]
+            })
           })
         })]
-      }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: props.webStyle.isMobile ? "input-group" : "",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
-          onChange: function onChange(evt) {
-            props.handleLinkChange(evt, props.index, "name");
-          },
-          style: {
-            width: "".concat(props.el.name.length + 2, "ch"),
-            color: props.webStyle.colors.lightShade
-          },
-          value: props.el.name
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          className: "form-control-plaintext" + (props.webStyle.isMobile ? " w-50" : ""),
-          onChange: function onChange(evt) {
-            props.handleLinkChange(evt, props.index, "path");
-          },
-          style: {
-            width: "".concat(props.el.path.length + 2, "ch"),
-            color: props.webStyle.colors.lightShade
-          },
-          value: props.el.path
-        })]
       })
-    })
-  });
+    });
+  } else {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+      className: "nav-item " + (props.localDisplaySettings.isMobile ? "ms-2" : "mx-4"),
+      children: props.isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
+          onChange: function onChange(evt) {
+            return setName(evt.target.value);
+          },
+          style: {
+            width: "".concat(name.length + 2, "ch"),
+            color: props.webStyle.colors.lightShade
+          },
+          value: name
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
+          onChange: function onChange(evt) {
+            return setPath(evt.target.value);
+          },
+          style: {
+            width: "".concat(path.length + 2, "ch"),
+            color: props.webStyle.colors.lightShade
+          },
+          value: path
+        })]
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+        "data-no-dnd": "true",
+        style: {
+          color: props.webStyle.colors.lightShade
+        },
+        className: "text-decoration-none ",
+        "aria-current": "page",
+        to: path,
+        children: name
+      })
+    });
+  }
 };
 
 var DropDownLink = function DropDownLink(props) {
   var _useContext2 = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext2.webStyle;
 
-  if (props.isEdit) return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-    className: "nav-item col",
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+  var _useState17 = (0, _react.useState)(props.name),
+      _useState18 = _slicedToArray(_useState17, 2),
+      name = _useState18[0],
+      setName = _useState18[1];
+
+  var _useState19 = (0, _react.useState)(props.path),
+      _useState20 = _slicedToArray(_useState19, 2),
+      path = _useState20[0],
+      setPath = _useState20[1];
+
+  (0, _react.useEffect)(function () {
+    // alert(props.isEdit)
+    if (props.isEdit) {
+      setName(props.name);
+      setPath(props.path);
+    } else {
+      if (name !== props.name || path !== props.path) {
+        props.handleLinkDropdownChange(name, path, props.parentIndex, props.index);
+      }
+    }
+  }, [props.isEdit]);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
+    className: "nav-item col ms-2",
+    children: props.isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       className: "input-group ",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         style: {
           color: webStyle.colors.lightShade
         },
         className: "form-control-plaintext w-50",
-        value: props.name,
-        onChange: props.onChangeName
+        value: name,
+        onChange: function onChange(evt) {
+          return setName(evt.target.value);
+        }
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         className: "form-control-plaintext w-50",
         style: {
           color: webStyle.colors.lightShade
         },
-        value: props.path,
-        onChange: props.onChangePath
+        value: path,
+        onChange: function onChange(evt) {
+          return setPath(evt.target.value);
+        }
       })]
+    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+      "data-no-dnd": "true",
+      style: {
+        color: props.webStyle.colors.lightShade
+      },
+      className: "nav-link ",
+      "aria-current": "page",
+      to: path,
+      children: name
     })
-  });else {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {});
-  }
+  });
 };

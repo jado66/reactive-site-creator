@@ -20,9 +20,9 @@ require("../css/bootstrapOverrides.css");
 
 var _StylesEditor = _interopRequireDefault(require("./StylesEditor"));
 
-var _DynamicPage = _interopRequireDefault(require("./DynamicPage"));
+var _DynamicPage = _interopRequireDefault(require("./pages/DynamicPage"));
 
-var _StaticPage = _interopRequireDefault(require("./StaticPage"));
+var _Page = _interopRequireDefault(require("./pages/Page404"));
 
 var _delayCallback = _interopRequireDefault(require("./helpers/delayCallback"));
 
@@ -96,7 +96,8 @@ var site_template = {
     }]
   }],
   masterNavBarData: {
-    homeLinkText: "home",
+    isUnique: false,
+    homeLinkText: "Home",
     navData: [{
       id: 1,
       name: "Blog",
@@ -130,8 +131,6 @@ var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
 function Website(props) {
-  var _ref2;
-
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       siteIsDraft = _useState2[0],
@@ -159,61 +158,67 @@ function Website(props) {
   };
 
   var _useState3 = (0, _react.useState)({
+    isEditMode: props.isAdmin || false,
+    isShowEditor: props.isAdmin || false,
+    isAdmin: props.isAdmin || false,
     viewDraftEdits: true,
     autoSaveEditsLocally: true,
     autoUpdateLiveWebsite: false
   }),
       _useState4 = _slicedToArray(_useState3, 2),
-      storageSettings = _useState4[0],
-      _setStorageSettings = _useState4[1];
+      adminSettings = _useState4[0],
+      _setAdminSettings = _useState4[1];
 
-  var _useContextStorage = useContextStorage(storageSettings, apiMethods, "webStyle", {
-    siteName: site_template.siteName,
-    isEditMode: props.isAdmin || false,
-    isShowEditor: props.isAdmin || false,
-    isAdmin: props.isAdmin || false,
-    // Website colors
-    colors: _objectSpread({}, site_template.colors),
-    promoCodes: _objectSpread({}, site_template.promoCodes)
+  var _useState5 = (0, _react.useState)({
+    isMobile: false
   }),
-      _useContextStorage2 = _slicedToArray(_useContextStorage, 2),
-      webStyle = _useContextStorage2[0],
-      _setWebStyle = _useContextStorage2[1];
-
-  var _useContextStorage3 = useContextStorage(storageSettings, apiMethods, "masterNavData", site_template.masterNavBarData),
-      _useContextStorage4 = _slicedToArray(_useContextStorage3, 2),
-      masterNavData = _useContextStorage4[0],
-      _setMasterNavData = _useContextStorage4[1];
-
-  var _useContextStorage5 = useContextStorage(storageSettings, apiMethods, "socialMedias", site_template.socialMedias),
-      _useContextStorage6 = _slicedToArray(_useContextStorage5, 2),
-      socialMedias = _useContextStorage6[0],
-      _setSocialMedias = _useContextStorage6[1];
-
-  var _useContextStorage7 = useContextStorage(storageSettings, apiMethods, "pages", site_template.pages),
-      _useContextStorage8 = _slicedToArray(_useContextStorage7, 2),
-      pages = _useContextStorage8[0],
-      _setPages = _useContextStorage8[1];
-
-  var _useContextStorage9 = useContextStorage(storageSettings, apiMethods, "promoCodes", site_template.pages),
-      _useContextStorage10 = _slicedToArray(_useContextStorage9, 2),
-      promoCodes = _useContextStorage10[0],
-      _setPromoCodes = _useContextStorage10[1];
-
-  var _useState5 = (0, _react.useState)({}),
       _useState6 = _slicedToArray(_useState5, 2),
-      cart = _useState6[0],
-      _setCart = _useState6[1];
+      localDisplaySettings = _useState6[0],
+      setLocalDisplaySettings = _useState6[1];
 
   var _useState7 = (0, _react.useState)(""),
       _useState8 = _slicedToArray(_useState7, 2),
       msgPort = _useState8[0],
       setMsgPort = _useState8[1];
 
+  var _useContextStorage = useContextStorage(adminSettings, apiMethods, msgPort, "webStyle", {
+    siteName: site_template.siteName,
+    // Website colors
+    colors: _objectSpread({}, site_template.colors)
+  }),
+      _useContextStorage2 = _slicedToArray(_useContextStorage, 2),
+      webStyle = _useContextStorage2[0],
+      _setWebStyle = _useContextStorage2[1];
+
+  var _useContextStorage3 = useContextStorage(adminSettings, apiMethods, msgPort, "masterNavData", site_template.masterNavBarData),
+      _useContextStorage4 = _slicedToArray(_useContextStorage3, 2),
+      masterNavData = _useContextStorage4[0],
+      _setMasterNavData = _useContextStorage4[1];
+
+  var _useContextStorage5 = useContextStorage(adminSettings, apiMethods, msgPort, "socialMedias", site_template.socialMedias),
+      _useContextStorage6 = _slicedToArray(_useContextStorage5, 2),
+      socialMedias = _useContextStorage6[0],
+      _setSocialMedias = _useContextStorage6[1];
+
+  var _useContextStorage7 = useContextStorage(adminSettings, apiMethods, msgPort, "pages", site_template.pages),
+      _useContextStorage8 = _slicedToArray(_useContextStorage7, 2),
+      pages = _useContextStorage8[0],
+      _setPages = _useContextStorage8[1];
+
+  var _useContextStorage9 = useContextStorage(adminSettings, apiMethods, msgPort, "promoCodes", site_template.pages),
+      _useContextStorage10 = _slicedToArray(_useContextStorage9, 2),
+      promoCodes = _useContextStorage10[0],
+      _setPromoCodes = _useContextStorage10[1];
+
   var _useState9 = (0, _react.useState)({}),
       _useState10 = _slicedToArray(_useState9, 2),
-      savedData = _useState10[0],
-      _setSavedData = _useState10[1];
+      cart = _useState10[0],
+      _setCart = _useState10[1];
+
+  var _useState11 = (0, _react.useState)({}),
+      _useState12 = _slicedToArray(_useState11, 2),
+      savedData = _useState12[0],
+      _setSavedData = _useState12[1];
 
   var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
 
@@ -225,8 +230,8 @@ function Website(props) {
     setMasterNavData: function setMasterNavData(state) {
       return _setMasterNavData(state);
     },
-    setStorageSettings: function setStorageSettings(state) {
-      return _setStorageSettings(state);
+    setAdminSettings: function setAdminSettings(state) {
+      return _setAdminSettings(state);
     },
     setCart: function setCart(state) {
       return _setCart(state);
@@ -311,20 +316,24 @@ function Website(props) {
       });
       return pageExists;
     },
-    deletePage: function deletePage(pageName, index) {
-      var sureDelete = prompt("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), "");
-
-      if (sureDelete === "YES") {
-        _setPages([].concat(_toConsumableArray(pages.slice(0, index)), _toConsumableArray(pages.slice(index + 1))));
-      }
-    },
-    addPage: function addPage() {
+    addPage: function addPage(name, path) {
       // alert("New Page")
       var newID = generatePageKey();
+      var newName = name;
+      var newPath = path;
+
+      if (!name) {
+        newName = "New Page";
+      }
+
+      if (!path) {
+        newPath = "/";
+      }
+
       var newPage = {
         id: newID,
-        path: "/new-page",
-        name: "New Page",
+        path: newPath,
+        name: newName,
         components: [{
           name: "Header",
           id: "Page-".concat(newID, "-Header-0-000"),
@@ -371,6 +380,19 @@ function Website(props) {
 
       _setSocialMedias([].concat(_toConsumableArray(socialMedias), [newSocialMedia]));
     },
+    toggleViewDraftEdits: function toggleViewDraftEdits(toggleOn) {
+      appMethods.setAdminSettings(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          viewDraftEdits: toggleOn
+        });
+      });
+
+      if (!toggleOn) {
+        _setSiteIsDraft(false);
+      }
+
+      appMethods.sendMsgPortMsg("reload");
+    },
     saveWebsite: function saveWebsite() {
       // Check if user really wants to publish edits
       if (window.confirm("Are you sure you want to publish your edits?")) {
@@ -395,7 +417,7 @@ function Website(props) {
 
       newWebstyle.isShowEditor = !newWebstyle.isShowEditor;
 
-      _setWebStyle(newWebstyle);
+      _setAdminSettings(newWebstyle);
     },
     saveComponentData: function saveComponentData(pageName, index, data) {
       var newSavedData = savedData;
@@ -413,8 +435,7 @@ function Website(props) {
 
   function handleWindowSizeChange() {
     var isMobile = window.innerWidth <= 991;
-
-    _setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
+    setLocalDisplaySettings(_objectSpread(_objectSpread({}, localDisplaySettings), {}, {
       isMobile: isMobile
     }));
   } // Website init
@@ -428,8 +449,9 @@ function Website(props) {
     };
   }, []);
   (0, _react.useEffect)(function () {
-    _setWebStyle(function (prevState) {
+    _setAdminSettings(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, {
+        isEditMode: props.isAdmin,
         isShowEditor: props.isAdmin,
         isAdmin: props.isAdmin
       });
@@ -448,8 +470,7 @@ function Website(props) {
 
   function handleWindowSizeChange() {
     var isMobile = window.innerWidth <= 991;
-
-    _setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
+    setLocalDisplaySettings(_objectSpread(_objectSpread({}, localDisplaySettings), {}, {
       isMobile: isMobile
     }));
   }
@@ -474,6 +495,10 @@ function Website(props) {
     if (msgPort == "save") {
       appMethods.sendMsgPortMsg("");
     }
+
+    if (msgPort == "reload") {
+      appMethods.sendMsgPortMsg("");
+    }
   }, [msgPort]);
   var sitePages = pages.map(function (_ref) {
     var id = _ref.id,
@@ -483,29 +508,33 @@ function Website(props) {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       exact: true,
       path: path + "/:pathParam?",
-      children: [webStyle.isAdmin && webStyle.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), webStyle.isEditMode === true ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
+      children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
         pageName: name,
         pageID: id,
         components: components,
         defaultComponentList: ["Header", "Navbar"],
         componentOptions: componentOptions
-      }, id) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_StaticPage.default, {
-        pageName: name,
-        pageID: id,
-        components: components
-      }, id + "static")]
+      }, id)]
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
-    value: (_ref2 = {
+    value: {
+      localDisplaySettings: localDisplaySettings,
       webStyle: webStyle,
       socialMedias: socialMedias,
       masterNavData: masterNavData,
       pages: pages,
       promoCodes: promoCodes,
       cart: cart,
-      storageSettings: storageSettings
-    }, _defineProperty(_ref2, "storageSettings", storageSettings), _defineProperty(_ref2, "siteIsDraft", siteIsDraft), _defineProperty(_ref2, "msgPort", msgPort), _defineProperty(_ref2, "savedData", savedData), _defineProperty(_ref2, "flatComponents", flatComponents), _defineProperty(_ref2, "componentOptions", componentOptions), _defineProperty(_ref2, "appMethods", appMethods), _defineProperty(_ref2, "apiMethods", apiMethods), _ref2),
+      adminSettings: adminSettings,
+      siteIsDraft: siteIsDraft,
+      msgPort: msgPort,
+      savedData: savedData,
+      flatComponents: flatComponents,
+      componentOptions: componentOptions,
+      appMethods: appMethods,
+      apiMethods: apiMethods
+    },
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "App",
       style: {
@@ -513,36 +542,61 @@ function Website(props) {
         overflowX: "hidden"
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Switch, {
-          children: sitePages
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
+          children: [sitePages, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
+            path: "*",
+            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+              children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Page.default, {
+                pageName: "404",
+                pageID: "404Page",
+                components: [],
+                defaultComponentList: ["Header", "Navbar"],
+                componentOptions: componentOptions
+              }, "404Page")]
+            })
+          })]
         })
       })
     })
   });
 
-  function useContextStorage(storageSettings, apiMethods, contextName, initialState) {
-    var _useState11 = (0, _react.useState)(false),
-        _useState12 = _slicedToArray(_useState11, 2),
-        hasBeenMounted = _useState12[0],
-        setHasBeenMounted = _useState12[1];
-
-    var _useState13 = (0, _react.useState)(function () {
-      return getStoredComponent(contextName, initialState, storageSettings, apiMethods);
-    }),
+  function useContextStorage(adminSettings, apiMethods, msgPort, contextName, initialState) {
+    var _useState13 = (0, _react.useState)(false),
         _useState14 = _slicedToArray(_useState13, 2),
-        value = _useState14[0],
-        setValue = _useState14[1];
+        hasBeenMounted = _useState14[0],
+        setHasBeenMounted = _useState14[1];
 
+    var _useState15 = (0, _react.useState)(function () {
+      return getStoredComponent(contextName, initialState, adminSettings, apiMethods);
+    }),
+        _useState16 = _slicedToArray(_useState15, 2),
+        value = _useState16[0],
+        setValue = _useState16[1]; // Save data
+
+
+    (0, _react.useEffect)(function () {
+      if (msgPort === "save") {
+        alert("Saving ");
+        apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
+        localStorage.removeItem(contextName);
+      }
+
+      if (msgPort === "reload") {
+        setHasBeenMounted(false);
+        setValue(function () {
+          return getStoredComponent(contextName, initialState, adminSettings, apiMethods);
+        });
+      }
+    }, [msgPort]);
     (0, _react.useEffect)(function () {
       // The use of has been mounted skips the first render.
       // Since we are programatically changing value we don't need to update our storage
       if (hasBeenMounted) {
         // Set live content from database
-        if (storageSettings.autoUpdateLiveWebsite) {
-            apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
-          
+        if (adminSettings.autoUpdateLiveWebsite) {
+          apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
         } // Store draft data locally
-        else if (storageSettings.autoSaveEditsLocally) {
+        else if (adminSettings.autoSaveEditsLocally) {
           localStorage.setItem(contextName, JSON.stringify(value)); // TODO get this to work
 
           informSiteOfDraftEdits(apiMethods);
@@ -555,10 +609,10 @@ function Website(props) {
   }
 }
 
-function getStoredComponent(contextName, initialValue, storageSettings, apiMethods) {
+function getStoredComponent(contextName, initialValue, adminSettings, apiMethods) {
   var savedData = null; // If we are viewing the draft load the draft
 
-  if (storageSettings.viewDraftEdits) {
+  if (adminSettings.viewDraftEdits) {
     savedData = JSON.parse(localStorage.getItem(contextName));
 
     if (savedData) {

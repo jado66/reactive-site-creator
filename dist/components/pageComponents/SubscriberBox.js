@@ -68,15 +68,16 @@ function SubscriberBox(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
       msgPort = _useContext.msgPort,
+      adminSettings = _useContext.adminSettings,
+      localDisplaySettings = _useContext.localDisplaySettings,
       apiMethods = _useContext.apiMethods; // Save data
+  // useEffect(() => {
+  //   if (msgPort == "save"){
+  //     apiMethods.setValueInDatabase(props.pageID+props.id,JSON.stringify(content))
+  //     localStorage.removeItem(props.pageID+props.id)
+  //   }
+  // }, [msgPort]);
 
-
-  (0, _react.useEffect)(function () {
-    if (msgPort == "save") {
-      apiMethods.setValueInDatabase(props.pageID + props.id, JSON.stringify(content));
-      localStorage.removeItem(props.pageID + props.id);
-    }
-  }, [msgPort]);
 
   var handleContentChange = function handleContentChange(key, value) {
     setContent(function (prevState) {
@@ -108,7 +109,7 @@ function SubscriberBox(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "px-5",
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "px-5 text-center mx-auto boxShadow py-3 rounded " + (webStyle.isMobile ? "" : "w-75"),
+      className: "px-5 text-center mx-auto boxShadow py-3 rounded " + (localDisplaySettings.isMobile ? "" : "w-75"),
       "data-no-dnd": "true",
       style: {
         backgroundColor: webStyle.colors.darkShade
@@ -122,7 +123,7 @@ function SubscriberBox(props) {
         innerRef: contentEditable,
         html: content.header // innerHTML of the editable div
         ,
-        disabled: !webStyle.isEditMode // use true to disable editing
+        disabled: !adminSettings.isEditMode // use true to disable editing
         ,
         onChange: function onChange(evt) {
           handleContentChange("header", evt.target.value);

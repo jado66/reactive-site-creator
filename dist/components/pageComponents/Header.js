@@ -59,16 +59,9 @@ function Header(props) {
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
+      adminSettings = _useContext.adminSettings,
       msgPort = _useContext.msgPort,
-      apiMethods = _useContext.apiMethods; // Save data
-
-
-  (0, _react.useEffect)(function () {
-    if (msgPort == "save") {
-      apiMethods.setValueInDatabase(props.pageID + props.id, JSON.stringify(content));
-      localStorage.removeItem(props.pageID + props.id);
-    }
-  }, [msgPort]);
+      apiMethods = _useContext.apiMethods;
 
   var handleContentChange = function handleContentChange(key, value) {
     setContent(function (prevState) {
@@ -89,7 +82,7 @@ function Header(props) {
       innerRef: contentEditable,
       html: content.header // innerHTML of the editable div
       ,
-      disabled: !webStyle.isEditMode // use true to disable editing
+      disabled: !adminSettings.isEditMode // use true to disable editing
       ,
       onChange: function onChange(evt) {
         return handleContentChange("header", evt.target.value);

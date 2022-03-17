@@ -28,8 +28,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 // Needs a pageID as a parent object
 function useComponentStorage(componentID, initialState) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
-      storageSettings = _useContext.storageSettings,
-      apiMethods = _useContext.apiMethods;
+      adminSettings = _useContext.adminSettings,
+      apiMethods = _useContext.apiMethods,
+      msgPort = _useContext.msgPort;
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -37,21 +38,36 @@ function useComponentStorage(componentID, initialState) {
       setHasBeenMounted = _useState2[1];
 
   var _useState3 = (0, _react.useState)(function () {
-    return getStoredComponent(componentID, initialState, storageSettings, apiMethods);
+    return getStoredComponent(componentID, initialState, adminSettings, apiMethods);
   }),
       _useState4 = _slicedToArray(_useState3, 2),
       value = _useState4[0],
-      setValue = _useState4[1];
+      setValue = _useState4[1]; // Save data
 
+
+  (0, _react.useEffect)(function () {
+    if (msgPort === "save") {
+      alert("Saving ");
+      apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
+      localStorage.removeItem(componentID);
+    }
+
+    if (msgPort === "reload") {
+      setHasBeenMounted(false);
+      setValue(function () {
+        return getStoredComponent(componentID, initialState, adminSettings, apiMethods);
+      });
+    }
+  }, [msgPort]);
   (0, _react.useEffect)(function () {
     // The use of has been mounted skips the first render.
     // Since we are programatically changing value we don't need to update our storage
     if (hasBeenMounted) {
       // Set live content from database
-      if (storageSettings.autoUpdateLiveWebsite) {
+      if (adminSettings.autoUpdateLiveWebsite) {
         apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
       } // Store draft data locally
-      else if (storageSettings.autoSaveEditsLocally) {
+      else if (adminSettings.autoSaveEditsLocally) {
         localStorage.setItem(componentID, JSON.stringify(value)); // TODO get this to work
 
         informSiteOfDraftEdits(apiMethods);
@@ -63,10 +79,10 @@ function useComponentStorage(componentID, initialState) {
   return [value, setValue];
 }
 
-function getStoredComponent(componentID, initialValue, storageSettings, apiMethods) {
+function getStoredComponent(componentID, initialValue, adminSettings, apiMethods) {
   var savedData = null; // If we are viewing the draft load the draft
 
-  if (storageSettings.viewDraftEdits) {
+  if (adminSettings.viewDraftEdits) {
     savedData = JSON.parse(localStorage.getItem(componentID));
 
     if (savedData) {
