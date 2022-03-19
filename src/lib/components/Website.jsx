@@ -48,7 +48,9 @@ const site_template = {
               { 
                   name: "Header",
                   id: `Home-Header-0-000`,
-                  content: { header: "New Website Home" }
+                  content: { 
+                    type: "h1",
+                    header: "New Website Home" }
               },
               {
                   name: "NavigationBar",
@@ -64,6 +66,7 @@ const site_template = {
           components:
             [
               { 
+                  type: "h1",
                   name: "Header",
                   id: `Blog-Header-0-000`,
                   content: {}
@@ -79,6 +82,7 @@ const site_template = {
     masterNavBarData: 
       {
         isUnique: false,
+        includeSocials: true,
         homeLinkText: "Home",
         navData: 
         [
@@ -103,27 +107,14 @@ const site_template = {
           link:"https://instagram.com"
         }
         ],
-    promoCodes:{},
-    pageData:{
-      ["Home"]: 
-        [
-          { 
-              name: "Header",
-              id: `Home-Header-0-000`,
-              content: { html: "New Website Home" }
-          },
-          {
-              name: "NavigationBar",
-              id: `Home-NavBar-1-001 `,
-              content:{}
-          }
-        ]
-    }
+    promoCodes:{}
 }
 
 export const WebContext = createContext()
 
 export default function Website(props) {
+
+  const images = require.context('../../../public/images', true);
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
 
@@ -166,7 +157,22 @@ export default function Website(props) {
     siteName: site_template.siteName,
     // Website colors
     colors: {...site_template.colors},
+    componentStyles :{
+        header:{
+          size: "h1",
+          textColor: "darkShade",
+        },
+        footer:{
+          textColor: "darkShade",
+        }
+      }
   } )
+
+  // Ensure backwards compatible
+  useEffect(() => {
+    
+      
+  },[webStyle])
   
   const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",site_template.masterNavBarData)
   const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",site_template.socialMedias)
@@ -174,7 +180,7 @@ export default function Website(props) {
   const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",site_template.pages)
   const [cart, setCart] = useState({})
   const [savedData, setSavedData] = useState({})
-  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box"].sort()
+  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show"].sort()
 
   // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
   const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]
@@ -483,6 +489,7 @@ export default function Website(props) {
   return (
     <WebContext.Provider value = {
         {
+          images: images,
           localDisplaySettings: localDisplaySettings,
           webStyle: webStyle,
           socialMedias: socialMedias,
@@ -614,6 +621,23 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
   if (adminSettings.viewDraftEdits){
       savedData = JSON.parse(localStorage.getItem(contextName))
       
+      // we need to override data instead of replace it. This will make it backcompatible
+      if (initialValue.constructor == Object){
+        let mergedData = {...initialValue}
+
+        for (const [key, value] of Object.entries(savedData)) {
+          if (key in mergedData && value.constructor == Object){
+            mergedData[key] = {...mergedData[key], ...value}
+          }
+          else{
+            mergedData[key] = value
+          }
+        }
+
+        informSiteOfDraftEdits(apiMethods)
+        return mergedData
+
+      }
       if (savedData){
           informSiteOfDraftEdits(apiMethods)
           return savedData

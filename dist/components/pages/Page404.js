@@ -25,6 +25,12 @@ var _Header = _interopRequireDefault(require("../pageComponents/Header"));
 
 var _NavigationBar = _interopRequireDefault(require("../pageComponents/NavigationBar"));
 
+var _StyledLink = _interopRequireDefault(require("../pageComponents/StyledLink"));
+
+var _TextEditor = _interopRequireDefault(require("../pageComponents/TextEditor"));
+
+var _PictureSlideShow = _interopRequireDefault(require("../pageComponents/PictureSlideShow"));
+
 var _Footer = _interopRequireDefault(require("../pageComponents/Footer"));
 
 var _AdminWrapper = _interopRequireDefault(require("../wrappers/AdminWrapper"));
@@ -76,6 +82,7 @@ function Page404(props) {
       content: {}
     }, {
       name: "Header",
+      type: "h3",
       id: "Page-404-Header-0-000",
       content: {
         header: "This page doesn't exist"
@@ -144,7 +151,10 @@ function Page404(props) {
     Footer: _Footer.default,
     // Mosaic:Mosaic,
     NavigationBar: _NavigationBar.default,
-    SubscriberBox: _SubscriberBox.default // VideoFrame:VideoFrame,
+    SubscriberBox: _SubscriberBox.default,
+    StyledLink: _StyledLink.default,
+    TextEditor: _TextEditor.default,
+    PictureSlideShow: _PictureSlideShow.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,
@@ -231,7 +241,7 @@ function Page404(props) {
     }
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-    children: [adminSettings.isAdmin && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    children: [adminSettings.isAdmin && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       className: "text-center py-3",
       children: [location.pathname != "/404" && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("h2", {

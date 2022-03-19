@@ -132,6 +132,22 @@ export default function StylesEditor(props) {
     )    
   }
 
+  const handleComponentStyleChange = (component, style, value) => {
+    appMethods.setWebStyle(
+      {
+        ...webStyle,
+        componentStyles: {
+          ...webStyle.componentStyles,
+          [component]: {
+            ...webStyle.componentStyles[component],
+            [style]: value
+          }
+        }
+      }
+    )
+  }
+  
+
   const invertColors = () =>{
     appMethods.setWebStyle(
       {
@@ -157,9 +173,9 @@ const socialMediaSelectOptions = [
   <option>Etsy</option>,
   <option>Github</option>,
   <option>Imdb</option>,
-  <option>LinkedinIn</option>,
+  <option value="LinkedinIn">Linkedin</option>,
   <option>Patreon</option>,
-  <option>PinterestP</option>,
+  <option>Pinterest</option>,
   <option>Reddit</option>,
   <option>Shopify</option>,
   <option>Spotify</option>,
@@ -234,17 +250,47 @@ const socialMediaSelectOptions = [
       <div className={"row m-auto w-100 "} style={{zIndex:2}}>
         <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
           <Menu className="nav-item dropdown" menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon   icon={faPalette} /></MenuButton>} transition>
-            <MenuHeader>Colors</MenuHeader>
-            <MenuDivider />
-            <FocusableItem><input   type={"color"} value ={webStyle.colors.lightShade} name = {"lightShade"} onChange = {handleColorChange}
-                                    style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} />-  Background Color</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.colors.lightAccent} onChange = {handleColorChange} name = {"lightAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Primary Accent</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.colors.mainBrandColor} onChange = {handleColorChange} name = {"mainBrandColor"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Main Brand Color</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.colors.darkAccent} onChange = {handleColorChange} name = {"darkAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Accent</FocusableItem>
-            <FocusableItem><input type={"color"} value ={webStyle.colors.darkShade} onChange = {handleColorChange} name = {"darkShade"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Secondary Shade (Font) </FocusableItem>
-            <MenuDivider />
-            <FocusableItem><a onClick={invertColors}>Invert Color Scheme</a> </FocusableItem>
+            <SubMenu label = {"Colors"}>
+              <MenuHeader>Main Colors</MenuHeader>
+              <MenuDivider />
+              <FocusableItem><input   type={"color"} value ={webStyle.colors.lightShade} name = {"lightShade"} onChange = {handleColorChange}
+                                      style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} />-  Light Shade (Background)</FocusableItem>
+              <FocusableItem><input type={"color"} value ={webStyle.colors.lightAccent} onChange = {handleColorChange} name = {"lightAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Light Accent</FocusableItem>
+              <FocusableItem><input type={"color"} value ={webStyle.colors.mainBrandColor} onChange = {handleColorChange} name = {"mainBrandColor"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> -  Main Brand Color</FocusableItem>
+              <FocusableItem><input type={"color"} value ={webStyle.colors.darkAccent} onChange = {handleColorChange} name = {"darkAccent"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Dark Accent</FocusableItem>
+              <FocusableItem><input type={"color"} value ={webStyle.colors.darkShade} onChange = {handleColorChange} name = {"darkShade"} style = {{border:"none",background:"none",width:"50px",height:"40px",padding:"0"}} /> - Dark Shade (Font) </FocusableItem>
+              <MenuDivider />
+              <FocusableItem><a onClick={invertColors}>Invert Main Colors</a> </FocusableItem>
+            </SubMenu>
+
+            <SubMenu label = {"Component Styles"}>
+              <SubMenu label = {"Header"}>
+                <MenuHeader>Default Styles</MenuHeader>
+                <MenuDivider />
+                <FocusableItem>
+                  <span className="me-2">Size: </span> 
+                  <select value ={webStyle.componentStyles.header.size} onChange = {(evt)=>{handleComponentStyleChange("header","size",evt.target.value)}}>
+                    <option value={"h1"}>X-Large (h1)</option>
+                    <option value={"h2"}>Large (h2)</option>
+                    <option value={"h3"}>Medium (h3)</option>
+                    <option value={"h4"}>Small (h4)</option>
+                  </select>
+                  </FocusableItem>
+                <FocusableItem>
+                  <span className="me-2">Text Color: </span> 
+                  <select value ={webStyle.componentStyles.header.textColor} onChange = {(evt)=>{handleComponentStyleChange("header","textColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                  </FocusableItem>
+              </SubMenu>
+              
+            </SubMenu>
           </Menu>
+
         </div>
         <div className={"col text-center "+(localDisplaySettings.isMobile?"mx-1 g-0":"mx-4")}>
             {/* Admin Menu */}

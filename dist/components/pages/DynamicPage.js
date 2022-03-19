@@ -23,6 +23,14 @@ var _Header = _interopRequireDefault(require("../pageComponents/Header"));
 
 var _NavigationBar = _interopRequireDefault(require("../pageComponents/NavigationBar"));
 
+var _StyledLink = _interopRequireDefault(require("../pageComponents/StyledLink"));
+
+var _TextEditor = _interopRequireDefault(require("../pageComponents/TextEditor"));
+
+var _PictureSlideShow = _interopRequireDefault(require("../pageComponents/PictureSlideShow"));
+
+var _Mosaic = _interopRequireDefault(require("../pageComponents/Mosaic"));
+
 var _Footer = _interopRequireDefault(require("../pageComponents/Footer"));
 
 var _AdminWrapper = _interopRequireDefault(require("../wrappers/AdminWrapper"));
@@ -116,9 +124,12 @@ function DynamicPage(props) {
   var componentMap = {
     Header: _Header.default,
     Footer: _Footer.default,
-    // Mosaic:Mosaic,
+    Mosaic: _Mosaic.default,
     NavigationBar: _NavigationBar.default,
-    SubscriberBox: _SubscriberBox.default // VideoFrame:VideoFrame,
+    SubscriberBox: _SubscriberBox.default,
+    StyledLink: _StyledLink.default,
+    TextEditor: _TextEditor.default,
+    PictureSlideShow: _PictureSlideShow.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,

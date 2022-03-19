@@ -54,7 +54,7 @@ export default function SubscriberBox(props){
 
     return(
     <div className='px-5'>
-      <div className={"px-5 text-center mx-auto boxShadow py-3 rounded "+(localDisplaySettings.isMobile?"":"w-75")} data-no-dnd="true" style={{backgroundColor:webStyle.colors.darkShade}}>
+      <div className={"px-5 text-center mx-auto boxShadow py-3 rounded "+(localDisplaySettings.isMobile?"":"w-75")} data-no-dnd="true" style={{backgroundColor:webStyle.colors.darkAccent}}>
         <ContentEditable
           className='apply-font-primary mb-4'
           style={{color:webStyle.colors.lightShade}}

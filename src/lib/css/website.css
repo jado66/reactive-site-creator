@@ -114,6 +114,17 @@ textarea {
   border: none !important;
   background: none !important;
 }
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 .relative-b {
   position: absolute;
   width: 100%;
@@ -143,6 +154,14 @@ textarea {
   right: 0;
   display: flex;
 }
+
+.relative {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+}
+
 .relative-l {
   position: absolute;
   height: 100%;

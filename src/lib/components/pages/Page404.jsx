@@ -26,6 +26,9 @@ import { MouseSensor } from "../helpers/DndSensors";
 import Spacer from "../pageComponents/Spacer"
 import Header from "../pageComponents/Header";
 import NavigationBar from "../pageComponents/NavigationBar";
+import StyledLink from "../pageComponents/StyledLink"
+import TextEditor from "../pageComponents/TextEditor";
+import PictureSlideShow from "../pageComponents/PictureSlideShow";
 // import BlogPreview from "./BlogPreview";
 // import CaptionedPicture from "./pageComponents/CaptionedPicture";
 // import DynamicForm from "./pageComponents/DynamicForm";
@@ -64,6 +67,7 @@ export default function Page404(props) {
             },
             { 
               name: "Header",
+              type:"h3",
               id: `Page-404-Header-0-000`,
               content: {header:"This page doesn't exist"}
           }
@@ -125,6 +129,9 @@ export default function Page404(props) {
     // Mosaic:Mosaic,
     NavigationBar:NavigationBar,
     SubscriberBox:SubscriberBox,
+    StyledLink:StyledLink,
+    TextEditor:TextEditor,
+    PictureSlideShow:PictureSlideShow
     // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
@@ -215,7 +222,7 @@ export default function Page404(props) {
 
   return (
     <>
-      {adminSettings.isAdmin &&
+      {adminSettings.isAdmin && adminSettings.isEditMode &&
       <div className="text-center py-3">
 
         {location.pathname != "/404" &&

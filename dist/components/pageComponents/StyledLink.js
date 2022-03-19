@@ -5,11 +5,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = Header;
+exports.default = QuickLink;
 
 var _react = _interopRequireWildcard(require("react"));
-
-var _reactContenteditable = _interopRequireDefault(require("react-contenteditable"));
 
 var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
@@ -18,6 +16,8 @@ var _Website = require("../Website");
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
 var _reactFontawesome = require("@fortawesome/react-fontawesome");
+
+var _EditableLink = _interopRequireDefault(require("../subComponents/EditableLink"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -45,19 +45,13 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function Header(props) {
-  var contentEditable = /*#__PURE__*/_react.default.createRef();
-
-  var _useContext = (0, _react.useContext)(_Website.WebContext),
-      webStyle = _useContext.webStyle,
-      adminSettings = _useContext.adminSettings;
-
+function QuickLink(props) {
   var initialState = props.content;
 
   if (Object.keys(initialState).length === 0) {
     initialState = {
-      header: props.pageName,
-      styles: {}
+      linkText: "New Link",
+      href: "/"
     };
   }
 
@@ -76,125 +70,79 @@ function Header(props) {
       isSettingsMode = _useState4[0],
       setIsSettingsMode = _useState4[1];
 
+  var _useContext = (0, _react.useContext)(_Website.WebContext),
+      webStyle = _useContext.webStyle,
+      adminSettings = _useContext.adminSettings,
+      localDisplaySettings = _useContext.localDisplaySettings;
+
   var handleContentChange = function handleContentChange(key, value) {
     setContent(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, _defineProperty({}, key, value));
     });
   };
 
-  var handleStyleChange = function handleStyleChange(key, value) {
-    setContent(function (prevState) {
-      return _objectSpread(_objectSpread({}, prevState), {}, {
-        styles: _objectSpread(_objectSpread({}, prevState.style), {}, _defineProperty({}, key, value))
-      });
-    });
-  };
-
-  var headerStyles = {};
-
-  try {
-    headerStyles = _objectSpread({
-      size: webStyle.componentStyles.header.size,
-      textColor: webStyle.componentStyles.header.textColor
-    }, content.styles);
-  } catch (error) {}
-
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "px-5 text-center relative-div ",
+    className: "px-5 text-center ",
     "data-no-dnd": "true",
+    style: {
+      marginTop: "-.8em",
+      marginBottom: "-.8em"
+    },
     onMouseEnter: function onMouseEnter() {
       showButtons(true);
     },
     onMouseLeave: function onMouseLeave() {
       showButtons(false);
     },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
-      className: "apply-font-primary mb-0",
-      style: {
-        color: webStyle.colors[headerStyles.textColor]
-      },
-      spellCheck: "false",
-      innerRef: contentEditable,
-      html: content.header // innerHTML of the editable div
-      ,
-      disabled: !adminSettings.isEditMode // use true to disable editing
-      ,
-      onChange: function onChange(evt) {
-        return handleContentChange("header", evt.target.value);
-      } // handle innerHTML change
-      ,
-      tagName: headerStyles.size // Use a custom HTML tag (uses a div by default)
-
-    }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        class: "input-group mt-3 mb-1 w-75 mx-auto",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-          class: "input-group-text",
-          for: "inputGroupSelect01",
-          children: "Header Size"
-        }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-          onChange: function onChange(evt) {
-            return handleStyleChange("size", evt.target.value);
-          },
-          value: headerStyles.size,
-          className: "form-select",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h1",
-            children: "X-Large (h1)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h2",
-            children: "Large (h2)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h3",
-            children: "Medium (h3)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h4",
-            children: "Small (h4)"
-          })]
-        })]
-      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        class: "input-group mb-3 w-75 mx-auto",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-          class: "input-group-text",
-          for: "inputGroupSelect01",
-          children: "Text Color"
-        }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-          value: headerStyles.color,
-          onChange: function onChange(evt) {
-            handleStyleChange("textColor", evt.target.value);
-          },
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "lightShade",
-            children: "Light Shade"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "lightAccent",
-            children: "Light Accent"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "mainBrandColor",
-            children: "Main Brand Color"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "darkAccent",
-            children: "Dark Accent"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "darkShade",
-            children: "Dark Shade"
-          })]
-        })]
-      })]
-    }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-      className: "relative-r btn",
-      style: {
-        marginRight: "2.5em"
-      },
-      "data-no-dnd": "true",
-      onClick: function onClick() {
-        setIsSettingsMode(!isSettingsMode);
-      },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-        icon: _freeSolidSvgIcons.faCog,
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "relative-div ",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableLink.default, {
+        webStyle: webStyle,
+        linkText: content.linkText,
+        href: content.href,
+        adminSettings: adminSettings,
+        localDisplaySettings: localDisplaySettings,
+        setLinkText: function setLinkText(value) {
+          return handleContentChange("linkText", value);
+        },
+        setHref: function setHref(value) {
+          return handleContentChange("href", value);
+        },
+        divStyle: {
+          backgroundColor: webStyle.colors.mainBrandColor
+        },
+        divClass: "rounded-pill py-3 mx-auto justify-content-center",
+        linkStyle: {
+          color: webStyle.colors.lightShade,
+          textDecoration: "none"
+        },
+        linkClass: "h5 m-0"
+      }), (isShowButtons || isSettingsMode) && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "relative-r btn d-flex col pt-3",
         style: {
-          color: webStyle.colors.darkShade
-        }
+          top: 0
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          className: "d-flex bg-transparent border-0",
+          style: {
+            marginRight: "2.5em"
+          },
+          "data-no-dnd": "true",
+          onClick: function onClick() {
+            setIsSettingsMode(!isSettingsMode);
+          },
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+            icon: _freeSolidSvgIcons.faCog,
+            style: {
+              color: webStyle.colors.darkShade
+            }
+          })
+        })
+      })]
+    }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        class: "input-group my-3 w-75 mx-auto",
+        children: "Styles Go Here"
       })
     })]
   });

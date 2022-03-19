@@ -112,7 +112,7 @@ function SubscriberBox(props) {
       className: "px-5 text-center mx-auto boxShadow py-3 rounded " + (localDisplaySettings.isMobile ? "" : "w-75"),
       "data-no-dnd": "true",
       style: {
-        backgroundColor: webStyle.colors.darkShade
+        backgroundColor: webStyle.colors.darkAccent
       },
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
         className: "apply-font-primary mb-4",

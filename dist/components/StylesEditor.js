@@ -168,6 +168,12 @@ function StylesEditor(props) {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, _defineProperty({}, name, !webStyle[name])));
   };
 
+  var handleComponentStyleChange = function handleComponentStyleChange(component, style, value) {
+    appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
+      componentStyles: _objectSpread(_objectSpread({}, webStyle.componentStyles), {}, _defineProperty({}, component, _objectSpread(_objectSpread({}, webStyle.componentStyles[component]), {}, _defineProperty({}, style, value))))
+    }));
+  };
+
   var invertColors = function invertColors() {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
       colors: _objectSpread(_objectSpread({}, webStyle.colors), {}, {
@@ -198,11 +204,12 @@ function StylesEditor(props) {
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Imdb"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-    children: "LinkedinIn"
+    value: "LinkedinIn",
+    children: "Linkedin"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Patreon"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-    children: "PinterestP"
+    children: "Pinterest"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Reddit"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
@@ -390,83 +397,143 @@ function StylesEditor(props) {
             })
           }),
           transition: true,
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
-            children: "Colors"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              type: "color",
-              value: webStyle.colors.lightShade,
-              name: "lightShade",
-              onChange: handleColorChange,
-              style: {
-                border: "none",
-                background: "none",
-                width: "50px",
-                height: "40px",
-                padding: "0"
-              }
-            }), "-  Background Color"]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              type: "color",
-              value: webStyle.colors.lightAccent,
-              onChange: handleColorChange,
-              name: "lightAccent",
-              style: {
-                border: "none",
-                background: "none",
-                width: "50px",
-                height: "40px",
-                padding: "0"
-              }
-            }), " -  Primary Accent"]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              type: "color",
-              value: webStyle.colors.mainBrandColor,
-              onChange: handleColorChange,
-              name: "mainBrandColor",
-              style: {
-                border: "none",
-                background: "none",
-                width: "50px",
-                height: "40px",
-                padding: "0"
-              }
-            }), " -  Main Brand Color"]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              type: "color",
-              value: webStyle.colors.darkAccent,
-              onChange: handleColorChange,
-              name: "darkAccent",
-              style: {
-                border: "none",
-                background: "none",
-                width: "50px",
-                height: "40px",
-                padding: "0"
-              }
-            }), " - Secondary Accent"]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              type: "color",
-              value: webStyle.colors.darkShade,
-              onChange: handleColorChange,
-              name: "darkShade",
-              style: {
-                border: "none",
-                background: "none",
-                width: "50px",
-                height: "40px",
-                padding: "0"
-              }
-            }), " - Secondary Shade (Font) "]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-              onClick: invertColors,
-              children: "Invert Color Scheme"
-            }), " "]
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+            label: "Colors",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+              children: "Main Colors"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                type: "color",
+                value: webStyle.colors.lightShade,
+                name: "lightShade",
+                onChange: handleColorChange,
+                style: {
+                  border: "none",
+                  background: "none",
+                  width: "50px",
+                  height: "40px",
+                  padding: "0"
+                }
+              }), "-  Light Shade (Background)"]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                type: "color",
+                value: webStyle.colors.lightAccent,
+                onChange: handleColorChange,
+                name: "lightAccent",
+                style: {
+                  border: "none",
+                  background: "none",
+                  width: "50px",
+                  height: "40px",
+                  padding: "0"
+                }
+              }), " -  Light Accent"]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                type: "color",
+                value: webStyle.colors.mainBrandColor,
+                onChange: handleColorChange,
+                name: "mainBrandColor",
+                style: {
+                  border: "none",
+                  background: "none",
+                  width: "50px",
+                  height: "40px",
+                  padding: "0"
+                }
+              }), " -  Main Brand Color"]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                type: "color",
+                value: webStyle.colors.darkAccent,
+                onChange: handleColorChange,
+                name: "darkAccent",
+                style: {
+                  border: "none",
+                  background: "none",
+                  width: "50px",
+                  height: "40px",
+                  padding: "0"
+                }
+              }), " - Dark Accent"]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                type: "color",
+                value: webStyle.colors.darkShade,
+                onChange: handleColorChange,
+                name: "darkShade",
+                style: {
+                  border: "none",
+                  background: "none",
+                  width: "50px",
+                  height: "40px",
+                  padding: "0"
+                }
+              }), " - Dark Shade (Font) "]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+                onClick: invertColors,
+                children: "Invert Main Colors"
+              }), " "]
+            })]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
+            label: "Component Styles",
+            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+              label: "Header",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+                children: "Default Styles"
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Size: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.header.size,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("header", "size", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "h1",
+                    children: "X-Large (h1)"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "h2",
+                    children: "Large (h2)"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "h3",
+                    children: "Medium (h3)"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "h4",
+                    children: "Small (h4)"
+                  })]
+                })]
+              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Text Color: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.header.textColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("header", "textColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              })]
+            })
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

@@ -42,6 +42,8 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -53,8 +55,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // import {site_template} from "./websiteVersions/current"
 var site_template = {
@@ -74,6 +74,7 @@ var site_template = {
       name: "Header",
       id: "Home-Header-0-000",
       content: {
+        type: "h1",
         header: "New Website Home"
       }
     }, {
@@ -86,6 +87,7 @@ var site_template = {
     name: "Blog",
     path: "/blog",
     components: [{
+      type: "h1",
       name: "Header",
       id: "Blog-Header-0-000",
       content: {}
@@ -97,6 +99,7 @@ var site_template = {
   }],
   masterNavBarData: {
     isUnique: false,
+    includeSocials: true,
     homeLinkText: "Home",
     navData: [{
       id: 1,
@@ -114,23 +117,14 @@ var site_template = {
     location: "Twitter",
     link: "https://instagram.com"
   }],
-  promoCodes: {},
-  pageData: _defineProperty({}, "Home", [{
-    name: "Header",
-    id: "Home-Header-0-000",
-    content: {
-      html: "New Website Home"
-    }
-  }, {
-    name: "NavigationBar",
-    id: "Home-NavBar-1-001 ",
-    content: {}
-  }])
+  promoCodes: {}
 };
 var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
 function Website(props) {
+  var images = require.context('../../../public/images', true);
+
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       siteIsDraft = _useState2[0],
@@ -184,11 +178,23 @@ function Website(props) {
   var _useContextStorage = useContextStorage(adminSettings, apiMethods, msgPort, "webStyle", {
     siteName: site_template.siteName,
     // Website colors
-    colors: _objectSpread({}, site_template.colors)
+    colors: _objectSpread({}, site_template.colors),
+    componentStyles: {
+      header: {
+        size: "h1",
+        textColor: "darkShade"
+      },
+      footer: {
+        textColor: "darkShade"
+      }
+    }
   }),
       _useContextStorage2 = _slicedToArray(_useContextStorage, 2),
       webStyle = _useContextStorage2[0],
-      _setWebStyle = _useContextStorage2[1];
+      _setWebStyle = _useContextStorage2[1]; // Ensure backwards compatible
+
+
+  (0, _react.useEffect)(function () {}, [webStyle]);
 
   var _useContextStorage3 = useContextStorage(adminSettings, apiMethods, msgPort, "masterNavData", site_template.masterNavBarData),
       _useContextStorage4 = _slicedToArray(_useContextStorage3, 2),
@@ -220,7 +226,7 @@ function Website(props) {
       savedData = _useState12[0],
       _setSavedData = _useState12[1];
 
-  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
+  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box", "Styled Link", "Mosaic", "Text Editor", "Picture Slide Show"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
 
   var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable", "Subscriber Box"];
   var appMethods = {
@@ -519,6 +525,7 @@ function Website(props) {
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
     value: {
+      images: images,
       localDisplaySettings: localDisplaySettings,
       webStyle: webStyle,
       socialMedias: socialMedias,
@@ -613,7 +620,26 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
   var savedData = null; // If we are viewing the draft load the draft
 
   if (adminSettings.viewDraftEdits) {
-    savedData = JSON.parse(localStorage.getItem(contextName));
+    savedData = JSON.parse(localStorage.getItem(contextName)); // we need to override data instead of replace it. This will make it backcompatible
+
+    if (initialValue.constructor == Object) {
+      var mergedData = _objectSpread({}, initialValue);
+
+      for (var _i2 = 0, _Object$entries = Object.entries(savedData); _i2 < _Object$entries.length; _i2++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
+            key = _Object$entries$_i[0],
+            value = _Object$entries$_i[1];
+
+        if (key in mergedData && value.constructor == Object) {
+          mergedData[key] = _objectSpread(_objectSpread({}, mergedData[key]), value);
+        } else {
+          mergedData[key] = value;
+        }
+      }
+
+      informSiteOfDraftEdits(apiMethods);
+      return mergedData;
+    }
 
     if (savedData) {
       informSiteOfDraftEdits(apiMethods);

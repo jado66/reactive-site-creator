@@ -466,6 +466,7 @@ export default function NavigationBar(props) {
                     </button>
                   </div>
                 )}
+                { content.includeSocials &&
                   <ul className="navbar-nav sm-icons justify-content-start me-0 " style={{float:0}} >
                     {socialLinks}
                     
@@ -479,9 +480,14 @@ export default function NavigationBar(props) {
                     </li>
                     } 
                   </ul>
-                  {isShowButtons && adminSettings.isEditMode &&<button className="relative-r btn" style={{marginRight:"-2.5em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
-                  </button>}
+                }
+                  {isShowButtons && adminSettings.isEditMode &&
+                  <div className="relative-r h-100 d-flex" >
+                    <button className="btn" style={{marginRight:"-2.5em", top:".2em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
+                      <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
+                    </button>
+                  </div>
+                  }
                 
             </div>
             </div>
@@ -495,14 +501,21 @@ export default function NavigationBar(props) {
                   Is this Navigation Bar unique?
                 </label>
               </div>
-                <div class="mb-3">
-                  <label class="form-label">Below will be other settings:</label>
-                  {/* <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> */}
-                </div>
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" checked = {content.includeSocials} onClick = {()=>handleContentCheckbox("includeSocials")} id="flexCheckDefault"/>
+                <label class="form-check-label" for="flexCheckDefault">
+                  Include social medias?
+                </label>
+              </div>
+                
               </form>
-              {<button className="relative-r btn h-auto mt-2 " style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
+              {
+                <div className="relative-r mt-2">
+                  <button className="btn d-flex" style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
                     <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
-                  </button>}
+                  </button>
+                </div> 
+              }
             </div> 
           }
 
@@ -510,6 +523,21 @@ export default function NavigationBar(props) {
         </nav>
       </div>
   );
+
+  function handleContentCheckbox(key){
+    setContent((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+    if (!content.isUnique){
+      appMethods.setMasterNavData(
+        (prevState) => ({
+          ...prevState,
+          [key]: !prevState[key],
+        })
+      )
+    }
+  }
 
   function toggleUnique(){
     if (content.isUnique){
@@ -814,7 +842,7 @@ const EditableNavItem = (props) => {
   }
   else{
     return(
-    <li className={"nav-item "+(props.localDisplaySettings.isMobile?"ms-2":"mx-4")} >
+    <li className={"nav-item py-2 "+(props.localDisplaySettings.isMobile?"ms-2":"mx-4")} >
       {props.isEdit?
       <>
         <input

@@ -26,11 +26,14 @@ import { MouseSensor } from "../helpers/DndSensors";
 import Spacer from "../pageComponents/Spacer"
 import Header from "../pageComponents/Header";
 import NavigationBar from "../pageComponents/NavigationBar";
+import StyledLink from '../pageComponents/StyledLink'
+import TextEditor from "../pageComponents/TextEditor";
 // import BlogPreview from "./BlogPreview";
 // import CaptionedPicture from "./pageComponents/CaptionedPicture";
 // import DynamicForm from "./pageComponents/DynamicForm";
 // import CardPaymentBlock from "./CardPaymentBlock";
-// import Mosaic from "./pageComponents/Mosaic";
+import PictureSlideShow from "../pageComponents/PictureSlideShow";
+import Mosaic from "../pageComponents/Mosaic";
 import Footer from "../pageComponents/Footer";
 // import VideoFrame from "./pageComponents/VideoFrame";
 // import SlideShow from "./pageComponents/SlideShow";
@@ -94,9 +97,12 @@ export default function DynamicPage(props) {
   const componentMap = {
     Header:Header,
     Footer:Footer,
-    // Mosaic:Mosaic,
+    Mosaic:Mosaic,
     NavigationBar:NavigationBar,
     SubscriberBox:SubscriberBox,
+    StyledLink:StyledLink,
+    TextEditor:TextEditor,
+    PictureSlideShow:PictureSlideShow
     // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,

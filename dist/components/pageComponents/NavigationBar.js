@@ -509,7 +509,7 @@ function NavigationBar(props) {
                 }
               })
             })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("ul", {
+          }), content.includeSocials && /*#__PURE__*/(0, _jsxRuntime.jsxs)("ul", {
             className: "navbar-nav sm-icons justify-content-start me-0 ",
             style: {
               float: 0
@@ -534,20 +534,24 @@ function NavigationBar(props) {
                 })]
               })]
             })]
-          }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-            className: "relative-r btn",
-            style: {
-              marginRight: "-2.5em"
-            },
-            "data-no-dnd": "true",
-            onClick: function onClick() {
-              setIsSettingsMode(!isSettingsMode);
-            },
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-              icon: _freeSolidSvgIcons.faCog,
+          }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+            className: "relative-r h-100 d-flex",
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+              className: "btn",
               style: {
-                color: webStyle.colors.lightShade
-              }
+                marginRight: "-2.5em",
+                top: ".2em"
+              },
+              "data-no-dnd": "true",
+              onClick: function onClick() {
+                setIsSettingsMode(!isSettingsMode);
+              },
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                icon: _freeSolidSvgIcons.faCog,
+                style: {
+                  color: webStyle.colors.lightShade
+                }
+              })
             })
           })]
         })]
@@ -571,33 +575,57 @@ function NavigationBar(props) {
               for: "flexCheckDefault",
               children: "Is this Navigation Bar unique?"
             })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            class: "mb-3",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              class: "form-label",
-              children: "Below will be other settings:"
-            })
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+            class: "form-check mb-3",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+              class: "form-check-input",
+              type: "checkbox",
+              checked: content.includeSocials,
+              onClick: function onClick() {
+                return handleContentCheckbox("includeSocials");
+              },
+              id: "flexCheckDefault"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+              class: "form-check-label",
+              for: "flexCheckDefault",
+              children: "Include social medias?"
+            })]
           })]
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-          className: "relative-r btn h-auto mt-2 ",
-          style: {
-            marginRight: "-2.5em",
-            top: "0"
-          },
-          "data-no-dnd": "true",
-          onClick: function onClick() {
-            setIsSettingsMode(!isSettingsMode);
-          },
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faCog,
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "relative-r mt-2",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            className: "btn d-flex",
             style: {
-              color: webStyle.colors.lightShade
-            }
+              marginRight: "-2.5em",
+              top: "0"
+            },
+            "data-no-dnd": "true",
+            onClick: function onClick() {
+              setIsSettingsMode(!isSettingsMode);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+              icon: _freeSolidSvgIcons.faCog,
+              style: {
+                color: webStyle.colors.lightShade
+              }
+            })
           })
         })]
       })
     })
   });
+
+  function handleContentCheckbox(key) {
+    setContent(function (prevState) {
+      return _objectSpread(_objectSpread({}, prevState), {}, _defineProperty({}, key, !prevState[key]));
+    });
+
+    if (!content.isUnique) {
+      appMethods.setMasterNavData(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, _defineProperty({}, key, !prevState[key]));
+      });
+    }
+  }
 
   function toggleUnique() {
     if (content.isUnique) {
@@ -909,7 +937,7 @@ var EditableNavItem = function EditableNavItem(props) {
     });
   } else {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("li", {
-      className: "nav-item " + (props.localDisplaySettings.isMobile ? "ms-2" : "mx-4"),
+      className: "nav-item py-2 " + (props.localDisplaySettings.isMobile ? "ms-2" : "mx-4"),
       children: props.isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
           className: "form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
