@@ -477,9 +477,9 @@ function StylesEditor(props) {
                 children: "Invert Main Colors"
               }), " "]
             })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
             label: "Component Styles",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
               label: "Header",
               children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
                 children: "Default Styles"
@@ -533,7 +533,152 @@ function StylesEditor(props) {
                   })]
                 })]
               })]
-            })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+              label: "Navigation Bar",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+                children: "Default Styles"
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Background Color: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.navigationBar.backgroundColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("navigationBar", "backgroundColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Text Color: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.navigationBar.textColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("navigationBar", "textColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+              label: "Styled Link",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+                children: "Default Styles"
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Background Color: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.styledLink.backgroundColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("styledLink", "backgroundColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Text Color: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.styledLink.textColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("styledLink", "textColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+              label: "Footer",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+                children: "Default Styles"
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-2",
+                  children: "Icon Colors: "
+                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+                  value: webStyle.componentStyles.footer.textColor,
+                  onChange: function onChange(evt) {
+                    handleComponentStyleChange("footer", "textColor", evt.target.value);
+                  },
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightShade",
+                    children: "Light Shade"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "lightAccent",
+                    children: "Light Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "mainBrandColor",
+                    children: "Main Brand Color"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkAccent",
+                    children: "Dark Accent"
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+                    value: "darkShade",
+                    children: "Dark Shade"
+                  })]
+                })]
+              })]
+            })]
           })]
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

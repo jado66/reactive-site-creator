@@ -36,17 +36,30 @@ export default function SocialLinks(props) {
       Snapchat: faSnapchatGhost
     };
 
+    let componentStyles = {}
+    try {
+      componentStyles = 
+      {
+        textColor:webStyle.componentStyles.footer.textColor,
+      }
+    } catch (error) {
+      
+    }
+
     const socialLinks = socialMedias.filter(({location}) => {
       if (location === "New Link") {
         return false; // skip
       }
       return true;
     }).map(({link,location}) =>
-      <Link className='col text-center' key = {location} to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors.darkShade}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
+      <Link className='col text-center' key = {location} to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
     );
+
+
 
     return(
             <div className='mt-3' style = {{width:`50%`, margin:"25px auto"}}>
+              {/* {JSON.stringify(webStyle.componentStyles)} */}
               <div className='row' style={{justifyContent:"space-evenly"}}>
                 {socialLinks}
               </div>

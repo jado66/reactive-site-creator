@@ -29,6 +29,7 @@ import NavigationBar from "../pageComponents/NavigationBar";
 import StyledLink from "../pageComponents/StyledLink"
 import TextEditor from "../pageComponents/TextEditor";
 import PictureSlideShow from "../pageComponents/PictureSlideShow";
+import SubscriptionCards from "../pageComponents/SubscriptionCards";
 // import BlogPreview from "./BlogPreview";
 // import CaptionedPicture from "./pageComponents/CaptionedPicture";
 // import DynamicForm from "./pageComponents/DynamicForm";
@@ -131,7 +132,9 @@ export default function Page404(props) {
     SubscriberBox:SubscriberBox,
     StyledLink:StyledLink,
     TextEditor:TextEditor,
-    PictureSlideShow:PictureSlideShow
+    PictureSlideShow:PictureSlideShow,
+    SubscriptionCards:SubscriptionCards
+
     // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,

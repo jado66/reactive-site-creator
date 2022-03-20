@@ -90,10 +90,10 @@ function Header(props) {
     });
   };
 
-  var headerStyles = {};
+  var componentStyle = {};
 
   try {
-    headerStyles = _objectSpread({
+    componentStyle = _objectSpread({
       size: webStyle.componentStyles.header.size,
       textColor: webStyle.componentStyles.header.textColor
     }, content.styles);
@@ -111,7 +111,7 @@ function Header(props) {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
       className: "apply-font-primary mb-0",
       style: {
-        color: webStyle.colors[headerStyles.textColor]
+        color: webStyle.colors[componentStyle.textColor]
       },
       spellCheck: "false",
       innerRef: contentEditable,
@@ -123,7 +123,7 @@ function Header(props) {
         return handleContentChange("header", evt.target.value);
       } // handle innerHTML change
       ,
-      tagName: headerStyles.size // Use a custom HTML tag (uses a div by default)
+      tagName: componentStyle.size // Use a custom HTML tag (uses a div by default)
 
     }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -136,7 +136,7 @@ function Header(props) {
           onChange: function onChange(evt) {
             return handleStyleChange("size", evt.target.value);
           },
-          value: headerStyles.size,
+          value: componentStyle.size,
           className: "form-select",
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
             value: "h1",
@@ -159,7 +159,7 @@ function Header(props) {
           for: "inputGroupSelect01",
           children: "Text Color"
         }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-          value: headerStyles.color,
+          value: componentStyle.color,
           onChange: function onChange(evt) {
             handleStyleChange("textColor", evt.target.value);
           },

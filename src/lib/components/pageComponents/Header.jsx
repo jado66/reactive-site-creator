@@ -46,17 +46,13 @@ export default function Header(props){
 
 
 
-  let headerStyles = {}
+  let componentStyle = {}
   try {
-    headerStyles = 
+    componentStyle = 
     {
       size: webStyle.componentStyles.header.size,
       textColor:webStyle.componentStyles.header.textColor,
-      
-
       ...content.styles,
-      
-
     }
   } catch (error) {
     
@@ -79,19 +75,19 @@ export default function Header(props){
 
       <ContentEditable
         className='apply-font-primary mb-0'
-        style={{color:webStyle.colors[headerStyles.textColor]}}
+        style={{color:webStyle.colors[componentStyle.textColor]}}
         spellCheck = "false"
         innerRef={contentEditable}
         html={content.header} // innerHTML of the editable div
         disabled={!adminSettings.isEditMode}      // use true to disable editing
         onChange={evt=>handleContentChange("header",evt.target.value)} // handle innerHTML change
-        tagName={headerStyles.size} // Use a custom HTML tag (uses a div by default)
+        tagName={componentStyle.size} // Use a custom HTML tag (uses a div by default)
         /> 
       {isSettingsMode &&
       <>
       <div class="input-group mt-3 mb-1 w-75 mx-auto">
         <label class="input-group-text" for="inputGroupSelect01">Header Size</label>
-        <select onChange={evt=>handleStyleChange("size",evt.target.value)} value = {headerStyles.size} className="form-select">
+        <select onChange={evt=>handleStyleChange("size",evt.target.value)} value = {componentStyle.size} className="form-select">
           <option value={"h1"}>X-Large (h1)</option>
           <option value={"h2"}>Large (h2)</option>
           <option value={"h3"}>Medium (h3)</option>
@@ -100,7 +96,7 @@ export default function Header(props){
       </div>
       <div class="input-group mb-3 w-75 mx-auto">
         <label class="input-group-text" for="inputGroupSelect01">Text Color</label>
-        <select value ={headerStyles.color} onChange = {(evt)=>{handleStyleChange("textColor",evt.target.value)}}>
+        <select value ={componentStyle.color} onChange = {(evt)=>{handleStyleChange("textColor",evt.target.value)}}>
           <option value={"lightShade"}>Light Shade</option>
           <option value={"lightAccent"}>Light Accent</option>
           <option value={"mainBrandColor"}>Main Brand Color</option>

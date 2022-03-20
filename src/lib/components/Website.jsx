@@ -162,6 +162,14 @@ export default function Website(props) {
           size: "h1",
           textColor: "darkShade",
         },
+        navigationBar:{
+          backgroundColor: "darkAccent",
+          textColor: "lightShade",
+        },
+        styledLink:{
+          backgroundColor: "mainBrandColor",
+          textColor: "darkShade",
+        },
         footer:{
           textColor: "darkShade",
         }
@@ -180,7 +188,7 @@ export default function Website(props) {
   const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",site_template.pages)
   const [cart, setCart] = useState({})
   const [savedData, setSavedData] = useState({})
-  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show"].sort()
+  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show", "Subscription Cards"].sort()
 
   // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
   const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]

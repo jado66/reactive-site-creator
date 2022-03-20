@@ -139,7 +139,7 @@ function TextEditor(props) {
           })]
         })
       })
-    }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+    }), true && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "relative d-flex  ",
         children: [!isEditMode && !isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {

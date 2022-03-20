@@ -27,6 +27,8 @@ var _StyledLink = _interopRequireDefault(require("../pageComponents/StyledLink")
 
 var _TextEditor = _interopRequireDefault(require("../pageComponents/TextEditor"));
 
+var _SubscriptionCards = _interopRequireDefault(require("../pageComponents/SubscriptionCards"));
+
 var _PictureSlideShow = _interopRequireDefault(require("../pageComponents/PictureSlideShow"));
 
 var _Mosaic = _interopRequireDefault(require("../pageComponents/Mosaic"));
@@ -129,7 +131,8 @@ function DynamicPage(props) {
     SubscriberBox: _SubscriberBox.default,
     StyledLink: _StyledLink.default,
     TextEditor: _TextEditor.default,
-    PictureSlideShow: _PictureSlideShow.default // VideoFrame:VideoFrame,
+    PictureSlideShow: _PictureSlideShow.default,
+    SubscriptionCards: _SubscriptionCards.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,

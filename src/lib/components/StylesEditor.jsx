@@ -287,7 +287,69 @@ const socialMediaSelectOptions = [
                   </select>
                   </FocusableItem>
               </SubMenu>
-              
+              <SubMenu label = {"Navigation Bar"}>
+                <MenuHeader>Default Styles</MenuHeader>
+                <MenuDivider />
+                <FocusableItem>
+                  <span className="me-2">Background Color: </span> 
+                  <select value ={webStyle.componentStyles.navigationBar.backgroundColor} onChange = {(evt)=>{handleComponentStyleChange("navigationBar","backgroundColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                </FocusableItem>
+                <FocusableItem>
+                  <span className="me-2">Text Color: </span> 
+                  <select value ={webStyle.componentStyles.navigationBar.textColor} onChange = {(evt)=>{handleComponentStyleChange("navigationBar","textColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                </FocusableItem>
+          
+              </SubMenu>
+              <SubMenu label = {"Styled Link"}>
+                <MenuHeader>Default Styles</MenuHeader>
+                <MenuDivider />
+                <FocusableItem>
+                  <span className="me-2">Background Color: </span> 
+                  <select value ={webStyle.componentStyles.styledLink.backgroundColor} onChange = {(evt)=>{handleComponentStyleChange("styledLink","backgroundColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                </FocusableItem>
+                <FocusableItem>
+                  <span className="me-2">Text Color: </span> 
+                  <select value ={webStyle.componentStyles.styledLink.textColor} onChange = {(evt)=>{handleComponentStyleChange("styledLink","textColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                </FocusableItem>
+              </SubMenu>
+              <SubMenu label = {"Footer"}>
+                <MenuHeader>Default Styles</MenuHeader>
+                <MenuDivider />
+                <FocusableItem>
+                  <span className="me-2">Icon Colors: </span> 
+                  <select value ={webStyle.componentStyles.footer.textColor} onChange = {(evt)=>{handleComponentStyleChange("footer","textColor",evt.target.value)}}>
+                    <option value={"lightShade"}>Light Shade</option>
+                    <option value={"lightAccent"}>Light Accent</option>
+                    <option value={"mainBrandColor"}>Main Brand Color</option>
+                    <option value={"darkAccent"}>Dark Accent</option>
+                    <option value={"darkShade"}>Dark Shade</option>
+                  </select>
+                  </FocusableItem>
+              </SubMenu>
             </SubMenu>
           </Menu>
 

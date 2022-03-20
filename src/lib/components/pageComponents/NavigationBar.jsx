@@ -100,6 +100,18 @@ export default function NavigationBar(props) {
   }));
 
  
+  let componentStyles = {}
+  
+  try {
+    componentStyles = 
+    {
+      textColor:webStyle.componentStyles.navigationBar.textColor,
+      backgroundColor:webStyle.componentStyles.navigationBar.backgroundColor
+      }
+  } 
+  catch (error) {
+      
+  }
 
   let navItems = [];
 
@@ -121,6 +133,7 @@ export default function NavigationBar(props) {
           <DropDownLink
             key = {subEl.id+"DropDown"}
             id = {subEl.id+"DropDown"}
+            componentStyles = {componentStyles}
             isEdit = {isEdit} webStyle = {webStyle}
             name = {subEl.name} path = {subEl.path} 
             parentIndex = {index} index = {subIndex}
@@ -156,6 +169,7 @@ export default function NavigationBar(props) {
               el = {el}
               id = {el.name+el.path+"Link"}
               webStyle = {webStyle}
+              componentStyles = {componentStyles}
               localDisplaySettings = {localDisplaySettings}
               handleLinkChange = {handleLinkChange}
               index = {index}
@@ -192,7 +206,7 @@ export default function NavigationBar(props) {
                     className={"btn "+(localDisplaySettings.isMobile?"ps-4":"w-100")}
                     data-no-dnd="true"
                     type="button"
-                    style={{color:webStyle.colors.lightShade}}
+                    style={{color:webStyle.colors[componentStyles.textColor]}}
                     onClick={(evt) => {
                       addDropdownlink(evt, index);
                     }}
@@ -334,13 +348,13 @@ export default function NavigationBar(props) {
     return true;
     }).map(({link,location}) =>
       <li className="py-2">
-        <Link className={'nav-link social-link'} key = {`Nav - ${componentMapping[location]}`}  to={{pathname: `${link}`}}  style={{color:webStyle.colors.lightShade}}><FontAwesomeIcon className={"sm-icons"} icon={componentMapping[location]} /></Link>
+        <Link className={'nav-link social-link'} key = {`Nav - ${componentMapping[location]}`}  to={{pathname: `${link}`}}  style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"sm-icons"} icon={componentMapping[location]} /></Link>
       </li>
     );
 
   return (
     <div
-      className="fullWidth boxShadow px-5  " style={{backgroundColor:webStyle.colors.darkAccent, color:webStyle.colors.lightShade, position: "sticky",top: 0, alignSelf: "flex-start",zIndex:5}}
+      className="fullWidth boxShadow px-5  " style={{backgroundColor:webStyle.colors[componentStyles.backgroundColor], color:webStyle.colors[componentStyles.textColor], position: "sticky",top: 0, alignSelf: "flex-start",zIndex:5}}
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -362,7 +376,7 @@ export default function NavigationBar(props) {
             <div data-no-dnd="true">
               <input
                 // style ={{,color:props.webStyle.colors.lightShade}}
-                style ={{color:webStyle.colors.lightShade,width:`${content.homeLinkText.length+2}ch`}}
+                style ={{color:webStyle.colors[componentStyles.textColor],width:`${content.homeLinkText.length+2}ch`}}
 
                 className="form-control-plaintext navbar-brand me-0"
                 value={content.homeLinkText}
@@ -373,7 +387,7 @@ export default function NavigationBar(props) {
                 
             </div>
             :
-            <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.colors.lightShade}}>{content.homeLinkText}</Link>
+            <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.colors[componentStyles.textColor]}}>{content.homeLinkText}</Link>
             }
             <button
               data-no-dnd="true"
@@ -385,7 +399,7 @@ export default function NavigationBar(props) {
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <FontAwesomeIcon  style={{color:webStyle.colors.lightShade}} icon={faBars}/>
+              <FontAwesomeIcon  style={{color:webStyle.colors[componentStyles.textColor]}} icon={faBars}/>
             </button>
             <div
               className="collapse navbar-collapse"
@@ -442,7 +456,7 @@ export default function NavigationBar(props) {
                         addLink();
                       }}
                     >
-                      <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.colors.lightShade}} />
+                      <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.colors[componentStyles.textColor]}} />
                     </button>
                       
                     <button
@@ -452,7 +466,7 @@ export default function NavigationBar(props) {
                         addLink(true);
                       }}
                     >
-                      <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.colors.lightShade}}/>
+                      <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.colors[componentStyles.textColor]}}/>
 
                     </button>
                     <button
@@ -462,7 +476,7 @@ export default function NavigationBar(props) {
                         setIsEdit(!isEdit); 
                       }}
                     >
-                      <FontAwesomeIcon icon={isEdit?faCheck:faPencilAlt} style={{color:webStyle.colors.lightShade}}/> 
+                      <FontAwesomeIcon icon={isEdit?faCheck:faPencilAlt} style={{color:webStyle.colors[componentStyles.textColor]}}/> 
                     </button>
                   </div>
                 )}
@@ -472,7 +486,7 @@ export default function NavigationBar(props) {
                     
                     {Object.keys(cart).length != 0 &&
                     <li className="position-relative">
-                      <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.colors.lightShade}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
+                      <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill ">
                         {Object.keys(cart).length}
                         <span className="visually-hidden">unread messages</span>
@@ -484,7 +498,7 @@ export default function NavigationBar(props) {
                   {isShowButtons && adminSettings.isEditMode &&
                   <div className="relative-r h-100 d-flex" >
                     <button className="btn" style={{marginRight:"-2.5em", top:".2em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                      <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
+                      <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors[componentStyles.textColor]}} />
                     </button>
                   </div>
                   }
@@ -512,7 +526,7 @@ export default function NavigationBar(props) {
               {
                 <div className="relative-r mt-2">
                   <button className="btn d-flex" style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.lightShade}} />
+                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors[componentStyles.textColor]}} />
                   </button>
                 </div> 
               }
@@ -763,7 +777,6 @@ const EditableNavItem = (props) => {
     
   }, [props.isEdit]);
 
-
   if ("dropdown" in props.el){
 
     let items = props.el.dropdown
@@ -778,12 +791,12 @@ const EditableNavItem = (props) => {
             <input  
               className={"form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : "")}
               onChange={(evt) => setName(evt.target.value)}
-              style ={{width:`${name.length+2}ch`,color:props.webStyle.colors.lightShade}}
+              style ={{width:`${name.length+2}ch`,color:props.webStyle.colors[props.componentStyles.textColor]}}
               value={name}
             />
             <a
               className={"nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : "")}
-              style ={{color:props.webStyle.colors.lightShade}}
+              style ={{color:props.webStyle.colors[props.componentStyles.textColor]}}
               data-no-dnd="true"
               data-bs-toggle="dropdown"
               id={"navbarDropdown-" + props.el.id}
@@ -797,7 +810,7 @@ const EditableNavItem = (props) => {
           :
           <a
             className={"nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : "")}
-            style ={{color:props.webStyle.colors.lightShade}}
+            style ={{color:props.webStyle.colors[props.componentStyles.textColor]}}
             data-no-dnd="true"
             data-bs-toggle="dropdown"
             id={"navbarDropdown-" + props.el.id}
@@ -809,7 +822,7 @@ const EditableNavItem = (props) => {
             {name}
           </a>
           }
-            <ul  className={"dropdown-menu "+(props.localDisplaySettings.isMobile?"":"boxShadow")} style={{backgroundColor:props.webStyle.colors.darkAccent, top:props.isEdit?"5em":"2.9em",zIndex:1}} aria-labelledby={"navbarDropdown-" + props.el.id}>
+            <ul  className={"dropdown-menu "+(props.localDisplaySettings.isMobile?"":"boxShadow")} style={{backgroundColor:props.webStyle.colors[props.componentStyles.backgroundColor], top:props.isEdit?"5em":"2.9em",zIndex:1}} aria-labelledby={"navbarDropdown-" + props.el.id}>
               <DndContext
                 sensors={props.sensors}
                 // modifiers = {[restrictToVerticalAxis]}
@@ -848,20 +861,20 @@ const EditableNavItem = (props) => {
         <input
           className={"form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : "")}
           onChange={(evt) => setName(evt.target.value)}
-          style ={{width:`${name.length+2}ch`,color:props.webStyle.colors.lightShade}}
+          style ={{width:`${name.length+2}ch`,color:props.webStyle.colors[props.componentStyles.textColor]}}
           value={name}
         />
         <input    
           className={"form-control-plaintext" + (props.localDisplaySettings.isMobile ? " w-50" : "")}
           onChange={(evt) => setPath(evt.target.value)}
-            style ={{width:`${path.length+2}ch`,color:props.webStyle.colors.lightShade}}
+            style ={{width:`${path.length+2}ch`,color:props.webStyle.colors[props.componentStyles.textColor]}}
             value={path}
         />
       </>
       :
       <Link
         data-no-dnd="true"
-        style={{color:props.webStyle.colors.lightShade}}
+        style={{color:props.webStyle.colors[props.componentStyles.textColor]}}
         className={"text-decoration-none "}
         aria-current="page"
         to={path}
@@ -900,7 +913,7 @@ const DropDownLink = (props) =>{
           props.isEdit?
           <div className="input-group " >
             <input
-              style ={{color:webStyle.colors.lightShade}}
+              style ={{color:webStyle.colors[props.componentStyles.textColor]}}
 
               className="form-control-plaintext w-50"
               value={name}
@@ -909,7 +922,7 @@ const DropDownLink = (props) =>{
             />
             <input
               className="form-control-plaintext w-50"
-              style ={{color:webStyle.colors.lightShade}}
+              style ={{color:webStyle.colors[props.componentStyles.textColor]}}
               value={path}
               onChange={evt=>setPath(evt.target.value)}
             />
@@ -917,7 +930,7 @@ const DropDownLink = (props) =>{
           :
           <Link
             data-no-dnd="true"
-            style={{color:props.webStyle.colors.lightShade}}
+            style={{color:props.webStyle.colors[props.componentStyles.textColor]}}
             className={"nav-link "}
             aria-current="page"
             to={path}

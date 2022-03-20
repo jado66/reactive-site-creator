@@ -44,6 +44,14 @@ function SocialLinks(props) {
     Soundcloud: _freeBrandsSvgIcons.faSoundcloud,
     Snapchat: _freeBrandsSvgIcons.faSnapchatGhost
   };
+  var componentStyles = {};
+
+  try {
+    componentStyles = {
+      textColor: webStyle.componentStyles.footer.textColor
+    };
+  } catch (error) {}
+
   var socialLinks = socialMedias.filter(function (_ref) {
     var location = _ref.location;
 
@@ -62,7 +70,7 @@ function SocialLinks(props) {
       },
       target: "_blank",
       style: {
-        color: webStyle.colors.darkShade
+        color: webStyle.colors[componentStyles.textColor]
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
         className: "socialMediaLink m-auto",

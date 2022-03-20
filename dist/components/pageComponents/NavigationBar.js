@@ -158,6 +158,15 @@ function NavigationBar(props) {
       tolerance: 5
     }
   }));
+  var componentStyles = {};
+
+  try {
+    componentStyles = {
+      textColor: webStyle.componentStyles.navigationBar.textColor,
+      backgroundColor: webStyle.componentStyles.navigationBar.backgroundColor
+    };
+  } catch (error) {}
+
   var navItems = []; // if (isEdit) {
   // for(var index = 1; index < navData.length; index++){
 
@@ -173,6 +182,7 @@ function NavigationBar(props) {
           className: "py-2 ",
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DropDownLink, {
             id: subEl.id + "DropDown",
+            componentStyles: componentStyles,
             isEdit: isEdit,
             webStyle: webStyle,
             name: subEl.name,
@@ -204,6 +214,7 @@ function NavigationBar(props) {
         el: el,
         id: el.name + el.path + "Link",
         webStyle: webStyle,
+        componentStyles: componentStyles,
         localDisplaySettings: localDisplaySettings,
         handleLinkChange: handleLinkChange,
         index: index,
@@ -230,7 +241,7 @@ function NavigationBar(props) {
               "data-no-dnd": "true",
               type: "button",
               style: {
-                color: webStyle.colors.lightShade
+                color: webStyle.colors[componentStyles.textColor]
               },
               onClick: function onClick(evt) {
                 addDropdownlink(evt, index);
@@ -373,7 +384,7 @@ function NavigationBar(props) {
           pathname: "".concat(link)
         },
         style: {
-          color: webStyle.colors.lightShade
+          color: webStyle.colors[componentStyles.textColor]
         },
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
           className: "sm-icons",
@@ -385,8 +396,8 @@ function NavigationBar(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "fullWidth boxShadow px-5  ",
     style: {
-      backgroundColor: webStyle.colors.darkAccent,
-      color: webStyle.colors.lightShade,
+      backgroundColor: webStyle.colors[componentStyles.backgroundColor],
+      color: webStyle.colors[componentStyles.textColor],
       position: "sticky",
       top: 0,
       alignSelf: "flex-start",
@@ -407,7 +418,7 @@ function NavigationBar(props) {
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
             // style ={{,color:props.webStyle.colors.lightShade}}
             style: {
-              color: webStyle.colors.lightShade,
+              color: webStyle.colors[componentStyles.textColor],
               width: "".concat(content.homeLinkText.length + 2, "ch")
             },
             className: "form-control-plaintext navbar-brand me-0",
@@ -421,7 +432,7 @@ function NavigationBar(props) {
           className: "navbar-brand",
           to: "/",
           style: {
-            color: webStyle.colors.lightShade
+            color: webStyle.colors[componentStyles.textColor]
           },
           children: content.homeLinkText
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -435,7 +446,7 @@ function NavigationBar(props) {
           "aria-label": "Toggle navigation",
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             style: {
-              color: webStyle.colors.lightShade
+              color: webStyle.colors[componentStyles.textColor]
             },
             icon: _freeSolidSvgIcons.faBars
           })
@@ -481,7 +492,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faPlusSquare,
                 style: {
-                  color: webStyle.colors.lightShade
+                  color: webStyle.colors[componentStyles.textColor]
                 }
               })
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -493,7 +504,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faCaretSquareDown,
                 style: {
-                  color: webStyle.colors.lightShade
+                  color: webStyle.colors[componentStyles.textColor]
                 }
               })
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -505,7 +516,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: isEdit ? _freeSolidSvgIcons.faCheck : _freeSolidSvgIcons.faPencilAlt,
                 style: {
-                  color: webStyle.colors.lightShade
+                  color: webStyle.colors[componentStyles.textColor]
                 }
               })
             })]
@@ -520,7 +531,7 @@ function NavigationBar(props) {
                 className: "col ms-3",
                 to: "/checkout",
                 style: {
-                  color: webStyle.colors.lightShade
+                  color: webStyle.colors[componentStyles.textColor]
                 },
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                   className: "m-icons",
@@ -549,7 +560,7 @@ function NavigationBar(props) {
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faCog,
                 style: {
-                  color: webStyle.colors.lightShade
+                  color: webStyle.colors[componentStyles.textColor]
                 }
               })
             })
@@ -606,7 +617,7 @@ function NavigationBar(props) {
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
               icon: _freeSolidSvgIcons.faCog,
               style: {
-                color: webStyle.colors.lightShade
+                color: webStyle.colors[componentStyles.textColor]
               }
             })
           })
@@ -874,13 +885,13 @@ var EditableNavItem = function EditableNavItem(props) {
             },
             style: {
               width: "".concat(name.length + 2, "ch"),
-              color: props.webStyle.colors.lightShade
+              color: props.webStyle.colors[props.componentStyles.textColor]
             },
             value: name
           }), /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
             className: "nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
             style: {
-              color: props.webStyle.colors.lightShade
+              color: props.webStyle.colors[props.componentStyles.textColor]
             },
             "data-no-dnd": "true",
             "data-bs-toggle": "dropdown",
@@ -893,7 +904,7 @@ var EditableNavItem = function EditableNavItem(props) {
         }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
           className: "nav-link dropdown-toggle" + (props.localDisplaySettings.isMobile ? " w-50" : ""),
           style: {
-            color: props.webStyle.colors.lightShade
+            color: props.webStyle.colors[props.componentStyles.textColor]
           },
           "data-no-dnd": "true",
           "data-bs-toggle": "dropdown",
@@ -905,7 +916,7 @@ var EditableNavItem = function EditableNavItem(props) {
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
           className: "dropdown-menu " + (props.localDisplaySettings.isMobile ? "" : "boxShadow"),
           style: {
-            backgroundColor: props.webStyle.colors.darkAccent,
+            backgroundColor: props.webStyle.colors[props.componentStyles.backgroundColor],
             top: props.isEdit ? "5em" : "2.9em",
             zIndex: 1
           },
@@ -946,7 +957,7 @@ var EditableNavItem = function EditableNavItem(props) {
           },
           style: {
             width: "".concat(name.length + 2, "ch"),
-            color: props.webStyle.colors.lightShade
+            color: props.webStyle.colors[props.componentStyles.textColor]
           },
           value: name
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
@@ -956,14 +967,14 @@ var EditableNavItem = function EditableNavItem(props) {
           },
           style: {
             width: "".concat(path.length + 2, "ch"),
-            color: props.webStyle.colors.lightShade
+            color: props.webStyle.colors[props.componentStyles.textColor]
           },
           value: path
         })]
       }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
         "data-no-dnd": "true",
         style: {
-          color: props.webStyle.colors.lightShade
+          color: props.webStyle.colors[props.componentStyles.textColor]
         },
         className: "text-decoration-none ",
         "aria-current": "page",
@@ -1005,7 +1016,7 @@ var DropDownLink = function DropDownLink(props) {
       className: "input-group ",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         style: {
-          color: webStyle.colors.lightShade
+          color: webStyle.colors[props.componentStyles.textColor]
         },
         className: "form-control-plaintext w-50",
         value: name,
@@ -1015,7 +1026,7 @@ var DropDownLink = function DropDownLink(props) {
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         className: "form-control-plaintext w-50",
         style: {
-          color: webStyle.colors.lightShade
+          color: webStyle.colors[props.componentStyles.textColor]
         },
         value: path,
         onChange: function onChange(evt) {
@@ -1025,7 +1036,7 @@ var DropDownLink = function DropDownLink(props) {
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
       "data-no-dnd": "true",
       style: {
-        color: props.webStyle.colors.lightShade
+        color: props.webStyle.colors[props.componentStyles.textColor]
       },
       className: "nav-link ",
       "aria-current": "page",

@@ -5,19 +5,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = QuickLink;
+exports.default = EditableButton;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
-
-var _Website = require("../Website");
-
-var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
+var _reactContenteditable = _interopRequireDefault(require("react-contenteditable"));
 
 var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
-var _EditableLink = _interopRequireDefault(require("../subComponents/EditableLink"));
+var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -45,116 +41,63 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function QuickLink(props) {
-  var initialState = props.content;
-
-  if (Object.keys(initialState).length === 0) {
-    initialState = {
-      linkText: "New Link",
-      href: "/"
-    };
-  }
-
-  var _useComponentStorage = (0, _useStorage.default)(props.pageID + props.id, initialState),
-      _useComponentStorage2 = _slicedToArray(_useComponentStorage, 2),
-      content = _useComponentStorage2[0],
-      setContent = _useComponentStorage2[1];
-
-  var _useState = (0, _react.useState)(false),
+function EditableButton(props) {
+  var _useState = (0, _react.useState)("Sign Up"),
       _useState2 = _slicedToArray(_useState, 2),
-      isShowButtons = _useState2[0],
-      showButtons = _useState2[1];
+      innerHtml = _useState2[0],
+      setInnerHtml = _useState2[1];
+
+  var contentEditable = /*#__PURE__*/_react.default.createRef();
 
   var _useState3 = (0, _react.useState)(false),
       _useState4 = _slicedToArray(_useState3, 2),
-      isSettingsMode = _useState4[0],
-      setIsSettingsMode = _useState4[1];
+      edit = _useState4[0],
+      setEdit = _useState4[1];
 
-  var _useContext = (0, _react.useContext)(_Website.WebContext),
-      webStyle = _useContext.webStyle,
-      adminSettings = _useContext.adminSettings,
-      localDisplaySettings = _useContext.localDisplaySettings;
-
-  var handleContentChange = function handleContentChange(key, value) {
-    setContent(function (prevState) {
-      return _objectSpread(_objectSpread({}, prevState), {}, _defineProperty({}, key, value));
-    });
-  };
-
-  var componentStyles = {};
-
-  try {
-    componentStyles = {
-      textColor: webStyle.componentStyles.styledLink.textColor,
-      backgroundColor: webStyle.componentStyles.styledLink.backgroundColor
-    };
-  } catch (error) {}
+  var _useState5 = (0, _react.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      admin = _useState6[0],
+      setAdmin = _useState6[1];
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "px-5 text-center ",
-    "data-no-dnd": "true",
-    style: {
-      marginTop: "-.8em",
-      marginBottom: "-.8em"
-    },
+    className: "relative-div",
     onMouseEnter: function onMouseEnter() {
-      showButtons(true);
+      setAdmin(true);
     },
     onMouseLeave: function onMouseLeave() {
-      showButtons(false);
+      setAdmin(false);
     },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "relative-div ",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableLink.default, {
-        webStyle: webStyle,
-        linkText: content.linkText,
-        href: content.href,
-        adminSettings: adminSettings,
-        localDisplaySettings: localDisplaySettings,
-        setLinkText: function setLinkText(value) {
-          return handleContentChange("linkText", value);
+    children: [edit ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
+      style: _objectSpread({}, props.style),
+      className: props.className + (admin ? "" : " hidden"),
+      spellCheck: "false",
+      innerRef: contentEditable,
+      html: innerHtml // innerHTML of the editable div
+      ,
+      disabled: false // use true to disable editing
+      ,
+      onChange: function onChange(evt) {
+        setInnerHtml(evt.target.value);
+      } // handle innerHTML change
+      ,
+      tagName: 'span'
+    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+      className: props.className,
+      style: _objectSpread({}, props.style),
+      onClick: props.callback,
+      children: innerHtml
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: 'relative-r' + (admin && props.webStyle.isEditMode ? "" : " hidden"),
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+        onClick: function onClick() {
+          setEdit(!edit);
         },
-        setHref: function setHref(value) {
-          return handleContentChange("href", value);
-        },
-        divStyle: {
-          backgroundColor: webStyle.colors[componentStyles.backgroundColor]
-        },
-        divClass: "rounded-pill py-3 mx-auto justify-content-center",
-        linkStyle: {
-          color: webStyle.colors[componentStyles.textColor],
-          textDecoration: "none"
-        },
-        linkClass: "h5 m-0"
-      }), (isShowButtons || isSettingsMode) && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "relative-r btn d-flex col pt-3",
-        style: {
-          top: 0
-        },
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-          className: "d-flex bg-transparent border-0",
-          style: {
-            marginRight: "2.5em"
-          },
-          "data-no-dnd": "true",
-          onClick: function onClick() {
-            setIsSettingsMode(!isSettingsMode);
-          },
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faCog,
-            style: {
-              color: webStyle.colors.darkShade
-            }
-          })
+        className: "btn btn-outline-light no-back",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+          className: "font-shrink",
+          icon: edit ? _freeSolidSvgIcons.faCheck : _freeSolidSvgIcons.faPencilAlt
         })
-      })]
-    }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        class: "input-group my-3 w-75 mx-auto",
-        children: "Styles Go Here"
       })
     })]
   });
 }
-
-;

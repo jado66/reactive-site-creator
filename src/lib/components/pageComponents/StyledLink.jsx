@@ -28,6 +28,17 @@ export default function QuickLink(props){
     }));
   };
 
+  let componentStyles = {}
+    try {
+      componentStyles = 
+      {
+        textColor:webStyle.componentStyles.styledLink.textColor,
+        backgroundColor:webStyle.componentStyles.styledLink.backgroundColor
+      }
+    } catch (error) {
+      
+  }
+
   return(
 
     <div 
@@ -50,9 +61,9 @@ export default function QuickLink(props){
             localDisplaySettings = {localDisplaySettings}
             setLinkText = {(value)=>handleContentChange("linkText",value)}
             setHref = {(value)=>handleContentChange("href",value)}
-            divStyle={{backgroundColor:webStyle.colors.mainBrandColor}}
+            divStyle={{backgroundColor:webStyle.colors[componentStyles.backgroundColor]}}
             divClass = {"rounded-pill py-3 mx-auto justify-content-center"}
-            linkStyle = {{color:webStyle.colors.lightShade, textDecoration:"none"}}
+            linkStyle = {{color:webStyle.colors[componentStyles.textColor], textDecoration:"none"}}
             linkClass = {"h5 m-0"}
           />
         

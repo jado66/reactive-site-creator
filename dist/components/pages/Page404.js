@@ -31,6 +31,8 @@ var _TextEditor = _interopRequireDefault(require("../pageComponents/TextEditor")
 
 var _PictureSlideShow = _interopRequireDefault(require("../pageComponents/PictureSlideShow"));
 
+var _SubscriptionCards = _interopRequireDefault(require("../pageComponents/SubscriptionCards"));
+
 var _Footer = _interopRequireDefault(require("../pageComponents/Footer"));
 
 var _AdminWrapper = _interopRequireDefault(require("../wrappers/AdminWrapper"));
@@ -154,7 +156,8 @@ function Page404(props) {
     SubscriberBox: _SubscriberBox.default,
     StyledLink: _StyledLink.default,
     TextEditor: _TextEditor.default,
-    PictureSlideShow: _PictureSlideShow.default // VideoFrame:VideoFrame,
+    PictureSlideShow: _PictureSlideShow.default,
+    SubscriptionCards: _SubscriptionCards.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,
