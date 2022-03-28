@@ -62,6 +62,7 @@ export default function Header(props){
   return(
 
     <div 
+      style={{...props.style,}}
       className="px-5 text-center relative-div " data-no-dnd="true"
       onMouseEnter={() => {
         showButtons(true);

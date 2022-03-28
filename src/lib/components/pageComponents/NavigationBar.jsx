@@ -21,7 +21,7 @@ import {
 
 
 
-import { faCaretSquareDown,  faPencilAlt, faArrowsAlt, faShoppingCart, faBars, faCog, faL, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCaretSquareDown,  faPencilAlt ,faArrowsAlt, faShoppingCart, faBars, faCog, faL, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookSquare, faTwitter, faInstagram, faYoutube, faTiktok, faDiscord, faEtsy, faGithub, faImdb, faLinkedinIn,faPatreon, faPinterestP, faReddit, faShopify, faSpotify, faSoundcloud, faSnapchatGhost } from "@fortawesome/free-brands-svg-icons"
@@ -36,6 +36,7 @@ import {
   Link
 } from "react-router-dom";
 import  useComponentStorage  from "../helpers/useStorage";
+import QuillComponent from "../subComponents/QuillComponent";
 
 
 // TODO dropdowns need to open only their dropdowns
@@ -46,6 +47,7 @@ export default function NavigationBar(props) {
   const [isShowDeleteSpot, showDeleteSpot] = useState(false);
   const [isShowDropdownDeleteSpot, showDropdownDeleteSpot] = useState(false);
   const [isShowButtons, showButtons] = useState(false);
+  const [isEditHeader, setIsEditHeader] = useState(false)
 
   const {webStyle, adminSettings, localDisplaySettings, msgPort, appMethods, apiMethods, socialMedias, cart, masterNavData} = useContext(WebContext)
 
@@ -56,19 +58,8 @@ export default function NavigationBar(props) {
 
   const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState)
 
-  // useEffect(() => {
-  //   if (msgPort == "save"){
-  //     if (content.isUnique){
-  //       apiMethods.setValueInDatabase(props.pageID+props.id,content)
-  //     }
-  //   }
-  // }, [msgPort]);
-  
-  // useEffect(() => {
-  //   if (!content.isUnique){
-  //     setContent(masterNavData)
-  //   }
-  // }, [masterNavData]);
+  // TODO include html in content
+  const [isEditMode, setIsEditMode] = useState(false)
 
   const componentMapping = {
     Email:faEnvelope,
@@ -113,8 +104,18 @@ export default function NavigationBar(props) {
       
   }
 
-  let navItems = [];
+  let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]  
+  let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]
 
+  let borderAndShadow = ""
+  if (webStyle.componentStyles.all.borderSize!==0){
+    borderAndShadow +=`${borderColor} 0px 1px ${webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${webStyle.componentStyles.all.borderSize}px, `
+  }
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
+  // alert(borderAndShadow)
+
+  let navItems = [];
   // if (isEdit) {
     // for(var index = 1; index < navData.length; index++){
   [...content.navData].forEach((el,index) => {
@@ -168,6 +169,7 @@ export default function NavigationBar(props) {
               key = {el.name+el.path+"Link"}
               el = {el}
               id = {el.name+el.path+"Link"}
+              borderAndShadow = {borderAndShadow}
               webStyle = {webStyle}
               componentStyles = {componentStyles}
               localDisplaySettings = {localDisplaySettings}
@@ -221,126 +223,6 @@ export default function NavigationBar(props) {
     // }
   });
 
-  //   // Move Mode
-  // } else {
-  //   for(var index = 0; index < content.navData.length; index++){
-
-  //     let el = content.navData[index]
-
-  //     let dropdownItems = [];
-
-  //     if ("dropdown" in el) {
-  //       el.dropdown.forEach((el) => {
-  //         dropdownItems.push(
-  //           <AdminNavWrapper
-  //             key={el.id}
-  //             id={el.id}
-  //             // order = {el.or}
-  //             className={(localDisplaySettings.isMobile?"ps-3":"py-2 ")}
-  //           >
-  //             <li className="nav-item ms-2" >
-  //               <Link
-  //                 style={{color:webStyle.colors.lightShade}}
-  //                 data-no-dnd="true"
-  //                 className="nav-link "
-  //                 aria-current="page"
-  //                 to={el.path}
-  //               >
-  //                 {el.name}
-  //               </Link>
-  //             </li>
-  //           </AdminNavWrapper>
-  //         );
-  //       });
-  //     }
-
-      // navItems.push(
-      //   <AdminNavWrapper
-      //     key={el.id}
-      //     id={el.id}
-      //     // order = {el.or}
-      //     className={"py-2 "}
-      //   >
-          // <li className={"nav-item "+(localDisplaySettings.isMobile?"ms-2":"mx-4")} style ={{whiteSpace: "nowrap"}}>
-          //   {"dropdown" in el ? (
-          //     <div className="position-relative ">
-          //       <a
-          //         style={{color:webStyle.colors.lightShade}}
-          //         className="  dropdown-toggle text-decoration-none"
-          //         data-bs-toggle="dropdown"
-          //         id={"navbarDropdown" + el.id}
-          //         role="button"
-          //         aria-expanded="false"
-          //         path="javascript:void(0)"
-          //       >
-          //         {el.name}
-          //       </a>
-                // <ul
-                //   className={"dropdown-menu border-0 rounded-0 mt-0 "+(localDisplaySettings.isMobile?"":"boxShadow")} style={{backgroundColor:webStyle.colors.darkAccent, top:"2.5em", opacity:"1 !important"}}
-                //   aria-labelledby={"navbarDropdown" + el.id}
-
-                // >                  
-                //   <div>
-
-                //   <DndContext
-                  //   sensors={sensors}
-                  //   collisionDetection={closestCenter}
-
-                  //   // modifiers = {[ verticalListSortingStrategy]}
-
-                  //   onDragStart={() => {
-                  //     showDropdownDeleteSpot(true);
-                  //   }}
-                  //   onDragEnd={(evt) => {
-                  //     handleDropdownDragEnd(evt, index);
-                  //     showDropdownDeleteSpot(false);
-                      
-                  //   }}
-                  // >
-                  //   <SortableContext
-                    //   items={el.dropdown}
-                    //   strategy={verticalListSortingStrategy}
-                    // >
-                    //   {dropdownItems}
-                    //   {isShowDropdownDeleteSpot && (
-                    //     <DeleteDrop id={`${index}:deleteDrop`} />
-                    //   )}
-
-                    //   {isShowButtons&& adminSettings.isEditMode &&<button
-                    //     className={"btn "+(localDisplaySettings.isMobile?"ps-4":"w-100")}
-                    //     data-no-dnd="true"
-        //                 type="button"
-        //                 style={{color:webStyle.colors.lightShade}}
-        //                 onClick={(evt) => {
-        //                   addDropdownlink(evt, index);
-        //                 }}
-        //               >
-        //                 <span>{index}</span>
-        //                 <FontAwesomeIcon icon={faPlusSquare}/>
-        //               </button>}
-        //             </SortableContext>
-        //           </DndContext>
-        //           </div>
-        //         </ul>
-        //       </div>
-        //     ) : (
-        //       <EditableNavItem
-        //         isEdit ={false}
-        //         key = {el.name+el.path+"Link"}
-        //         el = {el}
-        //         webStyle = {webStyle}
-        //         handleLinkChange = {handleLinkChange}
-        //         index = {index}
-        //       >
-        //         {dropdownItems}
-        //       />
-        //     )}  
-        //   </li>
-        // </AdminNavWrapper>
-      // ); 
-  //   };
-  // }
-
   const socialLinks = socialMedias.filter(({location}) => {
     if (location === "New Link") {
       return false; // skip
@@ -354,7 +236,8 @@ export default function NavigationBar(props) {
 
   return (
     <div
-      className="fullWidth boxShadow px-5  " style={{backgroundColor:webStyle.colors[componentStyles.backgroundColor], color:webStyle.colors[componentStyles.textColor], position: "sticky",top: 0, alignSelf: "flex-start",zIndex:5}}
+      style={{...props.style}}
+      className={(props.index === 0 && ! webStyle.componentStyles.navigationBar.topBarMargin ?"navbarTop ":" ")+(webStyle.componentStyles.navigationBar.navbarStyle)} 
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -362,179 +245,215 @@ export default function NavigationBar(props) {
         showButtons(false);
       }}
     >
-            {/* <span>{JSON.stringify(content)}</span> */} 
 
       {/* <span>{JSON.stringify(masterNavData.navData)}</span><br/>
       {/* <span>IsEdit: {JSON.stringify(isEdit)}</span>  */}
 
       {/* style={{backgroundColor:webStyle.colors.lightShade}} */}
-        <nav className="navbar navbar-expand-lg mx-4 p-0 container mx-auto"  >      
-
-          {!isSettingsMode?
-            <div className={"container-fluid g-0 "+(localDisplaySettings.isMobile?" ms-3":"")} >
-            {isEdit?
-            <div data-no-dnd="true">
-              <input
-                // style ={{,color:props.webStyle.colors.lightShade}}
-                style ={{color:webStyle.colors[componentStyles.textColor],width:`${content.homeLinkText.length+2}ch`}}
-
-                className="form-control-plaintext navbar-brand me-0"
-                value={content.homeLinkText}
-                onChange={(evt) => {
-                  handleHomeLinkText(evt.target.value);
+        <div className=" " style={{backgroundColor:webStyle.colors[componentStyles.backgroundColor], color:webStyle.colors[componentStyles.textColor],  boxShadow: borderAndShadow}}>
+          {
+            webStyle.componentStyles.navigationBar.includeHeader &&
+            <div className="container mx-auto pt-3 relative-div" data-no-dnd = "true">
+              <QuillComponent 
+                variables = {{
+                  pageName:props.pageName,
+                  siteName:webStyle.siteName
                 }}
+                color = {webStyle.colors[componentStyles.textColor]}
+                webStyle = {webStyle}
+                className = "navbar-header" 
+                html = {content.html} 
+                isEditMode = {isEditHeader} 
+                setHtml = {(value)=>{saveHtml(value)}} 
+                saveEdits = {()=>{setIsEditHeader(!isEditHeader)}}
               />
-                
+              {isShowButtons && !isEditHeader &&
+                <div className='relative' data-no-dnd="true">
+                  <button className='btn ' onClick={()=>setIsEditHeader(true)}>
+                    <FontAwesomeIcon style={{color:webStyle.colors[componentStyles.textColor]}} icon = {faPencilAlt}/>
+                  </button>
+                </div>
+              }
+              
             </div>
-            :
-            <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.colors[componentStyles.textColor]}}>{content.homeLinkText}</Link>
-            }
-            <button
-              data-no-dnd="true"
-              className="navbar-toggler btn"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <FontAwesomeIcon  style={{color:webStyle.colors[componentStyles.textColor]}} icon={faBars}/>
-            </button>
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className={"navbar-nav me-auto mb-2 mb-lg-0 "+(localDisplaySettings.isMobile?" ":"align-items-center")} >                 
-                <DndContext
-                  sensors={sensors}
-                  modifiers = {[ localDisplaySettings.isMobile
-                    ? restrictToVerticalAxis
-                    : restrictToHorizontalAxis]}
-                  collisionDetection={closestCenter}
-                  onDragStart={() => {
-                    showDeleteSpot(true);
+          }
+          
+          
+          <nav className="navbar navbar-expand-lg px-4 container mx-auto py-0" 
+            style={{position:"sticky", top:"2em",alignSelf: "flex-start"}}
+          >
+          {/* <span>{JSON.stringify(webStyle.componentStyles.navigationBar)}</span> */}
+
+          {/* <span>{props.index}</span>  */}
+
+            {/* <span>{borderAndShadow}</span> */}
+            {!isSettingsMode?
+              <div className={"container-fluid g-0 "+(localDisplaySettings.isMobile?" ms-3":"")} >
+              {isEdit?
+              <div data-no-dnd="true">
+                <input
+                  // style ={{,color:props.webStyle.colors.lightShade}}
+                  style ={{color:webStyle.colors[componentStyles.textColor],width:`${content.homeLinkText.length+2}ch`}}
+
+                  className="form-control-plaintext navbar-brand me-0"
+                  value={content.homeLinkText}
+                  onChange={(evt) => {
+                    handleHomeLinkText(evt.target.value);
                   }}
-                  onDragEnd={(evt) => {
-                    handleDragEnd(evt);
-                    showDeleteSpot(false);
-                  }}
-                >
-                  <SortableContext
-                    items={content.navData}
-                    strategy={
-                      localDisplaySettings.isMobile
-                        ? verticalListSortingStrategy
-                        : horizontalListSortingStrategy
-                    }
-                  >
-                    {navItems}
-                    {isShowDeleteSpot && (
-                      <div className={"py-2"}>
-                        <DeleteDrop id={"deleteDrop"} />
-                      </div>
-                    )}
-                  </SortableContext>
+                />
                   
-                </DndContext>
-                
-              </ul>
-              {isShowButtons && adminSettings.isEditMode && !isShowDeleteSpot && (
-                  <div
-                    data-no-dnd="true"
-                    className="btn-group  "
-                    role="group"
-                    aria-label="Basic example"
-
-                    // onClick={()=>{alert("group")}}
+              </div>
+              :
+              <Link data-no-dnd="true" className="navbar-brand" to = '/' style={{color:webStyle.colors[componentStyles.textColor]}}>{content.homeLinkText}</Link>
+              }
+              <button
+                data-no-dnd="true"
+                className="navbar-toggler btn"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <FontAwesomeIcon  style={{color:webStyle.colors[componentStyles.textColor]}} icon={faBars}/>
+              </button>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarSupportedContent"
+              >
+                <ul className={"navbar-nav flex-grow-1 mb-2 mb-lg-0 "+(localDisplaySettings.isMobile?" ":"align-items-center ")+(webStyle.componentStyles.navigationBar.justifyButtons)} >                 
+                  <DndContext
+                    sensors={sensors}
+                    modifiers = {[ localDisplaySettings.isMobile
+                      ? restrictToVerticalAxis
+                      : restrictToHorizontalAxis]}
+                    collisionDetection={closestCenter}
+                    onDragStart={() => {
+                      showDeleteSpot(true);
+                    }}
+                    onDragEnd={(evt) => {
+                      handleDragEnd(evt);
+                      showDeleteSpot(false);
+                    }}
                   >
-                    <button
-                      className="btn border-end mx-2"
-                      
-                      type="button"
-                      onClick={() => {
-                        addLink();
-                      }}
+                    <SortableContext
+                      items={content.navData}
+                      strategy={
+                        localDisplaySettings.isMobile
+                          ? verticalListSortingStrategy
+                          : horizontalListSortingStrategy
+                      }
                     >
-                      <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.colors[componentStyles.textColor]}} />
-                    </button>
-                      
-                    <button
-                      className="btn mx-1 px-0"
-                      type="button"
-                      onClick={() => {
-                        addLink(true);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.colors[componentStyles.textColor]}}/>
-
-                    </button>
-                    <button
-                      className="btn border-start mx-2"
-                      type="button"
-                      onClick={() => {
-                        setIsEdit(!isEdit); 
-                      }}
-                    >
-                      <FontAwesomeIcon icon={isEdit?faCheck:faPencilAlt} style={{color:webStyle.colors[componentStyles.textColor]}}/> 
-                    </button>
-                  </div>
-                )}
-                { content.includeSocials &&
-                  <ul className="navbar-nav sm-icons justify-content-start me-0 " style={{float:0}} >
-                    {socialLinks}
+                      {navItems}
+                      {isShowDeleteSpot && (
+                        <div className={"py-2"}>
+                          <DeleteDrop id={"deleteDrop"} />
+                        </div>
+                      )}
+                    </SortableContext>
                     
-                    {Object.keys(cart).length != 0 &&
-                    <li className="position-relative">
-                      <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
-                      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill ">
-                        {Object.keys(cart).length}
-                        <span className="visually-hidden">unread messages</span>
-                      </span>
-                    </li>
-                    } 
-                  </ul>
-                }
-                  {isShowButtons && adminSettings.isEditMode &&
-                  <div className="relative-r h-100 d-flex" >
-                    <button className="btn" style={{marginRight:"-2.5em", top:".2em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
+                  </DndContext>
+                  
+                </ul>
+                {isShowButtons && adminSettings.isEditMode && !isShowDeleteSpot && (
+                    <div
+                      data-no-dnd="true"
+                      className="btn-group  "
+                      role="group"
+                      aria-label="Basic example"
+
+                      // onClick={()=>{alert("group")}}
+                    >
+                      <button
+                        className="btn border-end mx-2"
+                        
+                        type="button"
+                        onClick={() => {
+                          addLink();
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPlusSquare} style={{color:webStyle.colors[componentStyles.textColor]}} />
+                      </button>
+                        
+                      <button
+                        className="btn mx-1 px-0"
+                        type="button"
+                        onClick={() => {
+                          addLink(true);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faCaretSquareDown} style={{color:webStyle.colors[componentStyles.textColor]}}/>
+
+                      </button>
+                      <button
+                        className="btn border-start mx-2"
+                        type="button"
+                        onClick={() => {
+                          setIsEdit(!isEdit); 
+                        }}
+                      >
+                        <FontAwesomeIcon icon={isEdit?faCheck:faPencilAlt} style={{color:webStyle.colors[componentStyles.textColor]}}/> 
+                      </button>
+                    </div>
+                  )}
+                  { content.includeSocials &&
+                    <ul className={"navbar-nav sm-icons justify-content-start me-0 "} style={{float:0}} >
+                      {socialLinks}
+                      
+                      {Object.keys(cart).length != 0 &&
+                      <li className="position-relative">
+                        <Link className='col ms-3' to={"/checkout"}  style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"m-icons"} icon={faShoppingCart} /></Link>
+                        <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill ">
+                          {Object.keys(cart).length}
+                          <span className="visually-hidden">unread messages</span>
+                        </span>
+                      </li>
+                      } 
+                    </ul>
+                  }
+                    {isShowButtons && adminSettings.isEditMode &&
+                    <div className="relative-r h-100 d-flex" >
+                      <button className="btn" style={{marginRight:"-2.5em", top:".2em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
+                        <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors[componentStyles.textColor]}} />
+                      </button>
+                    </div>
+                    }
+                  
+              </div>
+              </div>
+              :
+              <div className="text-center w-100 py-3" data-no-dnd = "true">
+                <h3>Navigation Bar Settings</h3>
+                <form className="text-start">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" checked = {content.isUnique} onClick = {toggleUnique} id="flexCheckDefault"/>
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Is this Navigation Bar unique?
+                  </label>
+                </div>
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" checked = {content.includeSocials} onClick = {()=>handleContentCheckbox("includeSocials")} id="flexCheckDefault"/>
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Include social medias?
+                  </label>
+                </div>
+                  
+                </form>
+                {
+                  <div className="relative-r mt-2">
+                    <button className="btn d-flex" style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
                       <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors[componentStyles.textColor]}} />
                     </button>
-                  </div>
-                  }
-                
-            </div>
-            </div>
-            :
-            <div className="text-center w-100 py-3" data-no-dnd = "true">
-              <h3>Navigation Bar Settings</h3>
-              <form className="text-start">
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" checked = {content.isUnique} onClick = {toggleUnique} id="flexCheckDefault"/>
-                <label class="form-check-label" for="flexCheckDefault">
-                  Is this Navigation Bar unique?
-                </label>
-              </div>
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" checked = {content.includeSocials} onClick = {()=>handleContentCheckbox("includeSocials")} id="flexCheckDefault"/>
-                <label class="form-check-label" for="flexCheckDefault">
-                  Include social medias?
-                </label>
-              </div>
-                
-              </form>
-              {
-                <div className="relative-r mt-2">
-                  <button className="btn d-flex" style={{marginRight:"-2.5em", top:"0"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-                    <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors[componentStyles.textColor]}} />
-                  </button>
-                </div> 
-              }
-            </div> 
-          }
+                  </div> 
+                }
+              </div> 
+            }
 
 
-        </nav>
+          </nav>
+        </div>
+        
       </div>
   );
 
@@ -570,6 +489,28 @@ export default function NavigationBar(props) {
       }));
     }
   }
+
+  async function saveHtml(value){
+    if (content.isUnique){
+      setContent((prevState) => ({
+        ...prevState,
+        html: value,
+      }));
+    }
+    else{
+      setContent((prevState) => ({
+        ...prevState,
+        html: value,
+      }));
+      appMethods.setMasterNavData(
+        (prevState) => ({
+          ...prevState,
+          html: value,
+        })
+      )
+    }
+  }
+
   async function saveNavData(value){
     if (content.isUnique){
       setContent((prevState) => ({
@@ -822,7 +763,7 @@ const EditableNavItem = (props) => {
             {name}
           </a>
           }
-            <ul  className={"dropdown-menu "+(props.localDisplaySettings.isMobile?"":"boxShadow")} style={{backgroundColor:props.webStyle.colors[props.componentStyles.backgroundColor], top:props.isEdit?"5em":"2.9em",zIndex:1}} aria-labelledby={"navbarDropdown-" + props.el.id}>
+            <ul  className={"dropdown-menu "} style={{backgroundColor:props.webStyle.colors[props.componentStyles.backgroundColor], top:props.isEdit?"5em":"2.9em",zIndex:1, boxShadow:(props.localDisplaySettings.isMobile?"":props.borderAndShadow)}} aria-labelledby={"navbarDropdown-" + props.el.id}>
               <DndContext
                 sensors={props.sensors}
                 // modifiers = {[restrictToVerticalAxis]}

@@ -62,6 +62,14 @@ function Mosaic(props) {
       content = _useComponentStorage2[0],
       setContent = _useComponentStorage2[1];
 
+  var _useContext = (0, _react.useContext)(_Website.WebContext),
+      webStyle = _useContext.webStyle,
+      localDisplaySettings = _useContext.localDisplaySettings,
+      images = _useContext.images,
+      adminSettings = _useContext.adminSettings;
+
+  var arrangement = webStyle.componentStyles.mosaic.arrangement;
+
   var handleContentEntryChange = function handleContentEntryChange(key, value) {
     setContent(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, _defineProperty({}, key, value));
@@ -73,14 +81,115 @@ function Mosaic(props) {
   var leftLinkBoxID = "".concat(props.id, "-Ll");
   var leftPictureFrameID = "".concat(props.id, "-Lp");
 
-  var _useContext = (0, _react.useContext)(_Website.WebContext),
-      webStyle = _useContext.webStyle,
-      localDisplaySettings = _useContext.localDisplaySettings,
-      images = _useContext.images,
-      adminSettings = _useContext.adminSettings;
+  var leftPictureFrame = function leftPictureFrame(divClass) {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "g-0 " + divClass,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
+        adminSettings: adminSettings,
+        webStyle: webStyle,
+        images: images,
+        id: leftPictureFrameID,
+        imageUrl: content.lImageUrl,
+        setImageUrl: function setImageUrl(value) {
+          handleContentEntryChange("lImageUrl", value);
+        },
+        isNested: true
+      }, leftPictureFrameID)
+    });
+  };
+
+  var rightPictureFrame = function rightPictureFrame(divClass) {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "g-0 " + divClass,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
+        adminSettings: adminSettings,
+        webStyle: webStyle,
+        images: images,
+        imageUrl: content.rImageUrl,
+        id: rightPictureFrameID,
+        setImageUrl: function setImageUrl(value) {
+          handleContentEntryChange("rImageUrl", value);
+        },
+        isNested: true
+      }, rightPictureFrameID)
+    });
+  };
+
+  var leftLinkBox = function leftLinkBox(divClass) {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "g-0 " + divClass,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LinkBox.default, {
+        className: "row g-0 ",
+        id: leftLinkBoxID,
+        adminSettings: adminSettings,
+        webStyle: webStyle,
+        title: content.lTitle,
+        subTitle: content.lSubTitle,
+        linkText: content.lLinkText,
+        href: content.lHref,
+        localDisplaySettings: localDisplaySettings,
+        setTitle: function setTitle(value) {
+          handleContentEntryChange("lTitle", value);
+        },
+        setSubTitle: function setSubTitle(value) {
+          handleContentEntryChange("lSubTitle", value);
+        },
+        setLinkText: function setLinkText(value) {
+          handleContentEntryChange("lLinkText", value);
+        },
+        setHref: function setHref(value) {
+          handleContentEntryChange("lHref", value);
+        }
+      }, leftLinkBoxID)
+    });
+  };
+
+  var rightLinkBox = function rightLinkBox(divClass) {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "g-0 " + divClass,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LinkBox.default, {
+        id: rightLinkBoxID,
+        adminSettings: adminSettings,
+        webStyle: webStyle,
+        title: content.rTitle,
+        subTitle: content.rSubTitle,
+        linkText: content.rLinkText,
+        href: content.rHref,
+        localDisplaySettings: localDisplaySettings,
+        setTitle: function setTitle(value) {
+          handleContentEntryChange("rTitle", value);
+        },
+        setSubTitle: function setSubTitle(value) {
+          handleContentEntryChange("rSubTitle", value);
+        },
+        setLinkText: function setLinkText(value) {
+          handleContentEntryChange("rLinkText", value);
+        },
+        setHref: function setHref(value) {
+          handleContentEntryChange("rHref", value);
+        }
+      }, rightLinkBoxID)
+    });
+  };
+
+  var componentMap = {
+    LP: function LP(divClass) {
+      return leftPictureFrame(divClass);
+    },
+    RP: function RP(divClass) {
+      return rightPictureFrame(divClass);
+    },
+    LL: function LL(divClass) {
+      return leftLinkBox(divClass);
+    },
+    RL: function RL(divClass) {
+      return rightLinkBox(divClass);
+    }
+  };
 
   if (localDisplaySettings.isMobile) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      style: _objectSpread({}, props.style),
       className: "row " + (localDisplaySettings.isMobile ? "px-2 " : "px-5"),
       "data-no-dnd": "true",
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -173,85 +282,30 @@ function Mosaic(props) {
     });
   } else {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      style: _objectSpread({}, props.style),
       className: "row g-0 px-5",
       "data-no-dnd": "true",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "col me-3",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Fade.default, {
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            className: "row g-0 mb-5 w-100",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
-              webStyle: webStyle,
-              adminSettings: adminSettings,
-              images: images,
-              imageUrl: content.lImageUrl,
-              setImageUrl: function setImageUrl(value) {
-                handleContentEntryChange("lImageUrl", value);
-              },
-              id: leftPictureFrameID,
-              isNested: true
-            }, leftPictureFrameID)
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LinkBox.default, {
-            id: leftLinkBoxID,
-            adminSettings: adminSettings,
-            localDisplaySettings: localDisplaySettings,
-            title: content.lTitle,
-            subTitle: content.lSubTitle,
-            linkText: content.lLinkText,
-            href: content.lHref,
-            webStyle: webStyle,
-            setTitle: function setTitle(value) {
-              handleContentEntryChange("lTitle", value);
-            },
-            setSubTitle: function setSubTitle(value) {
-              handleContentEntryChange("lSubTitle", value);
-            },
-            setLinkText: function setLinkText(value) {
-              handleContentEntryChange("lLinkText", value);
-            },
-            setHref: function setHref(value) {
-              handleContentEntryChange("lHref", value);
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
+          children: arrangement.split('-')[0].split(",").map(function (el, index) {
+            if (index === 0) {
+              return componentMap[el]("mb-5");
+            } else {
+              return componentMap[el]("");
             }
-          }, leftLinkBoxID)]
+          })
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "col ms-3",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Fade.default, {
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            className: "row g-0 mb-5",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_LinkBox.default, {
-              id: rightLinkBoxID,
-              adminSettings: adminSettings,
-              webStyle: webStyle,
-              title: content.rTitle,
-              subTitle: content.rSubTitle,
-              linkText: content.rLinkText,
-              href: content.rHref,
-              localDisplaySettings: localDisplaySettings,
-              setTitle: function setTitle(value) {
-                handleContentEntryChange("rTitle", value);
-              },
-              setSubTitle: function setSubTitle(value) {
-                handleContentEntryChange("rSubTitle", value);
-              },
-              setLinkText: function setLinkText(value) {
-                handleContentEntryChange("rLinkText", value);
-              },
-              setHref: function setHref(value) {
-                handleContentEntryChange("rHref", value);
-              }
-            }, rightLinkBoxID)
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
-            adminSettings: adminSettings,
-            webStyle: webStyle,
-            images: images,
-            imageUrl: content.rImageUrl,
-            setImageUrl: function setImageUrl(value) {
-              handleContentEntryChange("rImageUrl", value);
-            },
-            id: rightPictureFrameID,
-            isNested: true
-          }, rightPictureFrameID)]
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
+          children: arrangement.split('-')[1].split(",").map(function (el, index) {
+            if (index === 0) {
+              return componentMap[el]("mb-5");
+            } else {
+              return componentMap[el]("");
+            }
+          })
         })
       })]
     });

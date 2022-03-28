@@ -156,7 +156,25 @@ function PictureFrame(props) {
     borderRadius: "3px",
     border: "1px solid ".concat(props.webStyle.colors.darkShade)
   };
-  var borderStyle = props.noBorder ? "" : "boxShadow ";
+  var componentStyles = {};
+
+  try {
+    componentStyles = {
+      padding: props.webStyle.componentStyles.pictureFrame.padding,
+      backgroundColor: props.webStyle.componentStyles.pictureFrame.backgroundColor
+    };
+  } catch (error) {}
+
+  var borderShape = props.webStyle.componentStyles.all.borderShape;
+  var borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor];
+  var shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor];
+  var borderAndShadow = "";
+
+  if (props.webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(props.webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(props.webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     className: "relative-div " + props.className + (props.isNested ? "" : " px-5 mb-5"),
     onMouseEnter: function onMouseEnter() {
@@ -169,18 +187,21 @@ function PictureFrame(props) {
       flex: "1"
     },
     children: [imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: borderShape + " " + componentStyles.padding,
       style: {
-        backgroundColor: props.webStyle.colors.darkAccent
+        backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],
+        boxShadow: borderAndShadow
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
-        className: borderStyle + "w-100 no-select",
+        className: borderShape + " w-100 no-select",
         src: imageUrl
       })
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: borderStyle + "blankDiv w-100",
+      className: borderShape + " blankDiv w-100",
       style: {
         minHeight: "300px",
-        backgroundColor: props.webStyle.colors.darkAccent
+        backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],
+        boxShadow: borderAndShadow
       }
     }), areButtonsVisible && props.adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "row relative-l",

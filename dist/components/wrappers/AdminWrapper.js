@@ -27,24 +27,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function AdminNavWrapper(props) {
-  var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      isSelected = _useState2[0],
-      setSelected = _useState2[1];
-
   var _useSortable = (0, _sortable.useSortable)({
     id: props.id
   }),
@@ -56,24 +39,19 @@ function AdminNavWrapper(props) {
       isDragging = _useSortable.isDragging;
 
   var style = {
-    cursor: isDragging ? "move" : props.isEdit ? "auto" : "grab",
-    opacity: isDragging ? 0.5 : 1,
+    position: props.makeSticky ? "sticky" : "",
+    top: props.makeSticky ? "".concat(props.offsetY + 1.5, "em") : "",
+    zIndex: props.makeSticky ? 15 : "",
+    cursor: isDragging ? "move" : props.isEditMode ? "move" : "auto",
+    opacity: isDragging || props.isSelected ? 0.5 : 1,
     transform: _utilities.CSS.Translate.toString(transform),
     transition: transition
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", _objectSpread(_objectSpread(_objectSpread({
-    // onClick={() => {
-    //   if (isSelected) {
-    //     props.removeSelected(props.id);
-    //   } else {
-    //     props.addSelected(props.id);
-    //   }
-    //   setSelected(!isSelected);
-    // }}
     ref: setNodeRef,
     style: _objectSpread(_objectSpread({}, style), props.style)
   }, attributes), listeners), {}, {
-    className: props.className + (isSelected ? " border border-info" : ""),
+    className: props.className + (props.isSelected ? " border border-primary" : ""),
     children: props.children
   }));
 }

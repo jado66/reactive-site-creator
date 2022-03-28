@@ -124,6 +124,7 @@ function PictureSlideShow(props) {
     zIndex: 1
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: _objectSpread({}, props.style),
     className: "px-5 text-center relative-div ",
     "data-no-dnd": "true",
     onMouseEnter: function onMouseEnter() {

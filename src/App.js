@@ -19,7 +19,19 @@ function App() {
 
   return (
     <Website
+      siteName = {"Jadon's Site"}
       isAdmin = {isAuthenticated}
+      customShadowStyles = {
+        [
+          {
+            label:"Custom Styles",
+            options: [
+              {value:`C4d 0px 0px 0px 3px`, label: "Box1"}
+            ]
+          }
+        ]
+
+      }
     />
   );
 }

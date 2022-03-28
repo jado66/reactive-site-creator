@@ -84,6 +84,7 @@ const site_template = {
         isUnique: false,
         includeSocials: true,
         homeLinkText: "Home",
+        html: `<h1>{pageName}</h1>`,
         navData: 
         [
           {
@@ -154,25 +155,72 @@ export default function Website(props) {
   const [msgPort,setMsgPort] = useState("")
 
   const [webStyle, setWebStyle] = useContextStorage(adminSettings,apiMethods,msgPort,"webStyle",{
-    siteName: site_template.siteName,
+    siteName: props.siteName || site_template.siteName,
     // Website colors
     colors: {...site_template.colors},
     componentStyles :{
+        all:{
+          shadowStyle: "",
+          borderSize: 0,
+          borderShape: "",
+          borderColor: "darkShade",
+          shadowColor: 'darkShade',
+          linkStyle: "text-decoration-underline"
+
+        },
+        background:{
+          marginColor:"lightShade",
+          backgroundColor: "lightAccent",
+          applyBackground: true
+        },
         header:{
           size: "h1",
           textColor: "darkShade",
         },
+        mosaic:{
+          arrangement: "LP,RL-LL,RP"
+        },
         navigationBar:{
+          includeHeader: true,
+          topBarMargin: false,
+          isSticky: true,
+          stickyOffsetY: -2.5,
+          justifyButtons: "justify-content-start",
           backgroundColor: "darkAccent",
           textColor: "lightShade",
+          navbarStyle: "fullWidth"
+        },
+        linkBox:{
+          backgroundColor: "lightShade",
+          textColor: "darkShade",
+          linkColor: "darkAccent"
+        },
+        subscriptionCard:{
+          headerTextColor: "lightShade",
+          headerBackgroundColor: "darkAccent",
+          bodyTextColor: "darkShade",
+          bodyBackgroundColor: "lightShade"
+        },
+        subscriberBox:{
+          headerTextColor: "lightShade",
+          backgroundColor: "darkAccent",
+        },
+        pictureFrame:{
+          backgroundColor: "darkAccent",
+          padding: "",
         },
         styledLink:{
+          borderShape: null,
           backgroundColor: "mainBrandColor",
           textColor: "darkShade",
         },
         footer:{
           textColor: "darkShade",
-        }
+        },
+        textEditor:{
+          backgroundColor: "lightShade",
+          textColor: "darkShade",
+        },
       }
   } )
 
@@ -376,9 +424,10 @@ export default function Website(props) {
     },
 
     toggleStyleEditor:()=>{
-      let newWebstyle = {...webStyle}
-      newWebstyle.isShowEditor = !newWebstyle.isShowEditor
-      setAdminSettings(newWebstyle)
+      setAdminSettings(prevState => ({
+        ...prevState,
+        isShowEditor: !prevState.isShowEditor
+      }))
      
     },
 
@@ -473,7 +522,7 @@ export default function Website(props) {
     return(
         <Route exact path = {path+"/:pathParam?"} key = {name+"Route"}>
             {adminSettings.isAdmin && adminSettings.isShowEditor &&
-                <StylesEditor/>
+                <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
             }   
             
             
@@ -515,8 +564,8 @@ export default function Website(props) {
           apiMethods: apiMethods
         }
       }>
-      {/* {JSON.stringify(adminSettings)} */}
-      <div className="App" style={{minHeight:"100vh", overflowX: "hidden"}}>
+      {/* {JSON.stringify(adminSettings)} , overflowX: "hidden" */}
+      <div className="App" style={{minHeight:"100vh"}}>
 
         <Router>
             <Switch>
@@ -555,7 +604,7 @@ export default function Website(props) {
              <Route path = "*">
                <>
                {adminSettings.isAdmin && adminSettings.isShowEditor &&
-                <StylesEditor/>
+                <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
             }  
                 <Page404
                   key = {"404Page"} 
@@ -633,16 +682,18 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
       if (initialValue.constructor == Object){
         let mergedData = {...initialValue}
 
-        for (const [key, value] of Object.entries(savedData)) {
-          if (key in mergedData && value.constructor == Object){
-            mergedData[key] = {...mergedData[key], ...value}
+        if (savedData){
+          for (const [key, value] of Object.entries(savedData)) {
+            if (key in mergedData && value.constructor == Object){
+              mergedData[key] = {...mergedData[key], ...value}
+            }
+            else{
+              mergedData[key] = value
+            }
           }
-          else{
-            mergedData[key] = value
-          }
+          informSiteOfDraftEdits(apiMethods)
         }
 
-        informSiteOfDraftEdits(apiMethods)
         return mergedData
 
       }

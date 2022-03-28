@@ -85,8 +85,29 @@ function TextEditor(props) {
     });
   };
 
-  var backgroundColor = content.isBacked ? webStyle.colors.lightShade : "";
+  var backgroundColor = content.isBacked ? webStyle.colors[webStyle.componentStyles.textEditor.backgroundColor] : "";
+  var textColor = webStyle.colors[webStyle.componentStyles.textEditor.textColor];
+  var componentStyles = {};
+
+  try {
+    componentStyles = {
+      textColor: webStyle.componentStyles.textEditor.textColor,
+      backgroundColor: webStyle.componentStyles.textEditor.backgroundColor
+    };
+  } catch (error) {}
+
+  var borderShape = webStyle.componentStyles.all.borderShape;
+  var borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor];
+  var shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor];
+  var borderAndShadow = "";
+
+  if (webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+    style: _objectSpread({}, props.style),
     className: "px-5 text-center relative-div ",
     "data-no-dnd": "true",
     onMouseEnter: function onMouseEnter() {
@@ -99,7 +120,7 @@ function TextEditor(props) {
       style: {
         backgroundColor: backgroundColor
       },
-      className: "px-5 " + (content.isBacked ? " boxShadow py-5" : ""),
+      className: "px-5 " + borderShape + (content.isBacked ? " boxShadow py-5" : ""),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
         webStyle: webStyle,
         className: "paragraph text-start",
@@ -110,6 +131,9 @@ function TextEditor(props) {
         },
         saveEdits: function saveEdits() {
           setIsEditMode(!isEditMode);
+        },
+        style: {
+          color: textColor || webStyle.colors.darkShade
         }
       })
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
@@ -139,7 +163,7 @@ function TextEditor(props) {
           })]
         })
       })
-    }), true && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+    }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "relative d-flex  ",
         children: [!isEditMode && !isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -154,7 +178,7 @@ function TextEditor(props) {
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             icon: _freeSolidSvgIcons.faPencilAlt,
             style: {
-              color: webStyle.colors.darkShade
+              color: textColor
             }
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
@@ -169,7 +193,7 @@ function TextEditor(props) {
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
             icon: _freeSolidSvgIcons.faCog,
             style: {
-              color: webStyle.colors.darkShade
+              color: textColor
             }
           })
         })]

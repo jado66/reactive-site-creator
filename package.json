@@ -1,6 +1,6 @@
 {
   "name": "reactive-site-creator",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "private": false,
   "description": "Test React Component",
   "author": "Jado66",
@@ -21,11 +21,13 @@
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.1.3",
-    "html-react-parser": "^1.4.8",
     "react-contenteditable": "^3.3.6",
+    "react-jsx-parser": "^1.29.0",
+    "react-power-tooltip": "^1.0.2",
     "react-quill": "^1.3.5",
     "react-reveal": "^1.2.2",
-    "react-router-dom": "^5.0"
+    "react-router-dom": "^5.0",
+    "react-select": "^5.2.2"
   },
   "peerDependencies": {
     "react": "^17.0.2",

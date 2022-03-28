@@ -81,17 +81,20 @@ export default function SubscriptionCards (props){
     try {
         componentStyle = 
         {
-        size: webStyle.componentStyles.header.size,
-        textColor:webStyle.componentStyles.header.textColor,
-        ...content.styles,
+            headerTextColor: webStyle.componentStyles.subscriptionCard.headerTextColor,
+            headerBackgroundColor: webStyle.componentStyles.subscriptionCard.headerBackgroundColor,
+            bodyTextColor: webStyle.componentStyles.subscriptionCard.bodyTextColor,
+            bodyBackgroundColor: webStyle.componentStyles.subscriptionCard.bodyBackgroundColor,
+            ...content.styles,
         }
     } catch (error) {
         
     }
 
     return(
-        <div className="row row-cols-1 row-cols-md-3 mb-3 text-center px-5">
-            <PackagePlan 
+        <div className="row row-cols-1 row-cols-md-3 text-center px-5">
+            <SubscriptionCard 
+                componentStyle = {componentStyle}
                 data = {content.data[0]} 
                 webStyle = {webStyle} 
                 id = {props.id+"-1"} 
@@ -99,7 +102,8 @@ export default function SubscriptionCards (props){
                 index = {0} 
                 handleDataChange = {handleDataChange}
             />
-            <PackagePlan 
+            <SubscriptionCard 
+                componentStyle = {componentStyle}
                 data = {content.data[1]} 
                 webStyle = {webStyle} 
                 id = {props.id+"-2"} 
@@ -107,7 +111,8 @@ export default function SubscriptionCards (props){
                 index = {1} 
                 handleDataChange = {handleDataChange}
             />
-            <PackagePlan 
+            <SubscriptionCard 
+                componentStyle = {componentStyle}
                 data = {content.data[2]} 
                 webStyle = {webStyle} 
                 id = {props.id+"-3"} 
@@ -120,7 +125,7 @@ export default function SubscriptionCards (props){
 };
 
 
-function PackagePlan(props){
+function SubscriptionCard(props){
     
     const contentEditable = [React.createRef(),React.createRef()] // Header, Price, Button
     const [isEditMode, setIsEditMode] = useState(false)
@@ -130,11 +135,11 @@ function PackagePlan(props){
     const setHtmlContent = (val) => {props.handleDataChange(props.index,"htmlContent",val)}
 
     return(
-        <div className="col" data-no-dnd = "true">
-            <div className="card mb-4 rounded-3 boxShadow" style={{backgroundColor:props.webStyle.colors.darkAccent}}>
+        <div className="col" data-no-dnd = "true" style={{...props.style}}>
+            <div className="card rounded-3 boxShadow" style={{backgroundColor:props.webStyle.colors[props.componentStyle.headerBackgroundColor]}}>
             <div  className="card-header py-3">
                 <ContentEditable
-                    style={{color:props.webStyle.colors.lightShade}}
+                    style={{color:props.webStyle.colors[props.componentStyle.headerTextColor]}}
                     className="my-0 fw-normal"
                     spellCheck = "false"
                     innerRef={contentEditable[0]}
@@ -145,7 +150,7 @@ function PackagePlan(props){
                 />
             </div>
             <div 
-                className="card-body rounded-bottom relative-div" style={{backgroundColor:props.webStyle.colors.lightShade}}
+                className="card-body rounded-bottom relative-div" style={{backgroundColor:props.webStyle.colors[props.componentStyle.bodyBackgroundColor]}}
                 onMouseEnter={() => {
                     showButtons(true);
                 }}
@@ -158,7 +163,7 @@ function PackagePlan(props){
                     <div className="relative d-flex  " style={{zIndex:10}}>
                         
                         <button className=" btn pt-3"  style={{marginRight:".5em"}} data-no-dnd = "true" onClick = {()=>{setIsEditMode(!isEditMode)}}>
-                            <FontAwesomeIcon icon={faPencilAlt} style={{color:props.webStyle.colors.darkShade}} />
+                            <FontAwesomeIcon icon={faPencilAlt} style={{color:props.webStyle.colors[props.componentStyle.headerBackgroundColor]}} />
                         </button>
                     </div>
                 }
@@ -172,13 +177,14 @@ function PackagePlan(props){
                     setHtml = {(value)=>{setHtmlContent(value)}} 
                     saveEdits = {()=>{setIsEditMode(!isEditMode)}}
                     mini = {true} 
+                    style = {{color: props.webStyle.colors[props.componentStyle.bodyTextColor]}}
                     webStyle = {props.webStyle} 
                     id ={props.id} 
                     content = {{html:props.data.html}}
                     />
             
                 </ul>
-                <EditableButton webStyle = {props.webStyle} className={"w-100 btn btn-lg "} style = {{backgroundColor:props.webStyle.colors.darkAccent, color: props.webStyle.colors.lightShade}} callback = {()=>{alert("he he")}}/>
+                <EditableButton webStyle = {props.webStyle} className={"w-100 btn btn-lg "} style = {{backgroundColor:props.webStyle.colors[props.componentStyle.headerBackgroundColor], color: props.webStyle.colors[props.componentStyle.headerTextColor]}} callback = {()=>{alert("User picks callback: Link, Go to purhcase, ...")}}/>
                
                 {/* <button type="button" className="w-100 btn btn-lg btn-outline-dark">Sign Up</button> */}
             </div>

@@ -35,14 +35,35 @@ function LinkBox(props) {
     props.setSubTitle(evt.target.value); // localStorage.setItem(this.props.id+'-h3',evt.target.value);
   };
 
+  var componentStyles = {};
+
+  try {
+    componentStyles = {
+      textColor: props.webStyle.componentStyles.linkBox.textColor,
+      backgroundColor: props.webStyle.componentStyles.linkBox.backgroundColor,
+      linkColor: props.webStyle.componentStyles.linkBox.linkColor
+    };
+  } catch (error) {}
+
+  var borderShape = props.webStyle.componentStyles.all.borderShape;
+  var borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor];
+  var shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor];
+  var borderAndShadow = "";
+
+  if (props.webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(props.webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(props.webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "p-3 boxShadow",
+    className: "p-3 " + borderShape,
     style: {
-      backgroundColor: props.webStyle.colors.lightShade
+      backgroundColor: props.webStyle.colors[props.webStyle.componentStyles.linkBox.backgroundColor],
+      boxShadow: borderAndShadow
     },
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
       style: {
-        color: props.webStyle.colors.darkShade
+        color: props.webStyle.colors[componentStyles.textColor]
       },
       innerRef: contentEditable1,
       html: props.title // innerHTML of the editable div
@@ -56,7 +77,7 @@ function LinkBox(props) {
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
       className: "apply-font-secondary",
       style: {
-        color: props.webStyle.colors.darkShade
+        color: props.webStyle.colors[componentStyles.textColor]
       },
       innerRef: contentEditable2,
       html: props.subTitle // innerHTML of the editable div
@@ -69,6 +90,10 @@ function LinkBox(props) {
 
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableLink.default, {
       divClass: "px-0",
+      linkStyle: {
+        color: props.webStyle.colors[componentStyles.linkColor]
+      },
+      linkClass: props.webStyle.componentStyles.all.linkStyle,
       id: props.id + "-link",
       localDisplaySettings: props.localDisplaySettings,
       adminSettings: props.adminSettings,

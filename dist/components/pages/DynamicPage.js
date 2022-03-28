@@ -43,6 +43,10 @@ var _Website = require("../Website");
 
 var _SubscriberBox = _interopRequireDefault(require("../pageComponents/SubscriberBox"));
 
+var _reactFontawesome = require("@fortawesome/react-fontawesome");
+
+var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -98,6 +102,15 @@ function DynamicPage(props) {
       _useState4 = _slicedToArray(_useState3, 2),
       selectedComponents = _useState4[0],
       setSelectedComponents = _useState4[1];
+
+  var deleteSelectedComponents = function deleteSelectedComponents() {
+    setComponents(function (prevState) {
+      return prevState.filter(function (el) {
+        return !selectedComponents.includes(el.id);
+      });
+    });
+    setSelectedComponents([]);
+  };
 
   var insertComponent = function insertComponent(option, index) {
     var newComponent = {
@@ -170,10 +183,24 @@ function DynamicPage(props) {
   var pagecomponents = [];
   components.forEach(function (el, index) {
     var Component = componentMap[el.name];
+    var makeSticky = false;
+    var offsetY = null;
+
+    if (el.name === "NavigationBar") {
+      if (webStyle.componentStyles.navigationBar.isSticky) {
+        makeSticky = true;
+        offsetY = parseFloat(webStyle.componentStyles.navigationBar.stickyOffsetY);
+      }
+    }
 
     if (adminSettings.isEditMode) {
       pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminWrapper.default, {
+        makeSticky: makeSticky,
+        offsetY: offsetY,
         isFlat: flatComponents.includes(el.name),
+        isEditMode: adminSettings.isEditMode,
+        isShowEditor: adminSettings.isShowEditor,
+        isSelected: selectedComponents.includes(el.id),
         id: el.id,
         addSelected: addSelected,
         removeSelected: removeSelected,
@@ -218,18 +245,63 @@ function DynamicPage(props) {
       }));
     }
   });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+  var borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor];
+  var shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor];
+  var marginColor = webStyle.colors[webStyle.componentStyles.background.marginColor];
+  var backgroundColor = webStyle.colors[webStyle.componentStyles.background.backgroundColor];
+  var borderAndShadow = "";
+
+  if (webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
+  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
-      backgroundColor: webStyle.colors.lightShade
+      backgroundColor: marginColor,
+      marginTop: adminSettings.isShowEditor ? "50px" : ""
     },
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    children: [selectedComponents.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      className: "d-flex  ",
+      style: {
+        position: "absolute",
+        width: "100vw",
+        zIndex: 2000
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "d-flex w-100 flex-row",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          class: "btn-group mx-auto mt-2",
+          role: "group",
+          "aria-label": "Basic example",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            type: "button",
+            class: "btn btn-light btn-outline-dark border-end-0",
+            onClick: function onClick() {
+              return deleteSelectedComponents();
+            },
+            children: "Delete Selected Components"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            type: "button",
+            class: "btn btn-light btn-outline-dark border-start-0",
+            onClick: function onClick() {
+              return setSelectedComponents([]);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+              icon: _freeSolidSvgIcons.faXmark
+            })
+          })]
+        })
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       id: "outerSection",
       className: "min-vh-100" + (localDisplaySettings.isMobile ? " " : " container"),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         id: "innerSection",
-        className: "col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4",
+        className: "col justify-items-baseline min-vh-100 pb-4 pt-4",
         style: {
-          backgroundColor: webStyle.colors.lightAccent
+          backgroundColor: backgroundColor,
+          boxShadow: webStyle.componentStyles.background.applyBackground ? borderAndShadow : "none"
         },
         children: adminSettings.isEditMode === true ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_core.DndContext, {
           sensors: sensors,
@@ -250,7 +322,7 @@ function DynamicPage(props) {
           children: pagecomponents
         })
       })
-    })
+    })]
   });
 
   function generateKey(componentName, index) {
@@ -273,6 +345,16 @@ function DynamicPage(props) {
         return (0, _sortable.arrayMove)(components, oldIndex, newIndex);
       });
       setActiveID(null);
+    } else {
+      setSelectedComponents(function (prevState) {
+        if (prevState.includes(activeID)) {
+          return prevState.filter(function (id) {
+            return id !== active.id;
+          });
+        } else {
+          return [].concat(_toConsumableArray(prevState), [active.id]);
+        }
+      });
     }
   }
 }

@@ -101,6 +101,7 @@ var site_template = {
     isUnique: false,
     includeSocials: true,
     homeLinkText: "Home",
+    html: "<h1>{pageName}</h1>",
     navData: [{
       id: 1,
       name: "Blog",
@@ -176,23 +177,69 @@ function Website(props) {
       setMsgPort = _useState8[1];
 
   var _useContextStorage = useContextStorage(adminSettings, apiMethods, msgPort, "webStyle", {
-    siteName: site_template.siteName,
+    siteName: props.siteName || site_template.siteName,
     // Website colors
     colors: _objectSpread({}, site_template.colors),
     componentStyles: {
+      all: {
+        shadowStyle: "",
+        borderSize: 0,
+        borderShape: "",
+        borderColor: "darkShade",
+        shadowColor: 'darkShade',
+        linkStyle: "text-decoration-underline"
+      },
+      background: {
+        marginColor: "lightShade",
+        backgroundColor: "lightAccent",
+        applyBackground: true
+      },
       header: {
         size: "h1",
         textColor: "darkShade"
       },
+      mosaic: {
+        arrangement: "LP,RL-LL,RP"
+      },
       navigationBar: {
+        includeHeader: true,
+        topBarMargin: false,
+        isSticky: true,
+        stickyOffsetY: -2.5,
+        justifyButtons: "justify-content-start",
         backgroundColor: "darkAccent",
-        textColor: "lightShade"
+        textColor: "lightShade",
+        navbarStyle: "fullWidth"
+      },
+      linkBox: {
+        backgroundColor: "lightShade",
+        textColor: "darkShade",
+        linkColor: "darkAccent"
+      },
+      subscriptionCard: {
+        headerTextColor: "lightShade",
+        headerBackgroundColor: "darkAccent",
+        bodyTextColor: "darkShade",
+        bodyBackgroundColor: "lightShade"
+      },
+      subscriberBox: {
+        headerTextColor: "lightShade",
+        backgroundColor: "darkAccent"
+      },
+      pictureFrame: {
+        backgroundColor: "darkAccent",
+        padding: ""
       },
       styledLink: {
+        borderShape: null,
         backgroundColor: "mainBrandColor",
         textColor: "darkShade"
       },
       footer: {
+        textColor: "darkShade"
+      },
+      textEditor: {
+        backgroundColor: "lightShade",
         textColor: "darkShade"
       }
     }
@@ -427,11 +474,11 @@ function Website(props) {
       }
     },
     toggleStyleEditor: function toggleStyleEditor() {
-      var newWebstyle = _objectSpread({}, webStyle);
-
-      newWebstyle.isShowEditor = !newWebstyle.isShowEditor;
-
-      _setAdminSettings(newWebstyle);
+      _setAdminSettings(function (prevState) {
+        return _objectSpread(_objectSpread({}, prevState), {}, {
+          isShowEditor: !prevState.isShowEditor
+        });
+      });
     },
     saveComponentData: function saveComponentData(pageName, index, data) {
       var newSavedData = savedData;
@@ -522,7 +569,9 @@ function Website(props) {
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
       exact: true,
       path: path + "/:pathParam?",
-      children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
+      children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
+        customShadowStyles: props.customShadowStyles || []
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
         pageName: name,
         pageID: id,
         components: components,
@@ -553,15 +602,16 @@ function Website(props) {
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "App",
       style: {
-        minHeight: "100vh",
-        overflowX: "hidden"
+        minHeight: "100vh"
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
           children: [sitePages, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
             path: "*",
             children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-              children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Page.default, {
+              children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
+                customShadowStyles: props.customShadowStyles || []
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Page.default, {
                 pageName: "404",
                 pageID: "404Page",
                 components: [],
@@ -633,19 +683,22 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
     if (initialValue.constructor == Object) {
       var mergedData = _objectSpread({}, initialValue);
 
-      for (var _i2 = 0, _Object$entries = Object.entries(savedData); _i2 < _Object$entries.length; _i2++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
+      if (savedData) {
+        for (var _i2 = 0, _Object$entries = Object.entries(savedData); _i2 < _Object$entries.length; _i2++) {
+          var _Object$entries$_i = _slicedToArray(_Object$entries[_i2], 2),
+              key = _Object$entries$_i[0],
+              value = _Object$entries$_i[1];
 
-        if (key in mergedData && value.constructor == Object) {
-          mergedData[key] = _objectSpread(_objectSpread({}, mergedData[key]), value);
-        } else {
-          mergedData[key] = value;
+          if (key in mergedData && value.constructor == Object) {
+            mergedData[key] = _objectSpread(_objectSpread({}, mergedData[key]), value);
+          } else {
+            mergedData[key] = value;
+          }
         }
+
+        informSiteOfDraftEdits(apiMethods);
       }
 
-      informSiteOfDraftEdits(apiMethods);
       return mergedData;
     }
 

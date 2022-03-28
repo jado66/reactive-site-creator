@@ -36,10 +36,36 @@ export default function TextEditor(props) {
     }));
   };
 
-  const backgroundColor = content.isBacked?webStyle.colors.lightShade:""
+  const backgroundColor = content.isBacked?webStyle.colors[webStyle.componentStyles.textEditor.backgroundColor]:""
+  const textColor = webStyle.colors[webStyle.componentStyles.textEditor.textColor]
+  
+  let componentStyles = {}
+  
+  try {
+    componentStyles = 
+    {
+      textColor:webStyle.componentStyles.textEditor.textColor,
+      backgroundColor:webStyle.componentStyles.textEditor.backgroundColor
+      }
+  } 
+  catch (error) {
+      
+  }
+
+  let borderShape = webStyle.componentStyles.all.borderShape
+  let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]
+  let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]
+
+  let borderAndShadow = ""
+    if (webStyle.componentStyles.all.borderSize!==0){
+      borderAndShadow +=`${borderColor} 0px 1px ${webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${webStyle.componentStyles.all.borderSize}px, `
+    }
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
 
   return(
     <div 
+      style={{...props.style}}
       className="px-5 text-center relative-div " data-no-dnd="true"
       onMouseEnter={() => {
         showButtons(true);
@@ -50,7 +76,7 @@ export default function TextEditor(props) {
     >
       {/* {JSON.stringify(content.isBacked)} */}
     {!isSettingsMode ?
-      <div style={{backgroundColor:backgroundColor}} className = {"px-5 "+(content.isBacked?" boxShadow py-5":"")}>
+      <div style={{backgroundColor:backgroundColor}} className = {"px-5 "+borderShape+(content.isBacked?" boxShadow py-5":"")}>
         <QuillComponent 
           webStyle = {webStyle}
           className = "paragraph text-start" 
@@ -58,6 +84,7 @@ export default function TextEditor(props) {
           isEditMode = {isEditMode} 
           setHtml = {(value)=>{handleContentChange("html",value)}} 
           saveEdits = {()=>{setIsEditMode(!isEditMode)}}
+          style ={{color:textColor||webStyle.colors.darkShade}}
         />
       </div>
 
@@ -80,7 +107,7 @@ export default function TextEditor(props) {
       }
       
       {/*  */}
-      {true && adminSettings.isEditMode &&
+      {isShowButtons && adminSettings.isEditMode &&
       <>
         
         <div className="relative d-flex  ">
@@ -88,11 +115,11 @@ export default function TextEditor(props) {
         
           {!isEditMode && !isSettingsMode &&
             <button className=" btn p-0"  style={{marginRight:"1.5em"}} data-no-dnd = "true" onClick = {()=>{setIsEditMode(!isEditMode)}}>
-              <FontAwesomeIcon icon={faPencilAlt} style={{color:webStyle.colors.darkShade}} />
+              <FontAwesomeIcon icon={faPencilAlt} style={{color:textColor}} />
             </button>
           }
           <button className={"btn "+(isEditMode?"":"p-0")} style={{marginRight:"2.5em"}} data-no-dnd = "true" onClick = {()=>{setIsSettingsMode(!isSettingsMode)}}>
-            <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.darkShade}} />
+            <FontAwesomeIcon icon={faCog} style={{color:textColor}} />
           </button>
         </div>
       </>

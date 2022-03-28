@@ -39,11 +39,21 @@ export default function QuickLink(props){
       
   }
 
+  let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]  
+  let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]
+  let borderShape = webStyle.componentStyles.styledLink.borderShape || webStyle.componentStyles.all.borderShape
+
+  let borderAndShadow = ""
+  if (webStyle.componentStyles.all.borderSize!==0){
+    borderAndShadow +=`${borderColor} 0px 1px ${webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${webStyle.componentStyles.all.borderSize}px, `
+  }
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
   return(
 
     <div 
       className="px-5 text-center " data-no-dnd="true"
-      style={{marginTop:"-.8em",marginBottom:"-.8em"}}
+      style={{...props.style, marginTop:"-.8em",marginBottom:"-.8em"}}
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -61,8 +71,8 @@ export default function QuickLink(props){
             localDisplaySettings = {localDisplaySettings}
             setLinkText = {(value)=>handleContentChange("linkText",value)}
             setHref = {(value)=>handleContentChange("href",value)}
-            divStyle={{backgroundColor:webStyle.colors[componentStyles.backgroundColor]}}
-            divClass = {"rounded-pill py-3 mx-auto justify-content-center"}
+            divStyle={{backgroundColor:webStyle.colors[componentStyles.backgroundColor], boxShadow: borderAndShadow}}
+            divClass = {"py-3 mx-auto justify-content-center "+borderShape}
             linkStyle = {{color:webStyle.colors[componentStyles.textColor], textDecoration:"none"}}
             linkClass = {"h5 m-0"}
           />

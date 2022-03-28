@@ -19,6 +19,12 @@ var _Website = require("../Website");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function SocialLinks(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
@@ -63,31 +69,34 @@ function SocialLinks(props) {
   }).map(function (_ref2) {
     var link = _ref2.link,
         location = _ref2.location;
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "col text-center",
-      to: {
-        pathname: link
-      },
-      target: "_blank",
-      style: {
-        color: webStyle.colors[componentStyles.textColor]
-      },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-        className: "socialMediaLink m-auto",
-        icon: componentMapping[location]
-      })
-    }, location);
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+        to: {
+          pathname: link
+        },
+        target: "_blank",
+        style: {
+          color: webStyle.colors[componentStyles.textColor]
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+          className: "socialMediaLink m-auto",
+          icon: componentMapping[location]
+        })
+      }, location)
+    });
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "mt-3",
-    style: {
+    style: _objectSpread(_objectSpread({}, props.style), {}, {
       width: "50%",
       margin: "25px auto"
-    },
+    }),
+    "data-no-dnd": "true",
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "row",
       style: {
-        justifyContent: "space-evenly"
+        justifyContent: "space-around"
       },
       children: socialLinks
     })

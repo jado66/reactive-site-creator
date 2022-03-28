@@ -109,7 +109,7 @@ function EditableLink(props) {
           children: "Text"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
           type: "text",
-          className: "form-control  col-sm-8",
+          className: "form-control  col-sm-8 me-5",
           placeholder: "Text",
           value: tempLinkText,
           onChange: function onChange(evt) {
@@ -123,7 +123,7 @@ function EditableLink(props) {
           children: "HyperLink"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
           type: "text",
-          className: "form-control col-sm-8",
+          className: "form-control col-sm-8 me-5",
           placeholder: "Href",
           value: tempHref,
           onChange: function onChange(evt) {

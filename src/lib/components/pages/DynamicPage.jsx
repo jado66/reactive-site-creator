@@ -52,6 +52,8 @@ import AdminWrapper from "../wrappers/AdminWrapper";
 import useComponentStorage from '../helpers/useStorage';
 import { WebContext } from "../Website";
 import SubscriberBox from "../pageComponents/SubscriberBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 export default function DynamicPage(props) {
   const {flatComponents, webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
@@ -68,6 +70,12 @@ export default function DynamicPage(props) {
 
   const [selectedComponents, setSelectedComponents] = useState([]);
 
+  const deleteSelectedComponents = () =>{
+    setComponents((prevState) => {
+      return prevState.filter(el => !selectedComponents.includes(el.id));
+    })
+    setSelectedComponents([])
+  }
 
   const insertComponent = (option,index) => {
     let newComponent = {
@@ -155,11 +163,25 @@ export default function DynamicPage(props) {
 
     const Component = componentMap[el.name];
     
+    let makeSticky = false
+    let offsetY = null
+    if (el.name === "NavigationBar"){
+      if (webStyle.componentStyles.navigationBar.isSticky){
+        makeSticky = true
+        offsetY = parseFloat(webStyle.componentStyles.navigationBar.stickyOffsetY)
+      }
+    }
+
     if (adminSettings.isEditMode){
       pagecomponents.push(
         <AdminWrapper
           key={el.id}
+          makeSticky = {makeSticky}
+          offsetY = {offsetY}
           isFlat ={flatComponents.includes(el.name)}
+          isEditMode = {adminSettings.isEditMode}
+          isShowEditor = {adminSettings.isShowEditor}
+          isSelected = {selectedComponents.includes(el.id)}
           id={el.id}
           addSelected={addSelected}
           removeSelected={removeSelected}
@@ -193,10 +215,54 @@ export default function DynamicPage(props) {
     }
   });
 
+  let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]  
+  let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]
+  let marginColor = webStyle.colors[webStyle.componentStyles.background.marginColor]  
+  let backgroundColor = webStyle.colors[webStyle.componentStyles.background.backgroundColor]  
+
+
+  let borderAndShadow = ""
+  if (webStyle.componentStyles.all.borderSize!==0){
+    borderAndShadow +=`${borderColor} 0px 1px ${webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${webStyle.componentStyles.all.borderSize}px, `
+  }
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
   return (
-    <div style ={{backgroundColor:webStyle.colors.lightShade}}>
+    <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor?"50px":""}}>
+       {selectedComponents.length > 0 && 
+        <div className="d-flex  " style={{position:"absolute", width:"100vw", zIndex:2000}}>
+          <div className="d-flex w-100 flex-row">
+            <div class="btn-group mx-auto mt-2" role="group" aria-label="Basic example">
+              <button 
+                type="button" 
+                class="btn btn-light btn-outline-dark border-end-0"
+                onClick={()=>deleteSelectedComponents()}
+              >
+                Delete Selected Components
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-light btn-outline-dark border-start-0"
+                onClick={()=>setSelectedComponents([])}
+              >
+                <FontAwesomeIcon icon={faXmark}/>
+              </button>
+            </div>
+              {/* <button className="btn btn-light btn-outline-dark my-2 mx-auto">Delete Selected Components</button> */}
+          </div>
+         
+
+        </div>
+      }
       <div id = "outerSection" className={"min-vh-100"+(localDisplaySettings.isMobile?" ":" container")} >
-        <div id = "innerSection" className="col justify-items-baseline boxShadow min-vh-100 pb-4 pt-4" style={{backgroundColor:webStyle.colors.lightAccent}}>
+     
+
+        <div 
+          id = "innerSection"
+          className={"col justify-items-baseline min-vh-100 pb-4 pt-4"} 
+          style={{backgroundColor:backgroundColor,boxShadow:(webStyle.componentStyles.background.applyBackground?borderAndShadow:"none")}}
+        >
+          {/* <span>{JSON.stringify(selectedComponents)}</span> */}
           {adminSettings.isEditMode === true?  
           <DndContext
             sensors={sensors}
@@ -228,6 +294,8 @@ export default function DynamicPage(props) {
     return `${props.pageName}-${componentName}-${ index }${ String(new Date().getTime()).slice(-3) }`;
   }
 
+  
+
   function handleDragStart(event) {
     const { active } = event;
     setActiveID(active.id);
@@ -246,6 +314,17 @@ export default function DynamicPage(props) {
       });
 
       setActiveID(null)
+    }
+    else{
+      setSelectedComponents((prevState) => {
+
+        if (prevState.includes(activeID)){
+          return prevState.filter(id => id !== active.id);
+        }
+        else{
+          return([...prevState,active.id])
+        }
+      })
     }
   }
 }

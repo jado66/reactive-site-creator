@@ -124,28 +124,33 @@ function SubscriptionCards(props) {
 
   try {
     componentStyle = _objectSpread({
-      size: webStyle.componentStyles.header.size,
-      textColor: webStyle.componentStyles.header.textColor
+      headerTextColor: webStyle.componentStyles.subscriptionCard.headerTextColor,
+      headerBackgroundColor: webStyle.componentStyles.subscriptionCard.headerBackgroundColor,
+      bodyTextColor: webStyle.componentStyles.subscriptionCard.bodyTextColor,
+      bodyBackgroundColor: webStyle.componentStyles.subscriptionCard.bodyBackgroundColor
     }, content.styles);
   } catch (error) {}
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "row row-cols-1 row-cols-md-3 mb-3 text-center px-5",
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(PackagePlan, {
+    className: "row row-cols-1 row-cols-md-3 text-center px-5",
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      componentStyle: componentStyle,
       data: content.data[0],
       webStyle: webStyle,
       id: props.id + "-1",
       adminSettings: adminSettings,
       index: 0,
       handleDataChange: handleDataChange
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(PackagePlan, {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      componentStyle: componentStyle,
       data: content.data[1],
       webStyle: webStyle,
       id: props.id + "-2",
       adminSettings: adminSettings,
       index: 1,
       handleDataChange: handleDataChange
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(PackagePlan, {
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      componentStyle: componentStyle,
       data: content.data[2],
       webStyle: webStyle,
       id: props.id + "-3",
@@ -158,7 +163,7 @@ function SubscriptionCards(props) {
 
 ;
 
-function PackagePlan(props) {
+function SubscriptionCard(props) {
   var contentEditable = [/*#__PURE__*/_react.default.createRef(), /*#__PURE__*/_react.default.createRef()]; // Header, Price, Button
 
   var _useState7 = (0, _react.useState)(false),
@@ -182,16 +187,17 @@ function PackagePlan(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "col",
     "data-no-dnd": "true",
+    style: _objectSpread({}, props.style),
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "card mb-4 rounded-3 boxShadow",
+      className: "card rounded-3 boxShadow",
       style: {
-        backgroundColor: props.webStyle.colors.darkAccent
+        backgroundColor: props.webStyle.colors[props.componentStyle.headerBackgroundColor]
       },
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "card-header py-3",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
           style: {
-            color: props.webStyle.colors.lightShade
+            color: props.webStyle.colors[props.componentStyle.headerTextColor]
           },
           className: "my-0 fw-normal",
           spellCheck: "false",
@@ -209,7 +215,7 @@ function PackagePlan(props) {
       }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "card-body rounded-bottom relative-div",
         style: {
-          backgroundColor: props.webStyle.colors.lightShade
+          backgroundColor: props.webStyle.colors[props.componentStyle.bodyBackgroundColor]
         },
         onMouseEnter: function onMouseEnter() {
           showButtons(true);
@@ -234,7 +240,7 @@ function PackagePlan(props) {
             children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
               icon: _freeSolidSvgIcons.faPencilAlt,
               style: {
-                color: props.webStyle.colors.darkShade
+                color: props.webStyle.colors[props.componentStyle.headerBackgroundColor]
               }
             })
           })
@@ -251,6 +257,9 @@ function PackagePlan(props) {
               setIsEditMode(!isEditMode);
             },
             mini: true,
+            style: {
+              color: props.webStyle.colors[props.componentStyle.bodyTextColor]
+            },
             webStyle: props.webStyle,
             id: props.id,
             content: {
@@ -261,11 +270,11 @@ function PackagePlan(props) {
           webStyle: props.webStyle,
           className: "w-100 btn btn-lg ",
           style: {
-            backgroundColor: props.webStyle.colors.darkAccent,
-            color: props.webStyle.colors.lightShade
+            backgroundColor: props.webStyle.colors[props.componentStyle.headerBackgroundColor],
+            color: props.webStyle.colors[props.componentStyle.headerTextColor]
           },
           callback: function callback() {
-            alert("he he");
+            alert("User picks callback: Link, Go to purhcase, ...");
           }
         })]
       })]

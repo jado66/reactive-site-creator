@@ -52,7 +52,7 @@ export default function EditableLink(props){
                     <label className="col-form-label col-sm-4">Text</label>
                     <input 
                         type="text" 
-                        className="form-control  col-sm-8" 
+                        className="form-control  col-sm-8 me-5" 
                         placeholder="Text" 
                         value={tempLinkText}
                         onChange = {evt=>setTempLinkText(evt.target.value)}
@@ -62,7 +62,7 @@ export default function EditableLink(props){
                     <label className="col-form-label col-sm-4">HyperLink</label>
                     <input 
                         type="text" 
-                        className="form-control col-sm-8" 
+                        className="form-control col-sm-8 me-5" 
                         placeholder="Href" 
                         value = {tempHref}
                         onChange = {evt=>setTempHref(evt.target.value)}

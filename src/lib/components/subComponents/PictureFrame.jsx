@@ -141,20 +141,39 @@ export default function PictureFrame(props){
 
     const buttonStyle = {backgroundColor:props.webStyle.lightShade,color:props.webStyle.darkShade,
                          borderRadius: "3px", border: `1px solid ${props.webStyle.colors.darkShade}`}
+    
+    let componentStyles = {}
+    try {
+        componentStyles = 
+        {
+            padding:props.webStyle.componentStyles.pictureFrame.padding,
+            backgroundColor:props.webStyle.componentStyles.pictureFrame.backgroundColor
+        }
+        } catch (error) {
+        
+    }
 
+
+    let borderShape = props.webStyle.componentStyles.all.borderShape
+    let borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor]
+    let shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor]
     
-    const borderStyle = (props.noBorder ? "" : "boxShadow ")
-    
+    let borderAndShadow = ""
+    if (props.webStyle.componentStyles.all.borderSize!==0){
+        borderAndShadow +=`${borderColor} 0px 1px ${props.webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${props.webStyle.componentStyles.all.borderSize}px, `
+    }
+    borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
     return(
         <div className={"relative-div "+props.className+(props.isNested?"":" px-5 mb-5")} onMouseEnter={()=>{setButtonsVisible(true)}} onMouseLeave={()=>{setButtonsVisible(false)}} style={{flex: "1"}}>
             {/* {props.webStyle.isEditMode?<span>Edit Mode</span>:<span>No Edit Mode</span>} */}
             {imageUrl ? 
-                <div style={{backgroundColor:props.webStyle.colors.darkAccent}}>
-                    <img className={(borderStyle)+"w-100 no-select" } src={imageUrl} />
+                <div className = {(borderShape)+" "+(componentStyles.padding)} style={{backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
+                    <img className={(borderShape)+" w-100 no-select" } src={imageUrl} />
                 </div>
                 
                 :
-                <div className={borderStyle+"blankDiv w-100"} style={{minHeight:"300px",backgroundColor:props.webStyle.colors.darkAccent}}></div>
+                <div className={(borderShape)+" blankDiv w-100"} style={{minHeight:"300px",backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}></div>
             }
             {
                 areButtonsVisible && props.adminSettings.isEditMode &&

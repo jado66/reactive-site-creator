@@ -26,10 +26,16 @@ export default function Mosaic(props){
             rSubTitle: "SubTitle",
             rLinkText: `New Link`,
             rHref: "",
+
         }
     }
 
+
     const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
+    const {webStyle, localDisplaySettings, images, adminSettings} = useContext(WebContext)
+
+    const arrangement = webStyle.componentStyles.mosaic.arrangement
+
 
     const handleContentEntryChange = (key, value) =>{
         setContent((prevState) => ({
@@ -43,11 +49,96 @@ export default function Mosaic(props){
     const leftLinkBoxID = `${props.id}-Ll`
     const leftPictureFrameID = `${props.id}-Lp`
 
-    const {webStyle, localDisplaySettings, images, adminSettings} = useContext(WebContext)
+    const leftPictureFrame  = (divClass) => {
+        return(    
+            <div className={"g-0 " + (divClass)}>
+                <PictureFrame  
+                    key = {leftPictureFrameID} 
+                    adminSettings = {adminSettings} 
+                    webStyle = {webStyle} 
+                    images = {images}
+                    id = {leftPictureFrameID} 
+                    imageUrl = {content.lImageUrl} 
+                    setImageUrl = {(value)=>{handleContentEntryChange("lImageUrl",value)}} 
+                    isNested
+                />
+            </div>     
+        )
+    }
+
+    const rightPictureFrame = (divClass) => {
+        return(
+            <div className={"g-0 " + (divClass)}>
+                <PictureFrame 
+                    key = {rightPictureFrameID} 
+                    adminSettings = {adminSettings} 
+                    webStyle = {webStyle} 
+                    images = {images}
+                    imageUrl = {content.rImageUrl} 
+                    id = {rightPictureFrameID} 
+                    setImageUrl = {(value)=>{handleContentEntryChange("rImageUrl",value)}} 
+                    isNested
+                />
+            </div>
+        )
+    }
+
+    const leftLinkBox = (divClass) => {
+        return(
+            <div className={"g-0 " + (divClass)}>
+                <LinkBox 
+                    className="row g-0 "
+                    key = {leftLinkBoxID} 
+                    id = {leftLinkBoxID} 
+                    adminSettings = {adminSettings} 
+                    webStyle = {webStyle}
+                    title = {content.lTitle} 
+                    subTitle = {content.lSubTitle} 
+                    linkText = {content.lLinkText} 
+                    href = {content.lHref} 
+                    localDisplaySettings = {localDisplaySettings}
+                    setTitle = {(value)=>{handleContentEntryChange("lTitle",value)}} 
+                    setSubTitle = {(value)=>{handleContentEntryChange("lSubTitle",value)}} 
+                    setLinkText = {(value)=>{handleContentEntryChange("lLinkText",value)}} 
+                    setHref = {(value)=>{handleContentEntryChange("lHref",value)}}
+                />
+            </div>
+        )
+    }
+    
+    const rightLinkBox = (divClass) => {
+        return(
+            <div className={"g-0 " + (divClass)}>
+                <LinkBox 
+                    key = {rightLinkBoxID} 
+                    id = {rightLinkBoxID} 
+                    adminSettings = {adminSettings} 
+                    webStyle = {webStyle}
+                    title = {content.rTitle} 
+                    subTitle = {content.rSubTitle} 
+                    linkText = {content.rLinkText} 
+                    href = {content.rHref} 
+                    localDisplaySettings = {localDisplaySettings}
+                    setTitle = {(value)=>{handleContentEntryChange("rTitle",value)}} 
+                    setSubTitle = {(value)=>{handleContentEntryChange("rSubTitle",value)}} 
+                    setLinkText = {(value)=>{handleContentEntryChange("rLinkText",value)}} 
+                    setHref = {(value)=>{handleContentEntryChange("rHref",value)}}
+                />
+            </div> 
+        )
+    }
+
+    const componentMap = 
+        {
+            LP:(divClass)=>leftPictureFrame(divClass),
+            RP:(divClass)=>rightPictureFrame(divClass),
+            LL:(divClass)=>leftLinkBox(divClass),
+            RL:(divClass)=>rightLinkBox(divClass)
+        }
 
     if (localDisplaySettings.isMobile){
         return(
-        <div className = {"row "+(localDisplaySettings.isMobile?"px-2 ":"px-5")} data-no-dnd="true">
+        <div style={{...props.style}} className = {"row "+(localDisplaySettings.isMobile?"px-2 ":"px-5")} data-no-dnd="true">
             <div className="col">
                 <div className = {"row g-0 mb-5" }>
                     <Fade>
@@ -87,31 +178,35 @@ export default function Mosaic(props){
     }
     else{
         return(
-            <div className = {"row g-0 px-5"} data-no-dnd="true">
+            <div style={{...props.style}} className = {"row g-0 px-5"} data-no-dnd="true">
+                {/* <span>{arrangement}</span> */}
+
                 <div className = {"col me-3"}>
                     <Fade>
-                        <div className="row g-0 mb-5 w-100">
-                            <PictureFrame  webStyle = {webStyle}  key = {leftPictureFrameID} adminSettings = {adminSettings} images = {images}
-                                           imageUrl = {content.lImageUrl} setImageUrl = {(value)=>{handleContentEntryChange("lImageUrl",value)}} id = {leftPictureFrameID} isNested/>
-                        </div>
-                        <LinkBox 
-                            key = {leftLinkBoxID} id = {leftLinkBoxID} adminSettings = {adminSettings} localDisplaySettings = {localDisplaySettings}
-                            title = {content.lTitle} subTitle = {content.lSubTitle} linkText = {content.lLinkText} href = {content.lHref} webStyle = {webStyle}
-                            setTitle = {(value)=>{handleContentEntryChange("lTitle",value)}} setSubTitle = {(value)=>{handleContentEntryChange("lSubTitle",value)}} setLinkText = {(value)=>{handleContentEntryChange("lLinkText",value)}} setHref = {(value)=>{handleContentEntryChange("lHref",value)}}
-                        />
+                        {arrangement.split('-')[0].split(",").map((el, index,) => 
+                            {
+                                if (index === 0){
+                                    return componentMap[el]("mb-5")
+                                }
+                                else{
+                                    return componentMap[el]("")
+                                }
+                            }
+                        )}
                     </Fade>
                 </div>
                 <div className = {"col ms-3"}>
                     <Fade>
-                        <div className="row g-0 mb-5">
-                        <LinkBox 
-                            key = {rightLinkBoxID} id = {rightLinkBoxID} adminSettings = {adminSettings} webStyle = {webStyle}
-                            title = {content.rTitle} subTitle = {content.rSubTitle} linkText = {content.rLinkText} href = {content.rHref} localDisplaySettings = {localDisplaySettings}
-                            setTitle = {(value)=>{handleContentEntryChange("rTitle",value)}} setSubTitle = {(value)=>{handleContentEntryChange("rSubTitle",value)}} setLinkText = {(value)=>{handleContentEntryChange("rLinkText",value)}} setHref = {(value)=>{handleContentEntryChange("rHref",value)}}
-                        />
-                        </div>
-                            <PictureFrame  key = {rightPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                            imageUrl = {content.rImageUrl} setImageUrl = {(value)=>{handleContentEntryChange("rImageUrl",value)}} id = {rightPictureFrameID} isNested/>
+                        {arrangement.split('-')[1].split(",").map((el, index,) => 
+                            {
+                                if (index === 0){
+                                    return componentMap[el]("mb-5")
+                                }
+                                else{
+                                    return componentMap[el]("")
+                                }
+                            }
+                        )}                      
                     </Fade>
                 </div>  
             </div>

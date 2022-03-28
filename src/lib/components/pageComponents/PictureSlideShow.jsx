@@ -49,7 +49,8 @@ export default function PictureSlideShow(props){
                     color: webStyle.colors.darkShade, fontWeight: "bold", fontSize: "x-large", borderRadius: "0 3px 3px 0", userSelect: "none", zIndex:1}
             
     return(
-        <div       
+        <div 
+            style={{...props.style}}      
             className="px-5 text-center relative-div " 
             data-no-dnd="true"        
             onMouseEnter={() => {

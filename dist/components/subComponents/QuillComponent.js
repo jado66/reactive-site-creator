@@ -14,15 +14,23 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
-var _htmlReactParser = _interopRequireDefault(require("html-react-parser"));
-
 var _QuillToolbar = _interopRequireDefault(require("./QuillToolbar"));
 
 var _QuillToolbarMini = _interopRequireDefault(require("./QuillToolbarMini"));
 
+var _reactRouterDom = require("react-router-dom");
+
+var _reactJsxParser = _interopRequireDefault(require("react-jsx-parser"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // import { WebContext } from "../App";
 // Modules object for setting up the Quill editor
@@ -47,6 +55,8 @@ var formats = ["header", "font", "size", "bold", "italic", "underline", "align",
 exports.formats = formats;
 
 function QuillComponent(props) {
+  var location = (0, _reactRouterDom.useLocation)();
+  var path = location.pathname;
   var placeholder = "Here is some text";
 
   var copyToClipboard = function copyToClipboard() {
@@ -62,6 +72,7 @@ function QuillComponent(props) {
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "text-editor  ",
+    "data-no-dnd": "true",
     children: props.isEditMode ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       children: [props.mini ? /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillToolbarMini.default, {
         check: true,
@@ -89,13 +100,16 @@ function QuillComponent(props) {
         formats: formats
       })]
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "relative-div text-left ",
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: props.className,
-        style: {
-          color: props.webStyle.colors.darkShade
-        },
-        children: props.html ? (0, _htmlReactParser.default)(props.html) : (0, _htmlReactParser.default)(placeholder)
+      className: props.className,
+      style: props.style,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactJsxParser.default, {
+        truthyProp: true,
+        bindings: _objectSpread(_objectSpread({}, props.variables), {}, {
+          path: path
+        }) // variables = {props.variables}
+        ,
+        autoCloseVoidElements: true,
+        jsx: props.html ? props.html : placeholder
       })
     })
   });

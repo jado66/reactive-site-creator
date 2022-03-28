@@ -90,13 +90,23 @@ function QuickLink(props) {
     };
   } catch (error) {}
 
+  var borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor];
+  var shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor];
+  var borderShape = webStyle.componentStyles.styledLink.borderShape || webStyle.componentStyles.all.borderShape;
+  var borderAndShadow = "";
+
+  if (webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     className: "px-5 text-center ",
     "data-no-dnd": "true",
-    style: {
+    style: _objectSpread(_objectSpread({}, props.style), {}, {
       marginTop: "-.8em",
       marginBottom: "-.8em"
-    },
+    }),
     onMouseEnter: function onMouseEnter() {
       showButtons(true);
     },
@@ -118,9 +128,10 @@ function QuickLink(props) {
           return handleContentChange("href", value);
         },
         divStyle: {
-          backgroundColor: webStyle.colors[componentStyles.backgroundColor]
+          backgroundColor: webStyle.colors[componentStyles.backgroundColor],
+          boxShadow: borderAndShadow
         },
-        divClass: "rounded-pill py-3 mx-auto justify-content-center",
+        divClass: "py-3 mx-auto justify-content-center " + borderShape,
         linkStyle: {
           color: webStyle.colors[componentStyles.textColor],
           textDecoration: "none"

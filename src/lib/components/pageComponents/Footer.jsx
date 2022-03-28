@@ -52,15 +52,18 @@ export default function SocialLinks(props) {
       }
       return true;
     }).map(({link,location}) =>
-      <Link className='col text-center' key = {location} to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
+      <div className='col text-center'>
+        <Link  key = {location} to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
+
+      </div>
     );
 
 
 
     return(
-            <div className='mt-3' style = {{width:`50%`, margin:"25px auto"}}>
+            <div className='mt-3' style = {{...props.style, width:`50%`, margin:"25px auto"}} data-no-dnd = "true">
               {/* {JSON.stringify(webStyle.componentStyles)} */}
-              <div className='row' style={{justifyContent:"space-evenly"}}>
+              <div className='row' style={{justifyContent:"space-around"}}>
                 {socialLinks}
               </div>
             </div>)

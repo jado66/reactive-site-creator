@@ -2,10 +2,12 @@ import ReactQuill from 'react-quill';
 import '../helpers/quill.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faPencilAlt} from '@fortawesome/free-solid-svg-icons'
-import parse from 'html-react-parser';
+// import parse from 'html-react-parser';
 import QuillToolbar from "./QuillToolbar";
 import QuillToolbarMini from "./QuillToolbarMini";
+import { useLocation } from "react-router-dom";
 
+import JsxParser from 'react-jsx-parser';
 // import { WebContext } from "../App";
 // Modules object for setting up the Quill editor
 export const modules = {
@@ -46,6 +48,8 @@ export const formats = [
 
 export default function QuillComponent(props){
 
+  const location = useLocation()
+  const path = location.pathname;
   const placeholder = "Here is some text"
 
   const copyToClipboard =() =>{
@@ -59,14 +63,14 @@ export default function QuillComponent(props){
     props.setHtml(value)
   };
   return (
-    <div className="text-editor  " >
+    <div className="text-editor  " data-no-dnd = "true">
       {props.isEditMode?
       <div >
         {props.mini?
-        <QuillToolbarMini check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
-        :
-        <QuillToolbar check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
-      }
+          <QuillToolbarMini check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
+          :
+          <QuillToolbar check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
+        }
         <ReactQuill
           className={"text-left "+ props.className}
           theme="snow"
@@ -76,17 +80,24 @@ export default function QuillComponent(props){
           modules={modules}
           formats={formats}
         />
-      </div>:
-      <div className="relative-div text-left " >
-        {/* {<div className="relative-r">
-          <FontAwesomeIcon icon = {faPencilAlt} onClick={()=>{setEdit(true)}}/>
-        </div>} */}
-        <div className={props.className} style = {{color: props.webStyle.colors.darkShade}}>
-          {/* {props.html} */}
-          {props.html? parse(props.html): parse(placeholder)} 
-        </div>
+      </div>
+      :
+       
+      <div className={props.className} style = {props.style}>        
+        {/* <span>{JSON.stringify(props.variables)}</span>
+        <span>{props.html}</span> */}
+        <JsxParser
+          truthyProp={true}
+          bindings={{
+            ...props.variables, path:path
+          }}
+          // variables = {props.variables}
+          autoCloseVoidElements 
+          jsx={props.html?props.html:placeholder}
+        />
+      </div>
         
-      </div>}
+      }
     </div>
         
   );
