@@ -31,6 +31,10 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -65,7 +69,28 @@ function SubscriptionCards(props) {
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
-      adminSettings = _useContext.adminSettings;
+      adminSettings = _useContext.adminSettings,
+      localDisplaySettings = _useContext.localDisplaySettings;
+
+  var _useState3 = (0, _react.useState)(0),
+      _useState4 = _slicedToArray(_useState3, 2),
+      maxHeight = _useState4[0],
+      setMaxHeight = _useState4[1];
+
+  var _useState5 = (0, _react.useState)([0, 0, 0]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      heights = _useState6[0],
+      setHeights = _useState6[1];
+
+  var getMaxHeight = function getMaxHeight(height, index) {
+    setHeights(function (prevState) {
+      var newPrevState = _toConsumableArray(prevState);
+
+      newPrevState[index] = height;
+      return newPrevState;
+    });
+    setMaxHeight(Math.max(height));
+  };
 
   var initialState = props.content;
 
@@ -90,15 +115,15 @@ function SubscriptionCards(props) {
       content = _useComponentStorage2[0],
       setContent = _useComponentStorage2[1];
 
-  var _useState3 = (0, _react.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      isShowButtons = _useState4[0],
-      showButtons = _useState4[1];
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      isShowButtons = _useState8[0],
+      showButtons = _useState8[1];
 
-  var _useState5 = (0, _react.useState)(false),
-      _useState6 = _slicedToArray(_useState5, 2),
-      isSettingsMode = _useState6[0],
-      setIsSettingsMode = _useState6[1];
+  var _useState9 = (0, _react.useState)(false),
+      _useState10 = _slicedToArray(_useState9, 2),
+      isSettingsMode = _useState10[0],
+      setIsSettingsMode = _useState10[1];
 
   var handleDataChange = function handleDataChange(index, key, value) {
     setContent(function (prevState) {
@@ -132,31 +157,40 @@ function SubscriptionCards(props) {
   } catch (error) {}
 
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "row row-cols-1 row-cols-md-3 text-center px-5",
+    className: "d-flex text-center px-5" + (localDisplaySettings.isMobile ? " flex-column" : ""),
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      maxHeight: maxHeight,
+      getMaxHeight: getMaxHeight,
       componentStyle: componentStyle,
       data: content.data[0],
       webStyle: webStyle,
       id: props.id + "-1",
       adminSettings: adminSettings,
       index: 0,
-      handleDataChange: handleDataChange
+      handleDataChange: handleDataChange,
+      className: 'g-0 ' + (localDisplaySettings.isMobile ? "mb-3" : "me-3 ")
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      maxHeight: maxHeight,
+      getMaxHeight: getMaxHeight,
       componentStyle: componentStyle,
       data: content.data[1],
       webStyle: webStyle,
       id: props.id + "-2",
       adminSettings: adminSettings,
       index: 1,
-      handleDataChange: handleDataChange
+      handleDataChange: handleDataChange,
+      className: 'g-0 ' + (localDisplaySettings.isMobile ? "my-3" : "mx-3")
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+      maxHeight: maxHeight,
+      getMaxHeight: getMaxHeight,
       componentStyle: componentStyle,
       data: content.data[2],
       webStyle: webStyle,
       id: props.id + "-3",
       adminSettings: adminSettings,
       index: 2,
-      handleDataChange: handleDataChange
+      handleDataChange: handleDataChange,
+      className: 'g-0 ' + (localDisplaySettings.isMobile ? "mt-3" : "ms-3")
     })]
   });
 }
@@ -166,15 +200,27 @@ function SubscriptionCards(props) {
 function SubscriptionCard(props) {
   var contentEditable = [/*#__PURE__*/_react.default.createRef(), /*#__PURE__*/_react.default.createRef()]; // Header, Price, Button
 
-  var _useState7 = (0, _react.useState)(false),
-      _useState8 = _slicedToArray(_useState7, 2),
-      isEditMode = _useState8[0],
-      setIsEditMode = _useState8[1];
+  var _useState11 = (0, _react.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      isEditMode = _useState12[0],
+      setIsEditMode = _useState12[1];
 
-  var _useState9 = (0, _react.useState)(false),
-      _useState10 = _slicedToArray(_useState9, 2),
-      isShowButtons = _useState10[0],
-      showButtons = _useState10[1];
+  var _useState13 = (0, _react.useState)(false),
+      _useState14 = _slicedToArray(_useState13, 2),
+      isShowButtons = _useState14[0],
+      showButtons = _useState14[1];
+
+  var _useState15 = (0, _react.useState)(0),
+      _useState16 = _slicedToArray(_useState15, 2),
+      height = _useState16[0],
+      setHeight = _useState16[1];
+
+  var _useState17 = (0, _react.useState)(true),
+      _useState18 = _slicedToArray(_useState17, 2),
+      isAutoHeight = _useState18[0],
+      setIsAutoHeight = _useState18[1];
+
+  var bodyRef = (0, _react.useRef)(null);
 
   var setHeader = function setHeader(val) {
     props.handleDataChange(props.index, "header", val);
@@ -184,17 +230,70 @@ function SubscriptionCard(props) {
     props.handleDataChange(props.index, "htmlContent", val);
   };
 
+  function getNSetHeight() {
+    return _getNSetHeight.apply(this, arguments);
+  }
+
+  function _getNSetHeight() {
+    _getNSetHeight = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (bodyRef.current.clientHeight) {
+                setIsAutoHeight(true);
+                setTimeout(function () {
+                  var height = bodyRef.current.clientHeight;
+                  setHeight(height);
+                  props.getMaxHeight(height, props.index);
+                  setIsAutoHeight(false);
+                }, 250);
+              }
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+    return _getNSetHeight.apply(this, arguments);
+  }
+
+  (0, _react.useEffect)(function () {
+    getNSetHeight();
+  }, []);
+
+  var saveEdits = function saveEdits() {
+    setIsEditMode(!isEditMode);
+    getNSetHeight();
+  };
+
+  var borderShape = props.webStyle.componentStyles.all.borderShape;
+  var borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor];
+  var shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor];
+  var borderAndShadow = "";
+
+  if (props.webStyle.componentStyles.all.borderSize !== 0) {
+    borderAndShadow += "".concat(borderColor, " 0px 1px ").concat(props.webStyle.componentStyles.all.borderSize * 2, "px, ").concat(borderColor, " 0px 0px 0px ").concat(props.webStyle.componentStyles.all.borderSize, "px, ");
+  }
+
+  borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "col",
+    className: "col " + props.className,
     "data-no-dnd": "true",
     style: _objectSpread({}, props.style),
     children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "card rounded-3 boxShadow",
+      className: " " + borderShape,
       style: {
-        backgroundColor: props.webStyle.colors[props.componentStyle.headerBackgroundColor]
+        boxShadow: borderAndShadow,
+        backgroundColor: props.webStyle.colors[props.componentStyle.bodyBackgroundColor]
       },
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "card-header py-3",
+        className: borderShape + " py-3 noBottomRadius ",
+        style: {
+          backgroundColor: props.webStyle.colors[props.componentStyle.headerBackgroundColor]
+        },
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
           style: {
             color: props.webStyle.colors[props.componentStyle.headerTextColor]
@@ -213,10 +312,12 @@ function SubscriptionCard(props) {
           tagName: "h2"
         })
       }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "card-body rounded-bottom relative-div",
+        className: "p-3  d-flex flex-column flex relative-div ",
         style: {
-          backgroundColor: props.webStyle.colors[props.componentStyle.bodyBackgroundColor]
+          minHeight: props.maxHeight != 0 && !isAutoHeight ? props.maxHeight : "" // boxShadow:borderAndShadow,
+
         },
+        ref: bodyRef,
         onMouseEnter: function onMouseEnter() {
           showButtons(true);
         },
@@ -245,7 +346,7 @@ function SubscriptionCard(props) {
             })
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-          className: "list-unstyled mt-1 mb-4",
+          className: "list-unstyled mt-1 mb-4 flex-grow-1",
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
             className: "paragraph text-start",
             html: props.data.htmlContent,
@@ -253,9 +354,7 @@ function SubscriptionCard(props) {
             setHtml: function setHtml(value) {
               setHtmlContent(value);
             },
-            saveEdits: function saveEdits() {
-              setIsEditMode(!isEditMode);
-            },
+            saveEdits: saveEdits,
             mini: true,
             style: {
               color: props.webStyle.colors[props.componentStyle.bodyTextColor]
@@ -268,7 +367,7 @@ function SubscriptionCard(props) {
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableButton.default, {
           webStyle: props.webStyle,
-          className: "w-100 btn btn-lg ",
+          className: "w-100 btn btn-lg " + borderShape,
           style: {
             backgroundColor: props.webStyle.colors[props.componentStyle.headerBackgroundColor],
             color: props.webStyle.colors[props.componentStyle.headerTextColor]

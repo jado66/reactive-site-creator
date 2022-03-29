@@ -82,14 +82,20 @@ function QuillComponent(props) {
         clipboardCallback: function clipboardCallback() {
           copyToClipboard();
         }
-      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillToolbar.default, {
-        check: true,
-        checkCallback: function checkCallback() {
-          props.saveEdits();
-        },
-        clipboardCallback: function clipboardCallback() {
-          copyToClipboard();
-        }
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: 'top-toolbar bg-light' + (props.adminSettings.isShowEditor ? " mt-5" : ""),
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
+          className: "mt-2",
+          children: "Text Editor Toolbar"
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillToolbar.default, {
+          check: true,
+          checkCallback: function checkCallback() {
+            props.saveEdits();
+          },
+          clipboardCallback: function clipboardCallback() {
+            copyToClipboard();
+          }
+        })]
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactQuill.default, {
         className: "text-left " + props.className,
         theme: "snow",
@@ -100,7 +106,7 @@ function QuillComponent(props) {
         formats: formats
       })]
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: props.className,
+      className: props.className + " ql-editor",
       style: props.style,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactJsxParser.default, {
         truthyProp: true,

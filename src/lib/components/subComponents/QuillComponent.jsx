@@ -69,7 +69,10 @@ export default function QuillComponent(props){
         {props.mini?
           <QuillToolbarMini check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
           :
-          <QuillToolbar check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
+          <div className={'top-toolbar bg-light'+(props.adminSettings.isShowEditor?" mt-5":"")}>
+            <h3 className='mt-2'>Text Editor Toolbar</h3>
+            <QuillToolbar check checkCallback = {()=>{props.saveEdits()}} clipboardCallback = {() => {copyToClipboard()}}/>
+          </div>
         }
         <ReactQuill
           className={"text-left "+ props.className}
@@ -83,7 +86,7 @@ export default function QuillComponent(props){
       </div>
       :
        
-      <div className={props.className} style = {props.style}>        
+      <div className={props.className + " ql-editor"} style = {props.style}>        
         {/* <span>{JSON.stringify(props.variables)}</span>
         <span>{props.html}</span> */}
         <JsxParser

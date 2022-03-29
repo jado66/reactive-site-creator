@@ -39,6 +39,8 @@ export default function TextEditor(props) {
   const backgroundColor = content.isBacked?webStyle.colors[webStyle.componentStyles.textEditor.backgroundColor]:""
   const textColor = webStyle.colors[webStyle.componentStyles.textEditor.textColor]
   
+  
+
   let componentStyles = {}
   
   try {
@@ -74,10 +76,16 @@ export default function TextEditor(props) {
         showButtons(false);
       }}
     >
-      {/* {JSON.stringify(content.isBacked)} */}
+
     {!isSettingsMode ?
-      <div style={{backgroundColor:backgroundColor}} className = {"px-5 "+borderShape+(content.isBacked?" boxShadow py-5":"")}>
+      <div style={{
+        backgroundColor:backgroundColor,
+        boxShadow: content.isBacked?borderAndShadow:""
+        }} 
+        className = {"px-5 "+borderShape+(content.isBacked?"  py-5":"")}
+      >
         <QuillComponent 
+          adminSettings = {adminSettings}
           webStyle = {webStyle}
           className = "paragraph text-start" 
           html = {content.html} 
@@ -90,7 +98,13 @@ export default function TextEditor(props) {
 
       :
       <>
-        <div className={"input-group w-100 mx-auto d-flex px-5"+(content.isBacked?" boxShadow py-5":"")} style={{backgroundColor:backgroundColor}}>
+        <div 
+          style={{
+            backgroundColor:backgroundColor,
+            boxShadow: content.isBacked?borderAndShadow:""
+            }} 
+            className = {"px-5 "+borderShape+(content.isBacked?" pt-3 pb-5":"")}
+        >
           <form className="col">
 
             <h3>Text Editor Settings</h3>
@@ -113,7 +127,7 @@ export default function TextEditor(props) {
         <div className="relative d-flex  ">
           
         
-          {!isEditMode && !isSettingsMode &&
+          {!isSettingsMode &&
             <button className=" btn p-0"  style={{marginRight:"1.5em"}} data-no-dnd = "true" onClick = {()=>{setIsEditMode(!isEditMode)}}>
               <FontAwesomeIcon icon={faPencilAlt} style={{color:textColor}} />
             </button>

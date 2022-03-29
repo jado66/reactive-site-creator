@@ -13,8 +13,6 @@ var _sortable = require("@dnd-kit/sortable");
 
 var _utilities = require("@dnd-kit/utilities");
 
-require("bootstrap/dist/css/bootstrap.css");
-
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -39,6 +37,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+// import "bootstrap/dist/css/bootstrap.css";
 function AdminNavWrapper(props) {
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),

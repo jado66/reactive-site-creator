@@ -26,7 +26,7 @@ Quill.register(Font, true);
 // Quill Toolbar component
 export default function QuillToolbar(props){
     return(
-    <div id="toolbar">
+    <div id="toolbar" className={props.className?props.className:""}>
         <span className="ql-formats">
         <select className="ql-font" defaultValue="arial">
             <option value="arial">Arial</option>

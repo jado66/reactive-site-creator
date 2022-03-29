@@ -34,6 +34,7 @@ _reactQuill.Quill.register(Font, true); // Quill Toolbar component
 function QuillToolbar(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     id: "toolbar",
+    className: props.className ? props.className : "",
     children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
       className: "ql-formats",
       children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {

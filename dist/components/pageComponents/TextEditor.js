@@ -118,10 +118,12 @@ function TextEditor(props) {
     },
     children: [!isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       style: {
-        backgroundColor: backgroundColor
+        backgroundColor: backgroundColor,
+        boxShadow: content.isBacked ? borderAndShadow : ""
       },
-      className: "px-5 " + borderShape + (content.isBacked ? " boxShadow py-5" : ""),
+      className: "px-5 " + borderShape + (content.isBacked ? "  py-5" : ""),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
+        adminSettings: adminSettings,
         webStyle: webStyle,
         className: "paragraph text-start",
         html: content.html,
@@ -138,10 +140,11 @@ function TextEditor(props) {
       })
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "input-group w-100 mx-auto d-flex px-5" + (content.isBacked ? " boxShadow py-5" : ""),
         style: {
-          backgroundColor: backgroundColor
+          backgroundColor: backgroundColor,
+          boxShadow: content.isBacked ? borderAndShadow : ""
         },
+        className: "px-5 " + borderShape + (content.isBacked ? " pt-3 pb-5" : ""),
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
           className: "col",
           children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
@@ -166,7 +169,7 @@ function TextEditor(props) {
     }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "relative d-flex  ",
-        children: [!isEditMode && !isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+        children: [!isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
           className: " btn p-0",
           style: {
             marginRight: "1.5em"
