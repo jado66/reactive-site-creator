@@ -62,38 +62,49 @@ var site_template = {
   colors: {
     lightShade: "#EEE4E8",
     lightAccent: "#8BF6FD",
-    mainBrandColor: "#1D92B2",
+    mainBrandColor: "#17A9CC",
     darkAccent: "#1F4C57",
-    darkShade: "#1C191E"
+    darkShade: "#322127"
   },
   pages: [{
     id: "Page-1",
     name: "Home",
     path: "/",
     components: [{
-      name: "Header",
-      id: "Home-Header-0-000",
+      name: "NavigationBar",
+      id: "Home-NavBar-0-001 ",
+      content: {}
+    }, {
+      name: "Mosaic",
+      id: "Home-Mosaic-1-042 ",
+      content: {}
+    }, {
+      name: "TextEditor",
+      id: "Home-TextEditor-2-948",
       content: {
-        type: "h1",
-        header: "New Website Home"
+        html: "<h2 class=\"ql-align-center mb-3\">Here is some text</h2>\n                  <p class=\"ql-align-justify\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet pharetra nisl. Pellentesque in pellentesque justo, et ultrices augue. Mauris neque magna, laoreet vel purus nec, porttitor cursus quam. Maecenas posuere tellus in mauris elementum, id hendrerit lectus convallis. Nulla nec odio odio. Duis sed orci orci. Phasellus lobortis tristique ex vitae cursus. Ut eu erat sit amet orci tincidunt pretium. Phasellus malesuada, purus ut luctus scelerisque, turpis nisi dictum ex, malesuada semper nisl purus quis ligula. Mauris eu mollis mauris. Cras quis metus velit.</p>\n                  <p class=\"ql-align-justify\">Morbi vel tellus venenatis, rutrum neque sit amet, mollis enim. In eget placerat dolor. Mauris porttitor augue sit amet ligula commodo, sed sollicitudin turpis tempor. In placerat purus sem, a placerat ligula varius a. Curabitur consectetur, dui at pulvinar gravida, elit augue lobortis ipsum, laoreet bibendum massa libero id est. Donec maximus, turpis volutpat placerat lacinia, neque ante bibendum sapien, vel venenatis lectus diam in nisi. Donec aliquam dignissim tellus, condimentum eleifend arcu porttitor et. Morbi quis posuere dui, in vulputate augue.</p>\n                  <p class=\"ql-align-justify\">In diam tellus, congue vitae purus eget, posuere tristique diam. Vivamus placerat dictum nisi, ut scelerisque mauris tempor ut. Pellentesque imperdiet, arcu eu faucibus posuere, nulla ante gravida ligula, vel condimentum leo orci a ligula. Vivamus suscipit velit felis, sed mollis nibh faucibus nec. Fusce efficitur pretium blandit. In ac pulvinar purus. Nunc vitae magna orci. Ut maximus nibh ut felis tincidunt auctor. Etiam rhoncus sem at nunc feugiat, quis interdum urna tristique. Nullam elementum dapibus velit. Morbi ac odio commodo, iaculis lectus sagittis, dignissim felis. Aliquam fermentum at tellus a ullamcorper.</p>"
       }
     }, {
-      name: "NavigationBar",
-      id: "Home-NavBar-1-001 ",
+      name: "Footer",
+      id: "Home-Footer-2-051 ",
       content: {}
     }]
   }, {
     id: "Page-2",
-    name: "Blog",
-    path: "/blog",
+    name: "About",
+    path: "/about",
     components: [{
-      type: "h1",
-      name: "Header",
-      id: "Blog-Header-0-000",
-      content: {}
-    }, {
       name: "NavigationBar",
-      id: "Blog-NavBar-1-001",
+      id: "About-NavBar-1-001",
+      content: {}
+    }]
+  }, {
+    id: "Page-3",
+    name: "Contact",
+    path: "/contact",
+    components: [{
+      name: "NavigationBar",
+      id: "Contact-NavBar-1-001",
       content: {}
     }]
   }],
@@ -101,11 +112,15 @@ var site_template = {
     isUnique: false,
     includeSocials: true,
     homeLinkText: "Home",
-    html: "<h1>{pageName}</h1>",
+    html: "<h1 class = \"ql-align-center\">{siteName}</h1>",
     navData: [{
       id: 1,
-      name: "Blog",
-      path: "/blog"
+      name: "About Us",
+      path: "/about"
+    }, {
+      id: 2,
+      name: "Contact",
+      path: "/contact"
     }]
   },
   socialMedias: [{
@@ -124,7 +139,7 @@ var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
 function Website(props) {
-  var images = require.context('../../../public/images', true);
+  var images = []; // require.context('../../../public/images', true);
 
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -182,7 +197,7 @@ function Website(props) {
     colors: _objectSpread({}, site_template.colors),
     componentStyles: {
       all: {
-        shadowStyle: "",
+        shadowStyle: "C85 0px 16px 38px -12px, C1f 0px 4px 25px 0px, C33 0px 8px 10px -5px ",
         borderSize: 0,
         borderShape: "",
         borderColor: "darkShade",
@@ -205,7 +220,7 @@ function Website(props) {
         includeHeader: true,
         topBarMargin: false,
         isSticky: true,
-        stickyOffsetY: -2.5,
+        stickyOffsetY: -4.5,
         justifyButtons: "justify-content-start",
         backgroundColor: "darkAccent",
         textColor: "lightShade",
@@ -227,7 +242,7 @@ function Website(props) {
         backgroundColor: "darkAccent"
       },
       pictureFrame: {
-        backgroundColor: "darkAccent",
+        backgroundColor: "mainBrandColor",
         padding: ""
       },
       styledLink: {

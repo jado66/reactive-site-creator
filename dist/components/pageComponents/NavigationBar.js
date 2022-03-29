@@ -316,13 +316,14 @@ function NavigationBar(props) {
         className: "container mx-auto pt-3 relative-div",
         "data-no-dnd": "true",
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
+          adminSettings: adminSettings,
           variables: {
             pageName: props.pageName,
             siteName: webStyle.siteName
           },
           color: webStyle.colors[componentStyles.textColor],
           webStyle: webStyle,
-          className: "navbar-header",
+          className: "navbar-header ",
           html: content.html,
           isEditMode: isEditHeader,
           setHtml: function setHtml(value) {

@@ -76,7 +76,6 @@ export default function TextEditor(props) {
         showButtons(false);
       }}
     >
-
     {!isSettingsMode ?
       <div style={{
         backgroundColor:backgroundColor,

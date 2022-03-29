@@ -255,13 +255,14 @@ export default function NavigationBar(props) {
             webStyle.componentStyles.navigationBar.includeHeader &&
             <div className="container mx-auto pt-3 relative-div" data-no-dnd = "true">
               <QuillComponent 
+                adminSettings = {adminSettings}
                 variables = {{
                   pageName:props.pageName,
                   siteName:webStyle.siteName
                 }}
                 color = {webStyle.colors[componentStyles.textColor]}
                 webStyle = {webStyle}
-                className = "navbar-header" 
+                className = "navbar-header " 
                 html = {content.html} 
                 isEditMode = {isEditHeader} 
                 setHtml = {(value)=>{saveHtml(value)}} 

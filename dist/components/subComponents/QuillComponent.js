@@ -83,9 +83,9 @@ function QuillComponent(props) {
           copyToClipboard();
         }
       }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: 'top-toolbar bg-light' + (props.adminSettings.isShowEditor ? " mt-5" : ""),
+        className: 'top-toolbar bg-light text-center ' + (props.adminSettings.isShowEditor ? " mt-5" : ""),
         children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
-          className: "mt-2",
+          className: "mt-2 text-dark",
           children: "Text Editor Toolbar"
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillToolbar.default, {
           check: true,
@@ -106,7 +106,7 @@ function QuillComponent(props) {
         formats: formats
       })]
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: props.className + " ql-editor",
+      className: props.className + " ",
       style: props.style,
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactJsxParser.default, {
         truthyProp: true,

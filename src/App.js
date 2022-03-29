@@ -19,7 +19,7 @@ function App() {
 
   return (
     <Website
-      siteName = {"Jadon's Site"}
+      // siteName = {"Jadon's Site"}
       isAdmin = {isAuthenticated}
       customShadowStyles = {
         [
