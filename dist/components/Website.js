@@ -581,19 +581,24 @@ function Website(props) {
         name = _ref.name,
         path = _ref.path,
         components = _ref.components;
-    return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
-      exact: true,
-      path: path + "/:pathParam?",
-      children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
-        customShadowStyles: props.customShadowStyles || []
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
-        pageName: name,
-        pageID: id,
-        components: components,
-        defaultComponentList: ["Header", "Navbar"],
-        componentOptions: componentOptions
-      }, id)]
-    }, name + "Route");
+    return (
+      /*#__PURE__*/
+      // basename="/site-creator" exact path = {path+"/:pathParam?"} key = {name+"Route"}
+      (0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
+        basename: props.baseName,
+        exact: true,
+        path: path + "/:pathParam?",
+        children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
+          customShadowStyles: props.customShadowStyles || []
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
+          pageName: name,
+          pageID: id,
+          components: components,
+          defaultComponentList: ["Header", "Navbar"],
+          componentOptions: componentOptions
+        }, id)]
+      }, name + "Route")
+    );
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
     value: {
@@ -620,6 +625,7 @@ function Website(props) {
         minHeight: "100vh"
       },
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
+        basename: props.basename,
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
           children: [sitePages, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
             path: "*",

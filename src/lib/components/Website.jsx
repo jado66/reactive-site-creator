@@ -546,7 +546,8 @@ export default function Website(props) {
   let sitePages  = pages.map(({id, name, path, components})=> {
     
     return(
-        <Route exact path = {path+"/:pathParam?"} key = {name+"Route"}>
+        // basename="/site-creator" exact path = {path+"/:pathParam?"} key = {name+"Route"}
+        <Route basename={props.basename} exact path = {path+"/:pathParam?"} key = {name+"Route"}>
             {adminSettings.isAdmin && adminSettings.isShowEditor &&
                 <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
             }   
@@ -593,7 +594,7 @@ export default function Website(props) {
       {/* {JSON.stringify(adminSettings)} , overflowX: "hidden" */}
       <div className="App" style={{minHeight:"100vh"}}>
 
-        <Router>
+        <Router basename={props.basename}>
             <Switch>
             
             {/* App pages */}

@@ -21,6 +21,8 @@ function App() {
     <Website
       // siteName = {"Jadon's Site"}
       isAdmin = {isAuthenticated}
+      // basename = {"/site-creator"}
+      
       customShadowStyles = {
         [
           {
