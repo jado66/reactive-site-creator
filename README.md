@@ -1,10 +1,6 @@
-<p align="left">
-<a href="https://www.npmjs.com/package/reactive-site-creator"><img src="https://img.shields.io/npm/v/@reactive-site-creator" alt="Stable Release" /></a>
 
-<a href="./LICENSE"><img allt="Attribution-NonCommercial 4.0 International" src="https://licensebuttons.net/l/by-nc/4.0/80x15.png"/></a>
-
-</p>
-
+[![NPM Package](https://img.shields.io/npm/v/reactive-site-creator.svg?style=flat-square)](https://www.npmjs.com/package/reactive-site-creator)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 # Reactive-Site-Creator
 
 - **List Items Describing The Package:** description.
