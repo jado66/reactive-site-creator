@@ -60,3 +60,6 @@ Run the website
 ```sh
 npm start
 ```
+## License
+
+Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) © Jadon D Erwin 2022
