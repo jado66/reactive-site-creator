@@ -3,7 +3,13 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 # Reactive-Site-Creator
 
-- **List Items Describing The Package:** description.
+A website creator for React. 
+
+- **WYSIWYG:** a What You See Is What You Get website creator. 
+- **Works for static website:** can be configured for GitHub pages or other static hosting sites.
+- **Customizable:** you can add your own custom css styles and components 
+- **Open Source-ish:** use it for personal use or contact me at JadonDErwin@gmail.com for commercial use. I would make it completely open-source but then the large website creating corperations could "borrow" this code base
+
 
 ## Try Before Downloading
 
