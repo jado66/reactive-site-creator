@@ -11,7 +11,7 @@
 
 ## Try Before Downloading
 
-A live demo is available for testing: https://github.com/jado66/reactive-site-creator-live
+A live demo is available for testing: https://jado66.github.io/reactive-site-creator-live/
 
 ## Installation and Usage
 
@@ -41,7 +41,7 @@ npm install reactive-site-creator
 
 ### Import and Use the Website Component
 
-Open up your favorite code editor to your new website's directory. Open up **App.js** In the **src** directory and replace the code the with following:
+Open up your favorite code editor to your new website's directory. Open up **App.js** In the **/src** directory and replace the code the with following:
 
 ```js
 import Website from "reactive-site-creator/dist/components/Website";
