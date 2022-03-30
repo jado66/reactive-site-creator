@@ -585,7 +585,7 @@ function Website(props) {
       /*#__PURE__*/
       // basename="/site-creator" exact path = {path+"/:pathParam?"} key = {name+"Route"}
       (0, _jsxRuntime.jsxs)(_reactRouterDom.Route, {
-        basename: props.baseName,
+        basename: props.basename,
         exact: true,
         path: path + "/:pathParam?",
         children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
