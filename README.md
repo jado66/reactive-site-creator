@@ -7,7 +7,7 @@
 
 ## Try Before Downloading
 
-A live demo is available for testing: https://jado66.github.io/reactive-site-creator-live/
+A live [demo](https://jado66.github.io/reactive-site-creator-live/) is available for testing.
 
 ## Installation and Usage
 
