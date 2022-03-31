@@ -1,6 +1,6 @@
 {
   "name": "reactive-site-creator",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "private": false,
   "description": "Test React Component",
   "author": "Jado66",
@@ -23,6 +23,7 @@
     "bootstrap": "^5.1.3",
     "react-contenteditable": "^3.3.6",
     "react-jsx-parser": "^1.29.0",
+    "react-photo-gallery": "^8.0.0",
     "react-power-tooltip": "^1.0.2",
     "react-quill": "^1.3.5",
     "react-reveal": "^1.2.2",

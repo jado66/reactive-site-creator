@@ -97,6 +97,17 @@ var site_template = {
       name: "NavigationBar",
       id: "About-NavBar-1-001",
       content: {}
+    }, {
+      name: "Header",
+      id: "About-Header-1-001",
+      content: {
+        header: "Photo Gallery",
+        type: 'h2'
+      }
+    }, {
+      name: "PhotoGallery",
+      id: "About-PhotoGallery-1-001",
+      content: {}
     }]
   }, {
     id: "Page-3",
@@ -210,7 +221,7 @@ function Website(props) {
         applyBackground: true
       },
       header: {
-        size: "h1",
+        size: "h2",
         textColor: "darkShade"
       },
       mosaic: {
@@ -244,6 +255,10 @@ function Website(props) {
       pictureFrame: {
         backgroundColor: "mainBrandColor",
         padding: ""
+      },
+      photoGallery: {
+        margin: 8,
+        fullBorder: false
       },
       styledLink: {
         borderShape: null,
@@ -296,7 +311,7 @@ function Website(props) {
       savedData = _useState12[0],
       _setSavedData = _useState12[1];
 
-  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box", "Styled Link", "Mosaic", "Text Editor", "Picture Slide Show", "Subscription Cards"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
+  var componentOptions = ["Navigation Bar", "Header", "Footer", "Subscriber Box", "Styled Link", "Mosaic", "Text Editor", "Picture Slide Show", "Subscription Cards", "Photo Gallery"].sort(); // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
 
   var flatComponents = ["NavigationBar", "Header", "Footer", "CountDown", "ProductComparisonTable", "Subscriber Box"];
   var appMethods = {

@@ -9,6 +9,7 @@ exports.HeaderMenu = HeaderMenu;
 exports.LinkBoxMenu = LinkBoxMenu;
 exports.MosaicMenu = MosaicMenu;
 exports.NavigationBarMenu = NavigationBarMenu;
+exports.PhotoGalleryMenu = PhotoGalleryMenu;
 exports.PictureFrameMenu = PictureFrameMenu;
 exports.PictureSlideShowMenu = PictureSlideShowMenu;
 exports.StyledLinkMenu = StyledLinkMenu;
@@ -52,6 +53,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 (0, _reactMenu.applyStatics)(_reactMenu.SubMenu)(SubscriberCardMenu);
 (0, _reactMenu.applyStatics)(_reactMenu.SubMenu)(SubscriberBoxMenu);
 (0, _reactMenu.applyStatics)(_reactMenu.SubMenu)(BackgroundMenu);
+(0, _reactMenu.applyStatics)(_reactMenu.SubMenu)(PhotoGalleryMenu);
 
 function BackgroundMenu(props) {
   return /*#__PURE__*/(0, _react.createElement)(_reactMenu.SubMenu, _objectSpread(_objectSpread({}, props), {}, {
@@ -198,6 +200,76 @@ function SubscriberCardMenu(props) {
       onChange: function onChange(selectedOption) {
         props.handleSelectChange("subscriptionCard", "bodyBackgroundColor", selectedOption);
       }
+    })]
+  }));
+}
+
+function PhotoGalleryMenu(props) {
+  return /*#__PURE__*/(0, _react.createElement)(_reactMenu.SubMenu, _objectSpread(_objectSpread({}, props), {}, {
+    label: "Photo Gallery",
+    key: "photoGalleryMenu",
+    position: "auto",
+    align: "end",
+    menuoverflow: "auto",
+    menuClassName: "border border-dark"
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
+    children: "Photo Gallery Styles"
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+    className: "focusItem1"
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+    className: "p-0",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(MockMenuComponent, {
+      webStyle: props.webStyle,
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: " border p-2 mx-1 text-center my-3 flex-grow-1  ",
+        style: {
+          backgroundColor: props.webStyle.colors[props.webStyle.componentStyles.subscriberBox.backgroundColor],
+          color: props.webStyle.colors[props.webStyle.componentStyles.subscriberBox.headerTextColor]
+        },
+        children: "New Subscriber Box"
+      })
+    })
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "form-check",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "form-check-input me-3",
+        type: "checkbox",
+        checked: props.webStyle.componentStyles.photoGallery.fullBorder,
+        onClick: function onClick() {
+          return props.handleStyleToggle("photoGallery", "fullBorder");
+        }
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+        className: "form-check-label",
+        for: "flexCheckDefault",
+        children: "Border around photo-gallery"
+      })]
+    })
+  }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-2",
+      children: "Margin: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_OptionSelect.default, {
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("photoGallery", "margin", selectedOption);
+      },
+      value: props.webStyle.componentStyles.photoGallery.margin,
+      options: [{
+        value: 0,
+        label: "None"
+      }, {
+        value: 4,
+        label: "1/4 Spacing"
+      }, {
+        value: 8,
+        label: "1/2 Spacing"
+      }, {
+        value: 12,
+        label: "3/4 Spacing"
+      }, {
+        value: 16,
+        label: "Full Spacing"
+      }]
     })]
   }));
 }

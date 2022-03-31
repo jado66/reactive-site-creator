@@ -47,6 +47,7 @@ export default function ColorSelect(props) {
     return (
         <div style={{minWidth:"250px", textAlign:"left"}} className = "flex-grow-1">
             <Select 
+                {...props}
                 value={value}
                 myFontSize="20px" 
                 onChange={onChange}
@@ -55,6 +56,7 @@ export default function ColorSelect(props) {
                 styles={styles} 
                 className ={"flex-grow-1"}
                 menuPlacement="auto"
+            
 
             />
         </div>

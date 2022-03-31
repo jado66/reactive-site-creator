@@ -14,6 +14,10 @@ body,
   overflow-y: hidden;
 }
 
+.react-photo-gallery--gallery > div {
+  justify-content: space-around;
+}
+
 .top-toolbar {
   position: fixed;
   top: 0;

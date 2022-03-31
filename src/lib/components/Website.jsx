@@ -83,6 +83,19 @@ const site_template = {
                 id: `About-NavBar-1-001`,
                 content:{}
               },
+              {
+                name: "Header",
+                id: `About-Header-1-001`,
+                content:{
+                  header: "Photo Gallery",
+                  type: 'h2'
+                }
+              },
+              {
+                name: "PhotoGallery",
+                id: `About-PhotoGallery-1-001`,
+                content:{}
+              },
               
             ]
         }, 
@@ -200,7 +213,7 @@ export default function Website(props) {
           applyBackground: true
         },
         header:{
-          size: "h1",
+          size: "h2",
           textColor: "darkShade",
         },
         mosaic:{
@@ -235,6 +248,10 @@ export default function Website(props) {
           backgroundColor: "mainBrandColor",
           padding: "",
         },
+        photoGallery:{
+          margin: 8,
+          fullBorder: false
+        },
         styledLink:{
           borderShape: null,
           backgroundColor: "mainBrandColor",
@@ -262,7 +279,7 @@ export default function Website(props) {
   const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",site_template.pages)
   const [cart, setCart] = useState({})
   const [savedData, setSavedData] = useState({})
-  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show", "Subscription Cards"].sort()
+  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show", "Subscription Cards", "Photo Gallery"].sort()
 
   // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
   const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]

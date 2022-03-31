@@ -1,0 +1,165 @@
+import React, {useState, useContext, useCallback} from 'react'
+
+import useComponentStorage from '../helpers/useStorage';
+import Gallery from "react-photo-gallery";
+
+import { WebContext } from "../Website";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+
+export default function PhotoGallery(props){
+
+    let initialState =  props.content
+    if (Object.keys(initialState).length === 0){
+        initialState = {
+            photos: [
+                {
+                  src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
+                  width: 4, height: 3
+                },
+                {
+                  src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
+                  width: 1, height: 1
+                },
+                {
+                  src: "https://source.unsplash.com/qDkso9nvCg0/600x799",
+                  width: 3, height: 4
+                },
+                {
+                  src: "https://source.unsplash.com/iecJiKe_RNg/600x799",
+                  width: 3, height: 4
+                },
+                {
+                  src: "https://source.unsplash.com/epcsn8Ed8kY/600x799",
+                  width: 3, height: 4
+                },
+                {
+                  src: "https://source.unsplash.com/NQSWvyVRIJk/800x599",
+                  width: 4, height: 3
+                },
+                {
+                  src: "https://source.unsplash.com/zh7GEuORbUw/600x799",
+                  width: 3, height: 4
+                },
+                {
+                  src: "https://source.unsplash.com/PpOHJezOalU/800x599",
+                  width: 4, height: 3
+                },
+                {
+                  src: "https://source.unsplash.com/I1ASdgphUH4/800x599",
+                  width: 4, height: 3
+                }
+              ]
+        }
+    }
+
+    const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
+    const {webStyle, adminSettings, localDisplaySettings, apiMethods} = useContext(WebContext)
+    const [isShowButtons, showButtons] = useState(false);
+
+
+
+    let componentStyles = {}
+  
+    try {
+      componentStyles = 
+      {
+        textColor:webStyle.componentStyles.subscriberBox.headerTextColor,
+        backgroundColor:webStyle.componentStyles.subscriberBox.backgroundColor,
+        }
+    } 
+    catch (error) {
+        
+    }
+  
+    let borderShape = webStyle.componentStyles.all.borderShape
+    let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]
+    let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]
+  
+    let borderAndShadow = ""
+      if (webStyle.componentStyles.all.borderSize!==0){
+        borderAndShadow +=`${borderColor} 0px 1px ${webStyle.componentStyles.all.borderSize*2}px, ${borderColor} 0px 0px 0px ${webStyle.componentStyles.all.borderSize}px, `
+      }
+    borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
+
+    const handleContentChange = (key,value) => {
+      setContent((prevState) => ({
+        ...prevState,
+        [key]: value,
+      }));
+    };
+
+
+
+    const imageRenderer = useCallback(
+        ({ index, left, top, key, photo, margin }) => (
+          <StyledImage
+            // selected={selectAll ? true : false}
+            borderShape = {borderShape}
+            boxShadow = {borderAndShadow}
+            key={key}
+            margin={margin}
+            index={index}
+            photo={photo}
+            left={left}
+            top={top}
+          />
+        ),
+        [borderShape, borderAndShadow]
+      );
+        
+
+    return(
+        <div
+            data-no-dnd = "true"
+            style={{...props.style}}
+            className='px-5'
+        >
+            <Gallery photos={content.photos} margin ={32} direction={"column"} renderImage={imageRenderer}/>
+        </div>
+      )
+  };
+
+
+
+const cont = {
+    backgroundColor: "#eee",
+    cursor: "pointer",
+    overflow: "hidden",
+    position: "relative",
+    
+  };
+
+function StyledImage({
+    index,
+    borderShape,
+    boxShadow,
+    photo,
+    margin,
+    direction,
+    top,
+    left,
+  }){
+    
+    if (direction === "column") {
+        cont.position = "absolute";
+        cont.left =left;
+        cont.top =top;
+      }
+    return(
+        <div style={{ margin, height:photo.height, boxShadow:boxShadow, width:photo.width, ...cont }}
+            className={borderShape}
+        >
+            <img
+                className={borderShape}
+                style = {{ }}
+                alt={photo.title}
+                // style={
+                // // isSelected ? { ...imgStyle, ...selectedImgStyle } : { ...imgStyle }
+                // }
+                {...photo}
+                // onClick={handleOnClick}
+        />
+        </div>
+        )
+}

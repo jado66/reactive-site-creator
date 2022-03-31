@@ -47,6 +47,8 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
+var _PhotoGallery = _interopRequireDefault(require("../pageComponents/PhotoGallery"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -145,7 +147,8 @@ function DynamicPage(props) {
     StyledLink: _StyledLink.default,
     TextEditor: _TextEditor.default,
     PictureSlideShow: _PictureSlideShow.default,
-    SubscriptionCards: _SubscriptionCards.default // VideoFrame:VideoFrame,
+    SubscriptionCards: _SubscriptionCards.default,
+    PhotoGallery: _PhotoGallery.default // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,
     // BlogPreview:BlogPreview,

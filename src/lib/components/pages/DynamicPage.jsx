@@ -54,6 +54,7 @@ import { WebContext } from "../Website";
 import SubscriberBox from "../pageComponents/SubscriberBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import PhotoGallery from "../pageComponents/PhotoGallery";
 
 export default function DynamicPage(props) {
   const {flatComponents, webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
@@ -112,7 +113,8 @@ export default function DynamicPage(props) {
     StyledLink:StyledLink,
     TextEditor:TextEditor,
     PictureSlideShow:PictureSlideShow,
-    SubscriptionCards:SubscriptionCards
+    SubscriptionCards:SubscriptionCards,
+    PhotoGallery:PhotoGallery
     // VideoFrame:VideoFrame,
     // CardPaymentBlock:CardPaymentBlock,
     // DynamicForm:DynamicForm,

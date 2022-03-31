@@ -246,6 +246,12 @@ function StylesEditor(props) {
   };
 
   var componentStyleMenus = (_componentStyleMenus = {
+    "Photo Gallery": /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMenus.PhotoGalleryMenu, {
+      webStyle: webStyle,
+      handleStyleToggle: handleStyleToggle,
+      handleSelectChange: handleSelectChange,
+      handleStyleChange: handleStyleChange
+    }),
     Background: /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMenus.BackgroundMenu, {
       webStyle: webStyle,
       handleStyleToggle: handleStyleToggle,
@@ -622,18 +628,6 @@ function StylesEditor(props) {
               children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
                 children: "Website Borders"
               }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
-                ttText: "This is the default component border color",
-                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-                  className: "me-3",
-                  children: "Border Color:"
-                }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
-                  colors: webStyle.colors,
-                  value: webStyle.componentStyles.all.borderColor,
-                  onChange: function onChange(selectedOption) {
-                    handleSelectChange("all", "borderColor", selectedOption);
-                  }
-                })]
-              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
                 ttText: "This is the default border thickness",
                 children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
                   className: "me-2",
@@ -668,6 +662,19 @@ function StylesEditor(props) {
                     value: 4,
                     label: "4px - Extra Thick Border"
                   }]
+                })]
+              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
+                ttText: webStyle.componentStyles.all.borderSize === 0 ? "Change border thickness to set border color." : "This is the default component border color",
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                  className: "me-3",
+                  children: "Border Color:"
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+                  isDisabled: webStyle.componentStyles.all.borderSize === 0,
+                  colors: webStyle.colors,
+                  value: webStyle.componentStyles.all.borderColor,
+                  onChange: function onChange(selectedOption) {
+                    handleSelectChange("all", "borderColor", selectedOption);
+                  }
                 })]
               }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
                 ttText: "This is the shape of the component borders",
@@ -780,7 +787,7 @@ function StylesEditor(props) {
               }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
                 children: "Misc Settings"
               }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
-                ttText: "This is the default shadow color",
+                ttText: "This is the link color",
                 children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
                   className: "me-2",
                   children: "Link Style: "

@@ -89,7 +89,7 @@ function ColorSelect(props) {
       textAlign: "left"
     },
     className: "flex-grow-1",
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactSelect.default, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactSelect.default, _objectSpread(_objectSpread({}, props), {}, {
       value: value,
       myFontSize: "20px",
       onChange: onChange,
@@ -98,6 +98,6 @@ function ColorSelect(props) {
       styles: styles,
       className: "flex-grow-1",
       menuPlacement: "auto"
-    })
+    }))
   });
 }

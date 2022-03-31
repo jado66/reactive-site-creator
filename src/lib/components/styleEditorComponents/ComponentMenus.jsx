@@ -25,6 +25,7 @@ applyStatics(SubMenu)(MosaicMenu);
 applyStatics(SubMenu)(SubscriberCardMenu);
 applyStatics(SubMenu)(SubscriberBoxMenu);
 applyStatics(SubMenu)(BackgroundMenu);
+applyStatics(SubMenu)(PhotoGalleryMenu);
 
 export function BackgroundMenu(props){
   return (
@@ -155,6 +156,62 @@ export function SubscriberCardMenu(props) {
           headerBackgroundColor: "darkAccent",
           bodyTextColor: "darkShade",
           bodyBackgroundColor: "lightShade" */}
+    </SubMenu>
+  );
+}
+
+export function PhotoGalleryMenu(props) {
+  return (
+    <SubMenu {...props} label="Photo Gallery" key={"photoGalleryMenu"} position={"auto"} align = {"end"}  menuoverflow={"auto"} menuClassName={"border border-dark"} >
+      <MenuHeader>Photo Gallery Styles</MenuHeader>
+      <FocusableItem
+        className={"focusItem1"}
+      />
+
+      <FocusableItem className={"p-0"}>
+        <MockMenuComponent webStyle = {props.webStyle}>
+          <div 
+            className=" border p-2 mx-1 text-center my-3 flex-grow-1  " 
+            style={
+              {
+                backgroundColor:props.webStyle.colors[props.webStyle.componentStyles.subscriberBox.backgroundColor],
+                color:props.webStyle.colors[props.webStyle.componentStyles.subscriberBox.headerTextColor]
+              }
+            } 
+          >
+            New Subscriber Box
+          </div>
+        </MockMenuComponent>
+      </FocusableItem>
+      <FocusableItem>
+        <div className="form-check">
+          <input className="form-check-input me-3" type="checkbox" 
+            checked={props.webStyle.componentStyles.photoGallery.fullBorder} 
+            onClick={()=>props.handleStyleToggle("photoGallery","fullBorder")}
+          />
+          <label className="form-check-label" for="flexCheckDefault">
+            Border around photo-gallery
+          </label>
+        </div>
+      </FocusableItem>
+      <FocusableItem>
+        <span className="me-2">Margin: </span> 
+        <OptionSelect
+          onChange = {(selectedOption)=>{props.handleSelectChange("photoGallery","margin",selectedOption)}}
+          value = {props.webStyle.componentStyles.photoGallery.margin}
+          options = 
+            {
+              [
+                {value:0, label:"None"},
+                {value:4, label:"1/4 Spacing"},
+                {value:8, label:"1/2 Spacing"},
+                {value:12, label:"3/4 Spacing"},
+                {value:16, label:"Full Spacing"}
+              ]
+            }          
+        />
+      </FocusableItem>
+      
     </SubMenu>
   );
 }

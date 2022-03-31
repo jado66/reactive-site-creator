@@ -20,7 +20,7 @@ import { WebContext } from "./Website";
 import ColorSelect from "./styleEditorComponents/customSelects/ColorSelect";
 import OptionSelect from "./styleEditorComponents/customSelects/OptionSelect";
 
-import { HeaderMenu, FooterMenu, NavigationBarMenu, LinkBoxMenu, PictureFrameMenu, StyledLinkMenu, PictureSlideShowMenu, TextEditorMenu, SubscriberCardMenu, MosaicMenu, BackgroundMenu, SubscriberBoxMenu } from "./styleEditorComponents/ComponentMenus";
+import { HeaderMenu, FooterMenu, NavigationBarMenu, LinkBoxMenu, PictureFrameMenu, StyledLinkMenu, PictureSlideShowMenu, TextEditorMenu, SubscriberCardMenu, MosaicMenu, BackgroundMenu, SubscriberBoxMenu, PhotoGalleryMenu } from "./styleEditorComponents/ComponentMenus";
 
 export const UserPreferencesContext = createContext()
 
@@ -237,6 +237,7 @@ export default function StylesEditor(props) {
   }
 
   const componentStyleMenus = {
+    "Photo Gallery": <PhotoGalleryMenu webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     Background: <BackgroundMenu webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     Footer: <FooterMenu webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     Header: <HeaderMenu webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
@@ -249,8 +250,7 @@ export default function StylesEditor(props) {
     "Navigation Bar": <NavigationBarMenu  webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     "Link Box": <LinkBoxMenu  webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     "Picture Frame": <PictureFrameMenu  webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
-    "Subscriber Box": <SubscriberBoxMenu  webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>
-
+    "Subscriber Box": <SubscriberBoxMenu  webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
   };  
 
 const socialMediaSelectOptions = [
@@ -375,14 +375,7 @@ const socialMediaSelectOptions = [
               </SubMenu>
               <SubMenu label = {"Website Styles"} menuClassName={"border border-dark"}>
                 <MenuHeader>Website Borders</MenuHeader>
-                  <FocusableItemTT ttText = {"This is the default component border color"}>
-                    <span className="me-3">Border Color:</span> 
-                    <ColorSelect 
-                      colors = {webStyle.colors} 
-                      value = {webStyle.componentStyles.all.borderColor}
-                      onChange = {(selectedOption)=>{handleSelectChange("all","borderColor",selectedOption)}}  
-                    />
-                  </FocusableItemTT>
+                  
                   <FocusableItemTT ttText = {"This is the default border thickness"}>
                     <span className="me-2">Border Thickness: </span> 
                     {/* <select value ={webStyle.componentStyles.all.borderSize} onChange = {(evt)=>{handleComponentStyleChange("all","borderSize",evt.target.value)}}> */}
@@ -399,6 +392,15 @@ const socialMediaSelectOptions = [
                         {value:3, label:"3px - Thick Border"},
                         {value:4, label:"4px - Extra Thick Border"}
                       ]}
+                    />
+                  </FocusableItemTT>
+                  <FocusableItemTT ttText = {webStyle.componentStyles.all.borderSize === 0?"Change border thickness to set border color.":"This is the default component border color"}>
+                    <span className="me-3">Border Color:</span> 
+                    <ColorSelect 
+                      isDisabled={webStyle.componentStyles.all.borderSize === 0}
+                      colors = {webStyle.colors} 
+                      value = {webStyle.componentStyles.all.borderColor}
+                      onChange = {(selectedOption)=>{handleSelectChange("all","borderColor",selectedOption)}}  
                     />
                   </FocusableItemTT>
                   <FocusableItemTT ttText = {"This is the shape of the component borders"}>
@@ -480,7 +482,7 @@ const socialMediaSelectOptions = [
                   </FocusableItemTT>
                   <MenuDivider />
                   <MenuHeader>Misc Settings</MenuHeader>
-                  <FocusableItemTT ttText = {"This is the default shadow color"}>
+                  <FocusableItemTT ttText = {"This is the link color"}>
                     <span className="me-2">Link Style: </span> 
                     {/* <select value ={webStyle.componentStyles.all.shadowColor} onChange = {(evt)=>{handleComponentStyleChange("all","shadowColor",evt.target.value)}}> */}
                     <OptionSelect 
