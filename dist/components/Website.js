@@ -67,8 +67,9 @@ function Website(props) {
   var _useState = (0, _react.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       siteIsDraft = _useState2[0],
-      _setSiteIsDraft = _useState2[1]; // Components
+      _setSiteIsDraft = _useState2[1];
 
+  var siteData = props.defaultSiteData || _defaultData.defaultSiteData; // Components
 
   var componentOptions = props.defaultComponentOptions || _defaultData.defaultComponentOptions;
   componentOptions = _objectSpread(_objectSpread({}, _defaultData.defaultComponentOptions), props.componentOptions);
@@ -118,7 +119,7 @@ function Website(props) {
       setMsgPort = _useState8[1];
 
   var _useContextStorage = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "webStyle", {
-    siteName: props.siteName || _defaultData.defaultSiteData.siteName,
+    siteName: siteData.siteName,
     // Website colors
     colors: props.colors || _defaultData.defaultWebStyles.colors,
     componentStyles: props.componentStyles || _defaultData.defaultWebStyles.componentStyles
@@ -127,22 +128,22 @@ function Website(props) {
       webStyle = _useContextStorage2[0],
       _setWebStyle = _useContextStorage2[1];
 
-  var _useContextStorage3 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "masterNavData", _defaultData.defaultSiteData.masterNavBarData),
+  var _useContextStorage3 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "masterNavData", siteData.masterNavBarData),
       _useContextStorage4 = _slicedToArray(_useContextStorage3, 2),
       masterNavData = _useContextStorage4[0],
       _setMasterNavData = _useContextStorage4[1];
 
-  var _useContextStorage5 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "socialMedias", _defaultData.defaultSiteData.socialMedias),
+  var _useContextStorage5 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "socialMedias", siteData.socialMedias),
       _useContextStorage6 = _slicedToArray(_useContextStorage5, 2),
       socialMedias = _useContextStorage6[0],
       _setSocialMedias = _useContextStorage6[1];
 
-  var _useContextStorage7 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "pages", _defaultData.defaultSiteData.pages),
+  var _useContextStorage7 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "pages", siteData.pages),
       _useContextStorage8 = _slicedToArray(_useContextStorage7, 2),
       pages = _useContextStorage8[0],
       _setPages = _useContextStorage8[1];
 
-  var _useContextStorage9 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "promoCodes", _defaultData.defaultSiteData.pages),
+  var _useContextStorage9 = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "promoCodes", siteData.pages),
       _useContextStorage10 = _slicedToArray(_useContextStorage9, 2),
       promoCodes = _useContextStorage10[0],
       _setPromoCodes = _useContextStorage10[1];

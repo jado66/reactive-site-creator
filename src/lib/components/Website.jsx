@@ -30,6 +30,8 @@ export default function Website(props) {
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
 
+  const siteData = props.defaultSiteData || defaultSiteData
+
   // Components
   let componentOptions = (props.defaultComponentOptions || defaultComponentOptions)
   componentOptions = {...defaultComponentOptions, ...props.componentOptions}
@@ -70,16 +72,16 @@ export default function Website(props) {
   const [msgPort,setMsgPort] = useState("")
 
   const [webStyle, setWebStyle] = useContextStorage(adminSettings,apiMethods,msgPort,"webStyle",{
-    siteName: props.siteName || defaultSiteData.siteName,
+    siteName: siteData.siteName,
     // Website colors
     colors: props.colors || defaultWebStyles.colors,
     componentStyles : props.componentStyles || defaultWebStyles.componentStyles
   })
   
-  const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",defaultSiteData.masterNavBarData)
-  const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",defaultSiteData.socialMedias)
-  const [pages, setPages] = useContextStorage(adminSettings,apiMethods,msgPort,"pages",defaultSiteData.pages)
-  const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",defaultSiteData.pages)
+  const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",siteData.masterNavBarData)
+  const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",siteData.socialMedias)
+  const [pages, setPages] = useContextStorage(adminSettings,apiMethods,msgPort,"pages",siteData.pages)
+  const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",siteData.pages)
   const [cart, setCart] = useState({})
   const [savedData, setSavedData] = useState({})
   

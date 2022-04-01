@@ -2,9 +2,6 @@
 import Website from './lib/components/Website';
 import { useEffect, useState } from 'react'
 
-
-
-
 const componentOptions = {
   TestComponent: {
     componentName: "Test Component",
