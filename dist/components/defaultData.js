@@ -173,9 +173,9 @@ var defaultWebStyles = {
       fullBorder: false
     },
     styledLink: {
-      borderShape: null,
-      backgroundColor: "mainBrandColor",
-      textColor: "darkShade"
+      borderShape: 'rounded-6',
+      backgroundColor: "darkAccent",
+      textColor: "lightShade"
     },
     footer: {
       textColor: "darkShade"
