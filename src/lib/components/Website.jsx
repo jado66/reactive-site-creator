@@ -16,139 +16,11 @@ import '../css/bootstrapOverrides.css'
 import StylesEditor from "./StylesEditor";
 import DynamicPage from "./pages/DynamicPage";
 import Page404 from "./pages/Page404";
-// Pages
-// import CheckoutPage from "./pages/checkoutPage";
-// import AdminPage from "./pages/AdminPage"
-// import AdminLogin from "./pages/AdminLogin"
-// import Page404 from "./pages/Page404"
 
+// Custom Hook for Saving Context Data
+import useContextStorage from "./helpers/useContextStorage";
 
-// Data
-
-import delayCallback from "./helpers/delayCallback";
-
-// import {site_template} from "./websiteVersions/current"
-
-const site_template = {
-    siteName: "New Website",
-    colors: {
-        lightShade: "#EEE4E8",
-        lightAccent: "#8BF6FD",
-        mainBrandColor: "#17A9CC",
-        darkAccent: "#1F4C57" ,
-        darkShade: "#322127"
-    },
-    pages: [
-        {
-          id:"Page-1",
-          name:"Home",
-          path:"/",
-          components:
-            [
-              {
-                  name: "NavigationBar",
-                  id: `Home-NavBar-0-001 `,
-                  content:{}
-              },
-              {
-                name: "Mosaic",
-                id: `Home-Mosaic-1-042 `,
-                content:{}
-              },
-              {
-                name: "TextEditor",
-                id: `Home-TextEditor-2-948`,
-                content: {
-                  html:`<h2 class="ql-align-center mb-3">Here is some text</h2>
-                  <p class="ql-align-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet pharetra nisl. Pellentesque in pellentesque justo, et ultrices augue. Mauris neque magna, laoreet vel purus nec, porttitor cursus quam. Maecenas posuere tellus in mauris elementum, id hendrerit lectus convallis. Nulla nec odio odio. Duis sed orci orci. Phasellus lobortis tristique ex vitae cursus. Ut eu erat sit amet orci tincidunt pretium. Phasellus malesuada, purus ut luctus scelerisque, turpis nisi dictum ex, malesuada semper nisl purus quis ligula. Mauris eu mollis mauris. Cras quis metus velit.</p>
-                  <p class="ql-align-justify">Morbi vel tellus venenatis, rutrum neque sit amet, mollis enim. In eget placerat dolor. Mauris porttitor augue sit amet ligula commodo, sed sollicitudin turpis tempor. In placerat purus sem, a placerat ligula varius a. Curabitur consectetur, dui at pulvinar gravida, elit augue lobortis ipsum, laoreet bibendum massa libero id est. Donec maximus, turpis volutpat placerat lacinia, neque ante bibendum sapien, vel venenatis lectus diam in nisi. Donec aliquam dignissim tellus, condimentum eleifend arcu porttitor et. Morbi quis posuere dui, in vulputate augue.</p>
-                  <p class="ql-align-justify">In diam tellus, congue vitae purus eget, posuere tristique diam. Vivamus placerat dictum nisi, ut scelerisque mauris tempor ut. Pellentesque imperdiet, arcu eu faucibus posuere, nulla ante gravida ligula, vel condimentum leo orci a ligula. Vivamus suscipit velit felis, sed mollis nibh faucibus nec. Fusce efficitur pretium blandit. In ac pulvinar purus. Nunc vitae magna orci. Ut maximus nibh ut felis tincidunt auctor. Etiam rhoncus sem at nunc feugiat, quis interdum urna tristique. Nullam elementum dapibus velit. Morbi ac odio commodo, iaculis lectus sagittis, dignissim felis. Aliquam fermentum at tellus a ullamcorper.</p>`
-                }
-              },
-              {
-                name: "Footer",
-                id: `Home-Footer-2-051 `,
-                content:{}
-              }
-            ]
-        },
-        {
-          id:"Page-2",
-          name:"About",
-          path:"/about",
-          components:
-            [
-              {
-                name: "NavigationBar",
-                id: `About-NavBar-1-001`,
-                content:{}
-              },
-              {
-                name: "Header",
-                id: `About-Header-1-001`,
-                content:{
-                  header: "Photo Gallery",
-                  type: 'h2'
-                }
-              },
-              {
-                name: "PhotoGallery",
-                id: `About-PhotoGallery-1-001`,
-                content:{}
-              },
-              
-            ]
-        }, 
-        {
-          id:"Page-3",
-          name:"Contact",
-          path:"/contact",
-          components:
-            [
-              {
-                name: "NavigationBar",
-                id: `Contact-NavBar-1-001`,
-                content:{}
-              }
-            ]
-        }  
-      ],
-    masterNavBarData: 
-      {
-        isUnique: false,
-        includeSocials: true,
-        homeLinkText: "Home",
-        html: `<h1 class = "ql-align-center">{siteName}</h1>`,
-        navData: 
-        [
-          {
-            id:1,
-            name:"About Us",
-            path:"/about"
-          },
-          {
-            id:2,
-            name:"Contact",
-            path:"/contact"
-          }
-        ]
-      },
-    socialMedias:[
-        {
-            location  :"Youtube",
-            link:"https://youtube.com"
-        },
-        {
-          location  :"Instagram",
-          link:"https://instagram.com"
-        },
-        {
-          location  :"Twitter",
-          link:"https://instagram.com"
-        }
-        ],
-    promoCodes:{}
-}
+import { defaultSiteData, defaultWebStyles, defaultComponentOptions } from "./defaultData"
 
 export const WebContext = createContext()
 
@@ -157,6 +29,10 @@ export default function Website(props) {
   const images = []// require.context('../../../public/images', true);
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
+
+  // Components
+  let componentOptions = (props.defaultComponentOptions || defaultComponentOptions)
+  componentOptions = {...defaultComponentOptions, ...props.componentOptions}
 
   const apiMethods = {
     getFromDatabase:  (id,componentState) =>{
@@ -194,96 +70,18 @@ export default function Website(props) {
   const [msgPort,setMsgPort] = useState("")
 
   const [webStyle, setWebStyle] = useContextStorage(adminSettings,apiMethods,msgPort,"webStyle",{
-    siteName: props.siteName || site_template.siteName,
+    siteName: props.siteName || defaultSiteData.siteName,
     // Website colors
-    colors: {...site_template.colors},
-    componentStyles :{
-        all:{
-          shadowStyle: "C85 0px 16px 38px -12px, C1f 0px 4px 25px 0px, C33 0px 8px 10px -5px ",
-          borderSize: 0,
-          borderShape: "",
-          borderColor: "darkShade",
-          shadowColor: 'darkShade',
-          linkStyle: "text-decoration-underline"
-
-        },
-        background:{
-          marginColor:"lightShade",
-          backgroundColor: "lightAccent",
-          applyBackground: true
-        },
-        header:{
-          size: "h2",
-          textColor: "darkShade",
-        },
-        mosaic:{
-          arrangement: "LP,RL-LL,RP"
-        },
-        navigationBar:{
-          includeHeader: true,
-          topBarMargin: false,
-          isSticky: true,
-          stickyOffsetY: -4.5,
-          justifyButtons: "justify-content-start",
-          backgroundColor: "darkAccent",
-          textColor: "lightShade",
-          navbarStyle: "fullWidth"
-        },
-        linkBox:{
-          backgroundColor: "lightShade",
-          textColor: "darkShade",
-          linkColor: "darkAccent"
-        },
-        subscriptionCard:{
-          headerTextColor: "lightShade",
-          headerBackgroundColor: "darkAccent",
-          bodyTextColor: "darkShade",
-          bodyBackgroundColor: "lightShade"
-        },
-        subscriberBox:{
-          headerTextColor: "lightShade",
-          backgroundColor: "darkAccent",
-        },
-        pictureFrame:{
-          backgroundColor: "mainBrandColor",
-          padding: "",
-        },
-        photoGallery:{
-          margin: 8,
-          fullBorder: false
-        },
-        styledLink:{
-          borderShape: null,
-          backgroundColor: "mainBrandColor",
-          textColor: "darkShade",
-        },
-        footer:{
-          textColor: "darkShade",
-        },
-        textEditor:{
-          backgroundColor: "lightShade",
-          textColor: "darkShade",
-        },
-      }
-  } )
-
-  // Ensure backwards compatible
-  useEffect(() => {
-    
-      
-  },[webStyle])
+    colors: props.colors || defaultWebStyles.colors,
+    componentStyles : props.componentStyles || defaultWebStyles.componentStyles
+  })
   
-  const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",site_template.masterNavBarData)
-  const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",site_template.socialMedias)
-  const [pages, setPages] = useContextStorage(adminSettings,apiMethods,msgPort,"pages",site_template.pages)
-  const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",site_template.pages)
+  const [masterNavData, setMasterNavData] =  useContextStorage(adminSettings,apiMethods,msgPort,"masterNavData",defaultSiteData.masterNavBarData)
+  const [socialMedias, setSocialMedias] = useContextStorage(adminSettings,apiMethods,msgPort,"socialMedias",defaultSiteData.socialMedias)
+  const [pages, setPages] = useContextStorage(adminSettings,apiMethods,msgPort,"pages",defaultSiteData.pages)
+  const [promoCodes, setPromoCodes] = useContextStorage(adminSettings,apiMethods,msgPort,"promoCodes",defaultSiteData.pages)
   const [cart, setCart] = useState({})
   const [savedData, setSavedData] = useState({})
-  const componentOptions = ["Navigation Bar","Header","Footer","Subscriber Box", "Styled Link","Mosaic","Text Editor", "Picture Slide Show", "Subscription Cards", "Photo Gallery"].sort()
-
-  // const componentOptions = ["Product Comparison Table","Walk Through","Product Comparison Cards","Paragraph","Paragraph Backed","Quick Link","Navigation Bar","Header","Footer","Mosaic","Captioned Picture","Video Frame","Slide Show"].sort()
-  const flatComponents = ["NavigationBar","Header","Footer","CountDown","ProductComparisonTable","Subscriber Box"]
-
   
   const appMethods = {
     setWebStyle: (state) => setWebStyle(state),
@@ -296,8 +94,6 @@ export default function Website(props) {
     setSavedData: (state) => setSavedData(state),
     setPromoCodes: (state) => setPromoCodes(state),
     
-    
-
     addToCart: (cartItem) =>{
       // Check if we already have it in the cart
       if (cartItem.name in cart){
@@ -432,6 +228,7 @@ export default function Website(props) {
 
       setSocialMedias([...socialMedias, newSocialMedia]);
     },
+
     toggleViewDraftEdits:(toggleOn)=>{
         
         appMethods.setAdminSettings((prevState) => ({
@@ -442,8 +239,8 @@ export default function Website(props) {
           setSiteIsDraft(false)
         }
         appMethods.sendMsgPortMsg("reload")
-
     },
+
     saveWebsite:()=>{
       // Check if user really wants to publish edits
       if(window.confirm("Are you sure you want to publish your edits?")){
@@ -463,15 +260,13 @@ export default function Website(props) {
       else{
         alert("Please sign in as Admin to save")
       }
-
     },
 
     toggleStyleEditor:()=>{
       setAdminSettings(prevState => ({
         ...prevState,
         isShowEditor: !prevState.isShowEditor
-      }))
-     
+      }))   
     },
 
     saveComponentData: (pageName,index, data)=>{
@@ -499,10 +294,9 @@ export default function Website(props) {
   useEffect(() => {
     setCartFromStorage();
 
-
     window.addEventListener('resize', handleWindowSizeChange);
     return () => {
-        window.removeEventListener('resize', handleWindowSizeChange);
+      window.removeEventListener('resize', handleWindowSizeChange);
     }
 
   }, []);
@@ -516,7 +310,6 @@ export default function Website(props) {
     }))
 
   }, [props.isAdmin]);
-
 
   const setCartFromStorage = () => {
     // This stays as a local storage item
@@ -557,213 +350,69 @@ export default function Website(props) {
     }
   }, [msgPort]);
 
-  
-
-
   let sitePages  = pages.map(({id, name, path, components})=> {
-    
     return(
-        // basename="/site-creator" exact path = {path+"/:pathParam?"} key = {name+"Route"}
-        <Route basename={props.basename} exact path = {path+"/:pathParam?"} key = {name+"Route"}>
-            {adminSettings.isAdmin && adminSettings.isShowEditor &&
-                <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
-            }   
-            
-            
-            
-            <DynamicPage   
-              key = {id} 
-              pageName = {name}
-              pageID = {id}
-              components = {components}
-              defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}
-            />
-            
-        </Route>
-        )
-    }
-     
-  )
-
-  
+      <Route basename={props.basename} exact path = {path+"/:pathParam?"} key = {name+"Route"}>
+        {adminSettings.isAdmin && adminSettings.isShowEditor &&
+          <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
+        }   
+        <DynamicPage   
+          key = {id} 
+          pageName = {name}
+          pageID = {id}
+          components = {components}
+          componentOptions = {componentOptions}
+          defaultComponentList = { ["Header","Navbar"]}
+        />    
+      </Route>
+      )
+    }   
+  ) 
 
   return (
     <WebContext.Provider value = {
-        {
-          images: images,
-          localDisplaySettings: localDisplaySettings,
-          webStyle: webStyle,
-          socialMedias: socialMedias,
-          masterNavData: masterNavData,
-          pages: pages,
-          promoCodes: promoCodes,
-          cart: cart, 
-          adminSettings: adminSettings,
-          siteIsDraft: siteIsDraft,
-          msgPort: msgPort,
-          savedData: savedData, 
-          flatComponents: flatComponents,
-          componentOptions: componentOptions,
-          appMethods: appMethods,
-          apiMethods: apiMethods
-        }
-      }>
-      {/* {JSON.stringify(adminSettings)} , overflowX: "hidden" */}
-      <div className="App" style={{minHeight:"100vh"}}>
-
-        <Router basename={props.basename}>
-            <Switch>
-            
-            {/* App pages */}
-            {sitePages}
-            
-            {/* Admin */}
-            {/* <Route path="/admin">
-              { webStyle.isAdmin?
-                <AdminPage
-                          cart = {cart} cartCallbacks = {cartCallbacks} 
-                          promoCodes = {promoCodes}
-                          updateWebStyles = {updateWebStyles} pages = {pages} pageCallbacks = {pageCallbacks} 
-                          socialMedias = {socialMedias} webStyle = {webStyle} logOutCallback = {()=>{setWebStyle(prevState => ({
-                            ...prevState,
-                            isEditMode: false,
-                            isAdmin: false,
-                        }))}}/>
-                :
-                <AdminLogin cart = {cart} updateWebStyles = {updateWebStyles} pages = {pages} pageCallbacks = {pageCallbacks} 
-                            socialMedias = {socialMedias} webStyle = {webStyle} signInCallback = {(rememberMe)=>{ 
-                              if (rememberMe){
-                                localStorage.setItem('webStyle-isAdmin',"true");
-                              }
-                              setWebStyle(prevState => ({
-                                                          ...prevState,
-                                                          isAdmin: true,
-                                                      }))}} />
-              }
-            </Route> */}
-            {/* <Route path="/checkout">
-                <CheckoutPage promoCodes = {promoCodes} cart = {cart} cartCallbacks = {cartCallbacks} pages = {pages} pageCallbacks = {pageCallbacks} socialMedias = {socialMedias} webStyle = {webStyle}/>
-            </Route>
-             */}
-             <Route path = "*">
-               <>
-               {adminSettings.isAdmin && adminSettings.isShowEditor &&
+      {
+        images: images,
+        localDisplaySettings: localDisplaySettings,
+        webStyle: webStyle,
+        socialMedias: socialMedias,
+        masterNavData: masterNavData,
+        pages: pages,
+        promoCodes: promoCodes,
+        cart: cart, 
+        adminSettings: adminSettings,
+        siteIsDraft: siteIsDraft,
+        msgPort: msgPort,
+        savedData: savedData, 
+        componentOptions: componentOptions,
+        appMethods: appMethods,
+        apiMethods: apiMethods
+      }
+    }>
+    <div className="App" style={{minHeight:"100vh"}}>
+      <Router basename={props.basename}>
+        <Switch>  
+          {/* App pages */}
+          {sitePages}
+          
+          <Route path = "*">
+            <>
+              {adminSettings.isAdmin && adminSettings.isShowEditor &&
                 <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
-            }  
-                <Page404
-                  key = {"404Page"} 
-                  pageName = {"404"}
-                  pageID = {"404Page"}
-                  components = {[]}
-                  defaultComponentList = { ["Header","Navbar"]} componentOptions = {componentOptions}   
-                />
-                </>
-            </Route>
-          </Switch>
-          {/* </Fade> */}
-        </Router>
-
-      </div>
-    </WebContext.Provider>
+              }  
+              <Page404
+                key = {"404Page"} 
+                pageName = {"404"}
+                pageID = {"404Page"}
+                components = {[]}
+                defaultComponentList = { ["Header","Navbar"]} 
+                componentOptions = {componentOptions}   
+              />
+            </>
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  </WebContext.Provider>
   );
-
-function useContextStorage(adminSettings, apiMethods, msgPort, contextName, initialState){
-  const [hasBeenMounted, setHasBeenMounted] = useState(false)
-  const [value, setValue] = useState(()=>{
-      return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
-  })
-
-  // Save data
-  useEffect(() => {
-    if (msgPort === "save"){
-        alert("Saving ")
-        apiMethods.setValueInDatabase(contextName,JSON.stringify(value))
-        localStorage.removeItem(contextName)
-    }
-    if (msgPort === "reload"){
-        setHasBeenMounted(false)
-        setValue(()=>{
-            return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
-        })
-    }
-
-}, [msgPort]);
-
-  useEffect(() => {
-      // The use of has been mounted skips the first render.
-      // Since we are programatically changing value we don't need to update our storage
-      if (hasBeenMounted){ 
-          // Set live content from database
-          if (adminSettings.autoUpdateLiveWebsite){
-            apiMethods.setValueInDatabase(contextName,JSON.stringify(value))  
-          }
-          // Store draft data locally
-          else if (adminSettings.autoSaveEditsLocally){
-              localStorage.setItem(contextName,JSON.stringify(value))
-              // TODO get this to work
-              informSiteOfDraftEdits(apiMethods)
-          }
-      }
-      else{
-          setHasBeenMounted(true)
-      }
-        
-    },[value])
-
-    return [value, setValue]
-  }
-  
 }
-
-function getStoredComponent(contextName, initialValue, adminSettings, apiMethods){
-  let savedData = null
-  
-  // If we are viewing the draft load the draft
-  if (adminSettings.viewDraftEdits){
-      savedData = JSON.parse(localStorage.getItem(contextName))
-      
-      // we need to override data instead of replace it. This will make it backcompatible
-      if (initialValue.constructor == Object){
-        let mergedData = {...initialValue}
-
-        if (savedData){
-          for (const [key, value] of Object.entries(savedData)) {
-            if (key in mergedData && value.constructor == Object){
-              mergedData[key] = {...mergedData[key], ...value}
-            }
-            else{
-              mergedData[key] = value
-            }
-          }
-          informSiteOfDraftEdits(apiMethods)
-        }
-
-        return mergedData
-
-      }
-      if (savedData){
-          informSiteOfDraftEdits(apiMethods)
-          return savedData
-      } 
-  }
-  
-  // Load any values from database
-  if (apiMethods.getFromDataBase instanceof Function ){
-      savedData = JSON.stringify(apiMethods.getFromDataBase(contextName))
-      if (savedData){
-          return savedData
-      } 
-  }
-
-  // If nothing is stored load the prop data from the template
-  if (initialValue instanceof Function){ return initialValue()}
-  return initialValue
- 
-}
-
-function informSiteOfDraftEdits(apiMethods){
-    delayCallback(()=>{
-        apiMethods.setSiteIsDraft(true)
-    },500)
-}
-

@@ -42,14 +42,16 @@ function Spacer(props) {
     showBar(false);
   };
 
-  var options = componentOptions.map(function (option, index) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+  var options = [];
+  Object.keys(componentOptions).forEach(function (option) {
+    var componentName = componentOptions[option].componentName || option;
+    options.push( /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
       className: "btn btn-outline-dark border-0 my-1 col me-1",
-      onClick: function onClick(evt, option) {
-        insertComponent(componentOptions[index]);
+      onClick: function onClick(evt) {
+        insertComponent(componentName);
       },
-      children: option
-    }, option);
+      children: componentName
+    }, option));
   });
   var optionButtons = /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     style: {
@@ -71,8 +73,7 @@ function Spacer(props) {
     },
     onClick: function onClick() {
       setShowButtons(!isShowButtons);
-    } // onFocus
-    ,
+    },
     children: isShowButtons ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "m-0 px-5 mx-auto ",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

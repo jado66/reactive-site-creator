@@ -47,6 +47,11 @@ function AdminNavWrapper(props) {
     transition: transition
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", _objectSpread(_objectSpread(_objectSpread({
+    onClick: function onClick(event) {
+      if (event.target === event.currentTarget) {
+        props.toggleComponentSelect(props.id);
+      }
+    },
     ref: setNodeRef,
     style: _objectSpread(_objectSpread({}, style), props.style)
   }, attributes), listeners), {}, {

@@ -1,63 +1,40 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import Fade from 'react-reveal/Fade'; // Importing Zoom effect
 
+// Drag and drop stuff
 import {
   DndContext,
   closestCenter,
   useSensor,
   DragOverlay,
-
   useSensors
 } from "@dnd-kit/core";
-
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable"; 
 import {
-  restrictToVerticalAxis,
-  restrictToWindowEdges,
-  snapCenterToCursor,
+  restrictToVerticalAxis
 } from '@dnd-kit/modifiers';
-
-// import "bootstrap/dist/css/bootstrap.css";
 import { MouseSensor } from "../helpers/DndSensors";
-import Spacer from "../pageComponents/Spacer"
-import Header from "../pageComponents/Header";
-import NavigationBar from "../pageComponents/NavigationBar";
-import StyledLink from '../pageComponents/StyledLink'
-import TextEditor from "../pageComponents/TextEditor";
-import SubscriptionCards from "../pageComponents/SubscriptionCards";
-// import BlogPreview from "./BlogPreview";
-// import CaptionedPicture from "./pageComponents/CaptionedPicture";
-// import DynamicForm from "./pageComponents/DynamicForm";
-// import CardPaymentBlock from "./CardPaymentBlock";
-import PictureSlideShow from "../pageComponents/PictureSlideShow";
-import Mosaic from "../pageComponents/Mosaic";
-import Footer from "../pageComponents/Footer";
-// import VideoFrame from "./pageComponents/VideoFrame";
-// import SlideShow from "./pageComponents/SlideShow";
-// import PictureFrame from "./PictureFrame";
-// import QuickLink from "./pageComponents/QuickLink";
-// import Paragraph from "./pageComponents/Paragraph";
-// import ProductComparisonCards from "./pageComponents/ProductComparisonCards";
-// import ProductComparisonTable from "./pageComponents/ProductComparisonTable";
-// import WalkThrough from "./pageComponents/Walkthrough";
-// import ParagraphBacked from "./pageComponents/ParagraphBacked";
-// import CountDown from "./pageComponents/CountDown";
-// import Appointments from "./pageComponents/Appointments";
-// import PhotoGallery from "./pageComponents/PhotoGallery";
+
+// Component Wrapper
 import AdminWrapper from "../wrappers/AdminWrapper";
+
+// Custom hook for storing data
 import useComponentStorage from '../helpers/useStorage';
+
 import { WebContext } from "../Website";
-import SubscriberBox from "../pageComponents/SubscriberBox";
+
+// Font awesome icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
-import PhotoGallery from "../pageComponents/PhotoGallery";
+
+import Spacer from "../pageComponents/Spacer";
 
 export default function DynamicPage(props) {
-  const {flatComponents, webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
+  const {webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
 
   const initialState = props.components
   if (!props.components){
@@ -67,7 +44,14 @@ export default function DynamicPage(props) {
   const [ components, setComponents] = useComponentStorage(props.pageID+"-page",initialState);
   const [ activeID, setActiveID ] = useState(null)
 
-  const sensors = useSensors(useSensor(MouseSensor));
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }
+  ));
 
   const [selectedComponents, setSelectedComponents] = useState([]);
 
@@ -76,6 +60,18 @@ export default function DynamicPage(props) {
       return prevState.filter(el => !selectedComponents.includes(el.id));
     })
     setSelectedComponents([])
+  }
+
+  const toggleComponentSelect = (id) => {
+    setSelectedComponents((prevState) => {
+
+      if (prevState.includes(id)){
+        return prevState.filter(componetID => componetID !== id);
+      }
+      else{
+        return([...prevState,id])
+      }
+    })
   }
 
   const insertComponent = (option,index) => {
@@ -87,12 +83,12 @@ export default function DynamicPage(props) {
     let newComponents = [...components.slice(0,index+1),newComponent,...components.slice(index+1)]
 
     setComponents(newComponents)
-
   }
 
   const addSelected = (id) => {
     setSelectedComponents([...selectedComponents, id]);
   };
+
   const removeSelected = (id) => {
     try {
       const idIndex = selectedComponents.indexOf(id);
@@ -103,68 +99,15 @@ export default function DynamicPage(props) {
     }
   };
 
-
-  const componentMap = {
-    Header:Header,
-    Footer:Footer,
-    Mosaic:Mosaic,
-    NavigationBar:NavigationBar,
-    SubscriberBox:SubscriberBox,
-    StyledLink:StyledLink,
-    TextEditor:TextEditor,
-    PictureSlideShow:PictureSlideShow,
-    SubscriptionCards:SubscriptionCards,
-    PhotoGallery:PhotoGallery
-    // VideoFrame:VideoFrame,
-    // CardPaymentBlock:CardPaymentBlock,
-    // DynamicForm:DynamicForm,
-    // BlogPreview:BlogPreview,
-    // CaptionedPicture,CaptionedPicture,
-    // SlideShow:SlideShow,
-    // PictureFrame:PictureFrame,
-    // QuickLink:QuickLink,
-    // Paragraph:Paragraph,
-    // ParagraphBacked:ParagraphBacked,
-    // ProductComparisonCards:ProductComparisonCards,
-    // ProductComparisonTable:ProductComparisonTable,
-    // WalkThrough:WalkThrough,
-    // CountDown:CountDown,
-    // Appointments:Appointments,
-    // PhotoGallery:PhotoGallery
-
-  
-  };
-
-  // useEffect(() => {
-        
-  //   if(props.components){
-  //       const components = props.components;
-       
-  //       setComponents(components)
-    
-  //   }
-  //   else{
-        
-  //       let components = []
-  //       for (var i = 0; i < props.defaultComponentList.length; i++){
-  //           components.push(
-  //               {
-  //                   name: props.defaultComponentList[i],
-  //                   id: generateKey(props.defaultComponentList[i],i)
-  //               })
-  //       }
-  //       setComponents(components)
-
-  //   }
-
-  // },[]);
-
   let pagecomponents = [];
 
   components.forEach((el, index) => {
 
-    const Component = componentMap[el.name];
+    const componentOption = props.componentOptions[el.name]
     
+    const Component = componentOption.component;
+    const isNestedComponent = componentOption.isNestedComponent;
+
     let makeSticky = false
     let offsetY = null
     if (el.name === "NavigationBar"){
@@ -180,8 +123,9 @@ export default function DynamicPage(props) {
           key={el.id}
           makeSticky = {makeSticky}
           offsetY = {offsetY}
-          isFlat ={flatComponents.includes(el.name)}
+          isFlat ={!isNestedComponent}
           isEditMode = {adminSettings.isEditMode}
+          toggleComponentSelect = {toggleComponentSelect}
           isShowEditor = {adminSettings.isShowEditor}
           isSelected = {selectedComponents.includes(el.id)}
           id={el.id}
@@ -197,8 +141,6 @@ export default function DynamicPage(props) {
       );
       pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {index}/>);
     }
-
-    
 
     else{
       pagecomponents.push(
@@ -316,17 +258,6 @@ export default function DynamicPage(props) {
       });
 
       setActiveID(null)
-    }
-    else{
-      setSelectedComponents((prevState) => {
-
-        if (prevState.includes(activeID)){
-          return prevState.filter(id => id !== active.id);
-        }
-        else{
-          return([...prevState,active.id])
-        }
-      })
     }
   }
 }

@@ -25,7 +25,11 @@ export default function AdminNavWrapper(props) {
 
   return (
     <div
-      
+      onClick={(event)=>{
+        if (event.target === event.currentTarget) {
+          props.toggleComponentSelect(props.id)
+        }
+      }}
       ref={setNodeRef}
       style={{ ...style, ...props.style}}
       {...attributes}

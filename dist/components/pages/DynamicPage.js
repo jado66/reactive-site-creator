@@ -17,37 +17,17 @@ var _modifiers = require("@dnd-kit/modifiers");
 
 var _DndSensors = require("../helpers/DndSensors");
 
-var _Spacer = _interopRequireDefault(require("../pageComponents/Spacer"));
-
-var _Header = _interopRequireDefault(require("../pageComponents/Header"));
-
-var _NavigationBar = _interopRequireDefault(require("../pageComponents/NavigationBar"));
-
-var _StyledLink = _interopRequireDefault(require("../pageComponents/StyledLink"));
-
-var _TextEditor = _interopRequireDefault(require("../pageComponents/TextEditor"));
-
-var _SubscriptionCards = _interopRequireDefault(require("../pageComponents/SubscriptionCards"));
-
-var _PictureSlideShow = _interopRequireDefault(require("../pageComponents/PictureSlideShow"));
-
-var _Mosaic = _interopRequireDefault(require("../pageComponents/Mosaic"));
-
-var _Footer = _interopRequireDefault(require("../pageComponents/Footer"));
-
 var _AdminWrapper = _interopRequireDefault(require("../wrappers/AdminWrapper"));
 
 var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
 var _Website = require("../Website");
 
-var _SubscriberBox = _interopRequireDefault(require("../pageComponents/SubscriberBox"));
-
 var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
-var _PhotoGallery = _interopRequireDefault(require("../pageComponents/PhotoGallery"));
+var _Spacer = _interopRequireDefault(require("../pageComponents/Spacer"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -77,7 +57,6 @@ function _readOnlyError(name) { throw new TypeError("\"" + name + "\" is read-on
 
 function DynamicPage(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
-      flatComponents = _useContext.flatComponents,
       webStyle = _useContext.webStyle,
       adminSettings = _useContext.adminSettings,
       localDisplaySettings = _useContext.localDisplaySettings;
@@ -98,7 +77,12 @@ function DynamicPage(props) {
       activeID = _useState2[0],
       setActiveID = _useState2[1];
 
-  var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor));
+  var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor, {
+    activationConstraint: {
+      delay: 250,
+      tolerance: 5
+    }
+  }));
 
   var _useState3 = (0, _react.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -112,6 +96,18 @@ function DynamicPage(props) {
       });
     });
     setSelectedComponents([]);
+  };
+
+  var toggleComponentSelect = function toggleComponentSelect(id) {
+    setSelectedComponents(function (prevState) {
+      if (prevState.includes(id)) {
+        return prevState.filter(function (componetID) {
+          return componetID !== id;
+        });
+      } else {
+        return [].concat(_toConsumableArray(prevState), [id]);
+      }
+    });
   };
 
   var insertComponent = function insertComponent(option, index) {
@@ -138,54 +134,11 @@ function DynamicPage(props) {
     }
   };
 
-  var componentMap = {
-    Header: _Header.default,
-    Footer: _Footer.default,
-    Mosaic: _Mosaic.default,
-    NavigationBar: _NavigationBar.default,
-    SubscriberBox: _SubscriberBox.default,
-    StyledLink: _StyledLink.default,
-    TextEditor: _TextEditor.default,
-    PictureSlideShow: _PictureSlideShow.default,
-    SubscriptionCards: _SubscriptionCards.default,
-    PhotoGallery: _PhotoGallery.default // VideoFrame:VideoFrame,
-    // CardPaymentBlock:CardPaymentBlock,
-    // DynamicForm:DynamicForm,
-    // BlogPreview:BlogPreview,
-    // CaptionedPicture,CaptionedPicture,
-    // SlideShow:SlideShow,
-    // PictureFrame:PictureFrame,
-    // QuickLink:QuickLink,
-    // Paragraph:Paragraph,
-    // ParagraphBacked:ParagraphBacked,
-    // ProductComparisonCards:ProductComparisonCards,
-    // ProductComparisonTable:ProductComparisonTable,
-    // WalkThrough:WalkThrough,
-    // CountDown:CountDown,
-    // Appointments:Appointments,
-    // PhotoGallery:PhotoGallery
-
-  }; // useEffect(() => {
-  //   if(props.components){
-  //       const components = props.components;
-  //       setComponents(components)
-  //   }
-  //   else{
-  //       let components = []
-  //       for (var i = 0; i < props.defaultComponentList.length; i++){
-  //           components.push(
-  //               {
-  //                   name: props.defaultComponentList[i],
-  //                   id: generateKey(props.defaultComponentList[i],i)
-  //               })
-  //       }
-  //       setComponents(components)
-  //   }
-  // },[]);
-
   var pagecomponents = [];
   components.forEach(function (el, index) {
-    var Component = componentMap[el.name];
+    var componentOption = props.componentOptions[el.name];
+    var Component = componentOption.component;
+    var isNestedComponent = componentOption.isNestedComponent;
     var makeSticky = false;
     var offsetY = null;
 
@@ -200,8 +153,9 @@ function DynamicPage(props) {
       pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_AdminWrapper.default, {
         makeSticky: makeSticky,
         offsetY: offsetY,
-        isFlat: flatComponents.includes(el.name),
+        isFlat: !isNestedComponent,
         isEditMode: adminSettings.isEditMode,
+        toggleComponentSelect: toggleComponentSelect,
         isShowEditor: adminSettings.isShowEditor,
         isSelected: selectedComponents.includes(el.id),
         id: el.id,
@@ -348,16 +302,6 @@ function DynamicPage(props) {
         return (0, _sortable.arrayMove)(components, oldIndex, newIndex);
       });
       setActiveID(null);
-    } else {
-      setSelectedComponents(function (prevState) {
-        if (prevState.includes(activeID)) {
-          return prevState.filter(function (id) {
-            return id !== active.id;
-          });
-        } else {
-          return [].concat(_toConsumableArray(prevState), [active.id]);
-        }
-      });
     }
   }
 }
