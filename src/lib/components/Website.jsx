@@ -42,7 +42,7 @@ export default function Website(props) {
 
     setValueInDatabase: (id,componentState) =>{
       if (props.saveComponentToDB){
-        props.saveComponentDataToDB(id,componentState)
+        props.saveComponentToDB(id,componentState)
       }
     },
     addNewSubscriber: (formState)=>{

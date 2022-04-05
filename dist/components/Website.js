@@ -78,7 +78,7 @@ function Website(props) {
     getFromDataBase: props.getFromDataBase,
     setValueInDatabase: function setValueInDatabase(id, componentState) {
       if (props.saveComponentToDB) {
-        props.saveComponentDataToDB(id, componentState);
+        props.saveComponentToDB(id, componentState);
       }
     },
     addNewSubscriber: function addNewSubscriber(formState) {
