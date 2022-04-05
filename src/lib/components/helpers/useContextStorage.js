@@ -80,10 +80,11 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
     
     // Load any values from database
     if (apiMethods.getFromDataBase instanceof Function ){
-      savedData = JSON.stringify(apiMethods.getFromDataBase(contextName))
-      if (savedData){
-        return savedData
-      } 
+      apiMethods.getFromDataBase(contextName).then(response=>{
+        if (response){
+            return response
+        } 
+      })
     }
   
     // If nothing is stored load the prop data from the template

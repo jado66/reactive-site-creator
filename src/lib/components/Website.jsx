@@ -37,11 +37,9 @@ export default function Website(props) {
   componentOptions = {...defaultComponentOptions, ...props.componentOptions}
 
   const apiMethods = {
-    getFromDatabase:  (id,componentState) =>{
-      if (props.getFromDatabase){
-        props.getFromDatabase(id)
-      }
-    },
+    // getFromDatabase: props.getFromDatabase,
+    getFromDataBase: props.getFromDataBase,
+
     setValueInDatabase: (id,componentState) =>{
       if (props.saveComponentToDB){
         props.saveComponentDataToDB(id,componentState)
