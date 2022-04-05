@@ -74,11 +74,8 @@ function Website(props) {
   var componentOptions = props.defaultComponentOptions || _defaultData.defaultComponentOptions;
   componentOptions = _objectSpread(_objectSpread({}, _defaultData.defaultComponentOptions), props.componentOptions);
   var apiMethods = {
-    getFromDatabase: function getFromDatabase(id, componentState) {
-      if (props.getFromDatabase) {
-        props.getFromDatabase(id);
-      }
-    },
+    // getFromDatabase: props.getFromDatabase,
+    getFromDataBase: props.getFromDataBase,
     setValueInDatabase: function setValueInDatabase(id, componentState) {
       if (props.saveComponentToDB) {
         props.saveComponentDataToDB(id, componentState);

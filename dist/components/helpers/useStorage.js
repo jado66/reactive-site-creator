@@ -93,11 +93,11 @@ function getStoredComponent(componentID, initialValue, adminSettings, apiMethods
 
 
   if (apiMethods.getFromDataBase instanceof Function) {
-    savedData = JSON.stringify(apiMethods.getFromDataBase());
-
-    if (savedData) {
-      return savedData;
-    }
+    apiMethods.getFromDataBase(componentID).then(function (response) {
+      if (response) {
+        return response;
+      }
+    });
   } // If nothing is stored load the prop data from the template
 
 
