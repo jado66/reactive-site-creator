@@ -350,7 +350,8 @@ function StylesEditor(props) {
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Snapchat"
   })];
-  var pageMenus = tempPages.map(function (_ref, index) {
+  var tempPageLists = tempPages || [];
+  var pageMenuComponents = tempPageLists.map(function (_ref, index) {
     var name = _ref.name,
         path = _ref.path;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
@@ -1007,7 +1008,7 @@ function StylesEditor(props) {
             transition: true,
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
               children: "Your Website Pages"
-            }), pageMenus, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+            }), pageMenuComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
               className: "styleEditorSubmenuIcon ",
               onClick: function onClick() {
                 return addPage();

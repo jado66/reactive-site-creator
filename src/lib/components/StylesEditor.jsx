@@ -273,7 +273,8 @@ const socialMediaSelectOptions = [
   <option>Soundcloud</option>,
   <option>Snapchat</option>]
 
-  let pageMenus = tempPages.map(({name, path},index)=> 
+  let tempPageLists = tempPages || []
+  let pageMenuComponents = tempPageLists.map(({name, path},index)=> 
   (
     <SubMenu label={name}  menuClassName={"border border-dark"}>
       <FocusableItem>Name: <input type={"text"} value={name} onChange = {(e)=>{updateTempPage("name",e.target.value,index)}} style = {{width:"90px", borderWidth:"0px 0px 1px 0px",background:"none"}} /></FocusableItem>
@@ -671,7 +672,7 @@ const socialMediaSelectOptions = [
               {/* Pages Menu */}
               <Menu className="nav-item dropdown" menuClassName={"border border-dark"} menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faFile} /></MenuButton>} transition>
                   <MenuHeader>Your Website Pages</MenuHeader>
-                  {pageMenus}
+                  {pageMenuComponents}
                   <MenuButton className={"styleEditorSubmenuIcon "} onClick = {()=>addPage()}><FontAwesomeIcon  icon={faPlus} /></MenuButton>
                   <MenuDivider />
                   <SubMenu label={"Error Page (404)"} menuClassName={"border border-dark"}>
