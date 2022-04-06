@@ -217,7 +217,7 @@ export default function DynamicPage(props) {
             onDragEnd={handleDragEnd}
           >
             <SortableContext
-              items={components}
+              items={storedComponents}
               strategy={verticalListSortingStrategy}
             >
               {pagecomponents}

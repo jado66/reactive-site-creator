@@ -285,7 +285,7 @@ function Page404(props) {
             onDragStart: handleDragStart,
             onDragEnd: handleDragEnd,
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_sortable.SortableContext, {
-              items: components,
+              items: storedComponents,
               strategy: _sortable.verticalListSortingStrategy,
               children: pagecomponents
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DragOverlay, {

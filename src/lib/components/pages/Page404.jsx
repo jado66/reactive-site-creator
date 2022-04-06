@@ -180,7 +180,7 @@ export default function Page404(props) {
   // },[]);
 
   let pagecomponents = [];
-  
+
   const storedComponents = components || []
   storedComponents.forEach((el, index) => {
 
@@ -256,7 +256,7 @@ export default function Page404(props) {
               onDragEnd={handleDragEnd}
             >
               <SortableContext
-                items={components}
+                items={storedComponents}
                 strategy={verticalListSortingStrategy}
               >
                 {pagecomponents}

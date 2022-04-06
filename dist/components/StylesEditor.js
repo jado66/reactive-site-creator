@@ -125,7 +125,7 @@ function StylesEditor(props) {
   var location = (0, _reactRouterDom.useLocation)();
   var history = (0, _reactRouterDom.useHistory)();
   (0, _react.useEffect)(function () {
-    setTempPages(pages); // alert("Page change")
+    if (pages) setTempPages(pages); // alert("Page change")
   }, [pages]);
 
   var updateTempPage = function updateTempPage(key, value, index) {

@@ -6,6 +6,7 @@ export default function useComponentStorage(componentID, initialState){
     
     const { adminSettings, apiMethods, msgPort  } = useContext(WebContext)
     const [hasBeenMounted, setHasBeenMounted] = useState(false)
+    
     const [value, setValue] = useState(()=>{
         return getStoredComponent(componentID,initialState,adminSettings,apiMethods)
     })

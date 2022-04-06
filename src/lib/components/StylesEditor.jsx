@@ -46,7 +46,8 @@ export default function StylesEditor(props) {
   let history = useHistory();
 
   useEffect(() => {
-    setTempPages(pages)
+    if (pages)
+      setTempPages(pages)
     // alert("Page change")
   },[pages])
 
