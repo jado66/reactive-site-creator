@@ -48,13 +48,13 @@ function useComponentStorage(componentID, initialState) {
   (0, _react.useEffect)(function () {
     // Load any values from database
     if (adminSettings.viewDraftEdits) {
-      savedData = JSON.parse(localStorage.getItem(componentID));
+      var savedData = JSON.parse(localStorage.getItem(componentID));
 
       if (!savedData) {
-        loadFromDatabase(apiMethods, componentID, setHasBeenMounted);
+        loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted);
       }
     } else {
-      loadFromDatabase(apiMethods, componentID, setHasBeenMounted);
+      loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted);
     }
   }, []); // Save data
 
@@ -112,7 +112,7 @@ function getStoredComponent(componentID, initialValue, adminSettings, apiMethods
   return initialValue;
 }
 
-function loadFromDatabase(apiMethods, componentID, setHasBeenMounted) {
+function loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted) {
   if (apiMethods.getFromDataBase instanceof Function) {
     apiMethods.getFromDataBase(componentID).then(function (response) {
       if (response) {

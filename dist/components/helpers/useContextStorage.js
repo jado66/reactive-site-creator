@@ -46,13 +46,13 @@ function useContextStorage(adminSettings, apiMethods, msgPort, contextName, init
   (0, _react.useEffect)(function () {
     // Load any values from database
     if (adminSettings.viewDraftEdits) {
-      savedData = JSON.parse(localStorage.getItem(contextName));
+      var savedData = JSON.parse(localStorage.getItem(contextName));
 
       if (!savedData) {
-        loadFromDatabase(apiMethods, contextName, setHasBeenMounted);
+        loadFromDatabase(apiMethods, contextName, setValue, setHasBeenMounted);
       }
     } else {
-      loadFromDatabase(apiMethods, contextName, setHasBeenMounted);
+      loadFromDatabase(apiMethods, contextName, setValue, setHasBeenMounted);
     }
   }, []); // Save data
 
@@ -124,32 +124,17 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
       informSiteOfDraftEdits(apiMethods);
       return savedData;
     }
-  } // Load any values from database
+  } // If nothing is stored load the prop data from the template
 
 
-  if (apiMethods.getFromDataBase instanceof Function) {
-    apiMethods.getFromDataBase(contextName).then(function (response) {
-      if (response) {
-        return response;
-      } else {
-        if (initialValue instanceof Function) {
-          return initialValue();
-        }
-
-        return initialValue;
-      }
-    });
-  } else {
-    // If nothing is stored load the prop data from the template
-    if (initialValue instanceof Function) {
-      return initialValue();
-    }
-
-    return initialValue;
+  if (initialValue instanceof Function) {
+    return initialValue();
   }
+
+  return initialValue;
 }
 
-function loadFromDatabase(apiMethods, componentID, setHasBeenMounted) {
+function loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted) {
   if (apiMethods.getFromDataBase instanceof Function) {
     apiMethods.getFromDataBase(componentID).then(function (response) {
       if (response) {

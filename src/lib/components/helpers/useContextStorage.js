@@ -7,20 +7,20 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
         return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
     })
   
-    // load saved data
+     // load saved data
     useEffect(() =>{
       // Load any values from database
       if (adminSettings.viewDraftEdits){
-          savedData = JSON.parse(localStorage.getItem(contextName))
-          
-          if (!savedData){
-              loadFromDatabase(apiMethods,contextName,setHasBeenMounted)
-          } 
-        }
-      else{
-          loadFromDatabase(apiMethods,contextName,setHasBeenMounted)
-      }
+        let savedData = JSON.parse(localStorage.getItem(contextName))
         
+        if (!savedData){
+            loadFromDatabase(apiMethods,contextName, setValue, setHasBeenMounted)
+        } 
+      }
+      else{
+          loadFromDatabase(apiMethods,contextName, setValue, setHasBeenMounted)
+      }
+      
     }, []);
 
     // Save data
@@ -94,29 +94,17 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
         } 
     }
     
-    // Load any values from database
-    if (apiMethods.getFromDataBase instanceof Function ){
-      apiMethods.getFromDataBase(contextName).then(response=>{
-        if (response){
-            return response
-        }
-        else{
-          if (initialValue instanceof Function){ return initialValue()}
-          return initialValue
-        } 
-      })
-    }
-    else{
-      // If nothing is stored load the prop data from the template
-      if (initialValue instanceof Function){ return initialValue()}
-      
-      return initialValue
-    }
+   
+    // If nothing is stored load the prop data from the template
+    if (initialValue instanceof Function){ return initialValue()}
+    
+    return initialValue
+    
   
     
   }
 
-  function loadFromDatabase(apiMethods,componentID,setHasBeenMounted){
+  function loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted){
     if (apiMethods.getFromDataBase instanceof Function ){
         apiMethods.getFromDataBase(componentID).then(response=>{
             if (response){
