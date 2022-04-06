@@ -83,14 +83,21 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
       apiMethods.getFromDataBase(contextName).then(response=>{
         if (response){
             return response
+        }
+        else{
+          if (initialValue instanceof Function){ return initialValue()}
+          return initialValue
         } 
       })
     }
+    else{
+      // If nothing is stored load the prop data from the template
+      if (initialValue instanceof Function){ return initialValue()}
+      
+      return initialValue
+    }
   
-    // If nothing is stored load the prop data from the template
-    if (initialValue instanceof Function){ return initialValue()}
     
-    return initialValue
   }
   
   function informSiteOfDraftEdits(apiMethods){
