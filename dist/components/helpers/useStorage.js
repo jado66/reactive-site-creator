@@ -42,8 +42,21 @@ function useComponentStorage(componentID, initialState) {
   }),
       _useState4 = _slicedToArray(_useState3, 2),
       value = _useState4[0],
-      setValue = _useState4[1]; // Save data
+      setValue = _useState4[1]; // load saved data
 
+
+  (0, _react.useEffect)(function () {
+    // Load any values from database
+    if (adminSettings.viewDraftEdits) {
+      savedData = JSON.parse(localStorage.getItem(componentID));
+
+      if (!savedData) {
+        loadFromDatabase(apiMethods, componentID, setHasBeenMounted);
+      }
+    } else {
+      loadFromDatabase(apiMethods, componentID, setHasBeenMounted);
+    }
+  }, []); // Save data
 
   (0, _react.useEffect)(function () {
     if (msgPort === "save") {
@@ -89,28 +102,24 @@ function getStoredComponent(componentID, initialValue, adminSettings, apiMethods
       informSiteOfDraftEdits(apiMethods);
       return savedData;
     }
-  } // Load any values from database
+  } // If nothing is stored load the prop data from the template
 
 
+  if (initialValue instanceof Function) {
+    return initialValue();
+  }
+
+  return initialValue;
+}
+
+function loadFromDatabase(apiMethods, componentID, setHasBeenMounted) {
   if (apiMethods.getFromDataBase instanceof Function) {
     apiMethods.getFromDataBase(componentID).then(function (response) {
       if (response) {
-        return response;
-      } else {
-        if (initialValue instanceof Function) {
-          return initialValue();
-        }
-
-        return initialValue;
+        setValue(response);
+        setHasBeenMounted(false);
       }
     });
-  } else {
-    // If nothing is stored load the prop data from the template
-    if (initialValue instanceof Function) {
-      return initialValue();
-    }
-
-    return initialValue;
   }
 }
 

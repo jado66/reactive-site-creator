@@ -7,6 +7,22 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
         return getStoredComponent(contextName,initialState,adminSettings,apiMethods)
     })
   
+    // load saved data
+    useEffect(() =>{
+      // Load any values from database
+      if (adminSettings.viewDraftEdits){
+          savedData = JSON.parse(localStorage.getItem(contextName))
+          
+          if (!savedData){
+              loadFromDatabase(apiMethods,contextName,setHasBeenMounted)
+          } 
+        }
+      else{
+          loadFromDatabase(apiMethods,contextName,setHasBeenMounted)
+      }
+        
+    }, []);
+
     // Save data
     useEffect(() => {
       if (msgPort === "save"){
@@ -99,6 +115,17 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
   
     
   }
+
+  function loadFromDatabase(apiMethods,componentID,setHasBeenMounted){
+    if (apiMethods.getFromDataBase instanceof Function ){
+        apiMethods.getFromDataBase(componentID).then(response=>{
+            if (response){
+                setValue(response)
+                setHasBeenMounted(false)
+            } 
+        })  
+    }
+}
   
   function informSiteOfDraftEdits(apiMethods){
     delayCallback(()=>{

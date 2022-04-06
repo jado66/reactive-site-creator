@@ -40,8 +40,21 @@ function useContextStorage(adminSettings, apiMethods, msgPort, contextName, init
   }),
       _useState4 = _slicedToArray(_useState3, 2),
       value = _useState4[0],
-      setValue = _useState4[1]; // Save data
+      setValue = _useState4[1]; // load saved data
 
+
+  (0, _react.useEffect)(function () {
+    // Load any values from database
+    if (adminSettings.viewDraftEdits) {
+      savedData = JSON.parse(localStorage.getItem(contextName));
+
+      if (!savedData) {
+        loadFromDatabase(apiMethods, contextName, setHasBeenMounted);
+      }
+    } else {
+      loadFromDatabase(apiMethods, contextName, setHasBeenMounted);
+    }
+  }, []); // Save data
 
   (0, _react.useEffect)(function () {
     if (msgPort === "save") {
@@ -133,6 +146,17 @@ function getStoredComponent(contextName, initialValue, adminSettings, apiMethods
     }
 
     return initialValue;
+  }
+}
+
+function loadFromDatabase(apiMethods, componentID, setHasBeenMounted) {
+  if (apiMethods.getFromDataBase instanceof Function) {
+    apiMethods.getFromDataBase(componentID).then(function (response) {
+      if (response) {
+        setValue(response);
+        setHasBeenMounted(false);
+      }
+    });
   }
 }
 

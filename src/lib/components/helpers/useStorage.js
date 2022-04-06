@@ -6,10 +6,26 @@ export default function useComponentStorage(componentID, initialState){
     
     const { adminSettings, apiMethods, msgPort  } = useContext(WebContext)
     const [hasBeenMounted, setHasBeenMounted] = useState(false)
-    
+
     const [value, setValue] = useState(()=>{
         return getStoredComponent(componentID,initialState,adminSettings,apiMethods)
     })
+
+    // load saved data
+    useEffect(() =>{
+         // Load any values from database
+        if (adminSettings.viewDraftEdits){
+            savedData = JSON.parse(localStorage.getItem(componentID))
+            
+            if (!savedData){
+                loadFromDatabase(apiMethods,componentID,setHasBeenMounted)
+            } 
+        }
+        else{
+            loadFromDatabase(apiMethods,componentID,setHasBeenMounted)
+        }
+        
+    }, []);
 
     // Save data
     useEffect(() => {
@@ -65,28 +81,21 @@ function getStoredComponent(componentID, initialValue, adminSettings, apiMethods
             return savedData
         } 
     }
-    
-    // Load any values from database
+        
+    // If nothing is stored load the prop data from the template
+    if (initialValue instanceof Function){ return initialValue()}
+    return initialValue 
+}
+
+function loadFromDatabase(apiMethods,componentID,setHasBeenMounted){
     if (apiMethods.getFromDataBase instanceof Function ){
         apiMethods.getFromDataBase(componentID).then(response=>{
             if (response){
-                return response
+                setValue(response)
+                setHasBeenMounted(false)
             } 
-            else{
-                if (initialValue instanceof Function){ return initialValue()}
-                return initialValue
-            }
-        })
-        
+        })  
     }
-    else{
-        
-    // If nothing is stored load the prop data from the template
-        if (initialValue instanceof Function){ return initialValue()}
-        return initialValue
-    }
-
-   
 }
 
 function informSiteOfDraftEdits(apiMethods){
