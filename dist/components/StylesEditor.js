@@ -403,7 +403,8 @@ function StylesEditor(props) {
       })]
     });
   });
-  var socialMediaLinks = socialMedias.map(function (_ref2, index) {
+  var socialMediaLinks = socialMedias || [];
+  var socialMediaLinkComponents = socialMediaLinks.map(function (_ref2, index) {
     var location = _ref2.location,
         link = _ref2.link;
     return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
@@ -1039,7 +1040,7 @@ function StylesEditor(props) {
             transition: true,
             children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
               children: "Your Social Media Links"
-            }), socialMediaLinks, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+            }), socialMediaLinkComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
               className: "styleEditorSubmenuIcon",
               onClick: function onClick() {
                 return appMethods.addSocialMedia();

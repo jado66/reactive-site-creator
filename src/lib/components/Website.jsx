@@ -350,7 +350,9 @@ export default function Website(props) {
     }
   }, [msgPort]);
 
-  let sitePages  = pages.map(({id, name, path, components})=> {
+  let sitePages = pages || []
+
+  let sitePageComponents  = sitePages.map(({id, name, path, components})=> {
     return(
       <Route basename={props.basename} exact path = {path+"/:pathParam?"} key = {name+"Route"}>
         {adminSettings.isAdmin && adminSettings.isShowEditor &&
@@ -393,7 +395,7 @@ export default function Website(props) {
       <Router basename={props.basename}>
         <Switch>  
           {/* App pages */}
-          {sitePages}
+          {sitePageComponents}
           
           <Route path = "*">
             <>

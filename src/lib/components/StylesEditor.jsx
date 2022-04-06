@@ -289,7 +289,8 @@ const socialMediaSelectOptions = [
     </SubMenu>
   ))
 
-  let socialMediaLinks = socialMedias.map(({location, link},index)=> 
+  let socialMediaLinks = socialMedias || []
+  let socialMediaLinkComponents = socialMediaLinks.map(({location, link},index)=> 
   (
     <SubMenu label={location} menuClassName={"border border-dark"}>
         <FocusableItem>Site: <select onChange = {(e)=>{appMethods.handleSocialSiteChange(index,e.target.value)}} value={location}>{socialMediaSelectOptions}</select></FocusableItem>
@@ -687,7 +688,7 @@ const socialMediaSelectOptions = [
               {/* Socials Pages */}
               <Menu className="nav-item dropdown " menuClassName={"border border-dark"} menuButton={<MenuButton className={"styleEditorIcon dropdown-toggle font-shrink-md m-0"}><FontAwesomeIcon  icon={faTwitter} /></MenuButton>} transition>
                   <MenuHeader>Your Social Media Links</MenuHeader>
-                  {socialMediaLinks}
+                  {socialMediaLinkComponents}
                   <MenuButton className={"styleEditorSubmenuIcon"} onClick = {()=>appMethods.addSocialMedia()}><FontAwesomeIcon  icon={faPlus} /></MenuButton>
               </Menu>
           </div>

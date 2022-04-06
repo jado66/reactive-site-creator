@@ -432,7 +432,8 @@ function Website(props) {
       appMethods.sendMsgPortMsg("");
     }
   }, [msgPort]);
-  var sitePages = pages.map(function (_ref) {
+  var sitePages = pages || [];
+  var sitePageComponents = sitePages.map(function (_ref) {
     var id = _ref.id,
         name = _ref.name,
         path = _ref.path,
@@ -478,7 +479,7 @@ function Website(props) {
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
         basename: props.basename,
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
-          children: [sitePages, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
+          children: [sitePageComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
             path: "*",
             children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
               children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {

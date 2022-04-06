@@ -268,7 +268,8 @@ function NavigationBar(props) {
     }, el.id + "admin")); // }
   });
 
-  var socialLinks = socialMedias.filter(function (_ref) {
+  var socialMediaLinks = socialMedias || [];
+  var socialLinks = socialMediaLinks.filter(function (_ref) {
     var location = _ref.location;
 
     if (location === "New Link") {

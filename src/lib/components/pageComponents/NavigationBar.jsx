@@ -223,7 +223,9 @@ export default function NavigationBar(props) {
     // }
   });
 
-  const socialLinks = socialMedias.filter(({location}) => {
+  const socialMediaLinks = socialMedias || []
+
+  const socialLinks = socialMediaLinks.filter(({location}) => {
     if (location === "New Link") {
       return false; // skip
     }

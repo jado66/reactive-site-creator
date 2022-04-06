@@ -46,7 +46,9 @@ export default function SocialLinks(props) {
       
     }
 
-    const socialLinks = socialMedias.filter(({location}) => {
+    const socialMediaLinks = [...socialMedias]
+
+    const socialLinkComponents = socialMediaLinks.filter(({location}) => {
       if (location === "New Link") {
         return false; // skip
       }
@@ -64,7 +66,7 @@ export default function SocialLinks(props) {
             <div className='mt-3' style = {{...props.style, width:`50%`, margin:"25px auto"}} data-no-dnd = "true">
               {/* {JSON.stringify(webStyle.componentStyles)} */}
               <div className='row' style={{justifyContent:"space-around"}}>
-                {socialLinks}
+                {socialLinkComponents}
               </div>
             </div>)
   
