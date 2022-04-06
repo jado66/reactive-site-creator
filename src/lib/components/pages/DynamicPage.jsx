@@ -101,7 +101,8 @@ export default function DynamicPage(props) {
 
   let pagecomponents = [];
 
-  components.forEach((el, index) => {
+  const storedComponents = components || []
+  storedComponents.forEach((el, index) => {
 
     const componentOption = props.componentOptions[el.name]
     

@@ -180,8 +180,9 @@ export default function Page404(props) {
   // },[]);
 
   let pagecomponents = [];
-
-  components.forEach((el, index) => {
+  
+  const storedComponents = components || []
+  storedComponents.forEach((el, index) => {
 
     const Component = componentMap[el.name];
     

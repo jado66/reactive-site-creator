@@ -193,7 +193,8 @@ function Page404(props) {
   // },[]);
 
   var pagecomponents = [];
-  components.forEach(function (el, index) {
+  var storedComponents = components || [];
+  storedComponents.forEach(function (el, index) {
     var Component = componentMap[el.name];
 
     if (adminSettings.isEditMode) {
