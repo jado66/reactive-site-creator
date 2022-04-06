@@ -447,64 +447,38 @@ function StylesEditor(props) {
         })
       })]
     });
-  });
-  var promoCodeMenus = Object.keys(promoCodes).map(function (code, index) {
-    return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
-      label: code,
-      menuClassName: "border border-dark",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-          className: "input-group",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-            className: "input-group-text",
-            children: "Code"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-            type: "text",
-            className: "form-control",
-            placeholder: "Promo Code",
-            value: code
-          })]
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-          className: "input-group",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-            className: "input-group-text",
-            children: "Type"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-            className: "form-select",
-            "aria-label": "Default select example",
-            value: promoCodes[code].type,
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-              selected: true,
-              style: {
-                display: "none"
-              },
-              children: "Pick A Type"
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-              children: "% Off"
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-              children: "$ Off"
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-              children: "Free"
-            })]
-          })]
-        })
-      }), promoCodes[code].value && /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-          className: "input-group",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-            className: "input-group-text",
-            children: "Value"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-            type: "number",
-            className: "form-control",
-            value: promoCodes[code].value
-          })]
-        })
-      })]
-    });
-  });
+  }); // let promoCodeMenus = Object.keys(promoCodes).map((code,index)=>{
+  //   return (
+  //     <SubMenu label={code} menuClassName={"border border-dark"}>
+  //       <FocusableItem>
+  //         <div className="input-group">
+  //           <span className="input-group-text">Code</span>
+  //           <input type="text" className="form-control" placeholder="Promo Code" value={code}/>
+  //         </div>
+  //       </FocusableItem>
+  //       <FocusableItem>
+  //         <div className="input-group">
+  //           <span className="input-group-text">Type</span>
+  //           <select className="form-select" aria-label="Default select example" value={promoCodes[code].type}>
+  //             <option selected style={{display:"none"}}>Pick A Type</option>
+  //             <option>% Off</option>
+  //             <option>$ Off</option>
+  //             <option>Free</option>
+  //           </select>
+  //         </div>
+  //       </FocusableItem>
+  //       {promoCodes[code].value &&
+  //           <FocusableItem>
+  //           <div className="input-group">
+  //             <span className="input-group-text">Value</span>
+  //             <input type="number" className="form-control" value={promoCodes[code].value}/>
+  //           </div>
+  //         </FocusableItem>
+  //       }
+  //     </SubMenu>
+  //   )
+  // })
+
   var showRibbonClass = ""; // 
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {

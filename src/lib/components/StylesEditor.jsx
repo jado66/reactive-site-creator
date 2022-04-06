@@ -303,37 +303,37 @@ const socialMediaSelectOptions = [
     </SubMenu>
   ))
 
-  let promoCodeMenus = Object.keys(promoCodes).map((code,index)=>{
-    return (
-      <SubMenu label={code} menuClassName={"border border-dark"}>
-        <FocusableItem>
-          <div className="input-group">
-            <span className="input-group-text">Code</span>
-            <input type="text" className="form-control" placeholder="Promo Code" value={code}/>
-          </div>
-        </FocusableItem>
-        <FocusableItem>
-          <div className="input-group">
-            <span className="input-group-text">Type</span>
-            <select className="form-select" aria-label="Default select example" value={promoCodes[code].type}>
-              <option selected style={{display:"none"}}>Pick A Type</option>
-              <option>% Off</option>
-              <option>$ Off</option>
-              <option>Free</option>
-            </select>
-          </div>
-        </FocusableItem>
-        {promoCodes[code].value &&
-            <FocusableItem>
-            <div className="input-group">
-              <span className="input-group-text">Value</span>
-              <input type="number" className="form-control" value={promoCodes[code].value}/>
-            </div>
-          </FocusableItem>
-        }
-      </SubMenu>
-    )
-  })
+  // let promoCodeMenus = Object.keys(promoCodes).map((code,index)=>{
+  //   return (
+  //     <SubMenu label={code} menuClassName={"border border-dark"}>
+  //       <FocusableItem>
+  //         <div className="input-group">
+  //           <span className="input-group-text">Code</span>
+  //           <input type="text" className="form-control" placeholder="Promo Code" value={code}/>
+  //         </div>
+  //       </FocusableItem>
+  //       <FocusableItem>
+  //         <div className="input-group">
+  //           <span className="input-group-text">Type</span>
+  //           <select className="form-select" aria-label="Default select example" value={promoCodes[code].type}>
+  //             <option selected style={{display:"none"}}>Pick A Type</option>
+  //             <option>% Off</option>
+  //             <option>$ Off</option>
+  //             <option>Free</option>
+  //           </select>
+  //         </div>
+  //       </FocusableItem>
+  //       {promoCodes[code].value &&
+  //           <FocusableItem>
+  //           <div className="input-group">
+  //             <span className="input-group-text">Value</span>
+  //             <input type="number" className="form-control" value={promoCodes[code].value}/>
+  //           </div>
+  //         </FocusableItem>
+  //       }
+  //     </SubMenu>
+  //   )
+  // })
 
   let showRibbonClass = ""
 // 
