@@ -20,7 +20,7 @@ import Page404 from "./pages/Page404";
 // Custom Hook for Saving Context Data
 import useContextStorage from "./helpers/useContextStorage";
 
-import { defaultSiteData, defaultWebStyles, defaultComponentOptions } from "./defaultData"
+import { defaultSiteData, defaultWebStyles, defaultComponentOptions } from "./defaultDataEmpty"
 
 export const WebContext = createContext()
 

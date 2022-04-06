@@ -101,6 +101,9 @@ export default function DynamicPage(props) {
 
   let pagecomponents = [];
 
+  pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {-1}/>);
+
+
   const storedComponents = components || []
   storedComponents.forEach((el, index) => {
 

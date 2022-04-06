@@ -135,6 +135,10 @@ function DynamicPage(props) {
   };
 
   var pagecomponents = [];
+  pagecomponents.push( /*#__PURE__*/(0, _jsxRuntime.jsx)(_Spacer.default, {
+    insertComponent: insertComponent,
+    index: -1
+  }));
   var storedComponents = components || [];
   storedComponents.forEach(function (el, index) {
     var componentOption = props.componentOptions[el.name];

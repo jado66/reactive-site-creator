@@ -26,7 +26,7 @@ var _Page = _interopRequireDefault(require("./pages/Page404"));
 
 var _useContextStorage11 = _interopRequireDefault(require("./helpers/useContextStorage"));
 
-var _defaultData = require("./defaultData");
+var _defaultDataEmpty = require("./defaultDataEmpty");
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -69,10 +69,10 @@ function Website(props) {
       siteIsDraft = _useState2[0],
       _setSiteIsDraft = _useState2[1];
 
-  var siteData = props.defaultSiteData || _defaultData.defaultSiteData; // Components
+  var siteData = props.defaultSiteData || _defaultDataEmpty.defaultSiteData; // Components
 
-  var componentOptions = props.defaultComponentOptions || _defaultData.defaultComponentOptions;
-  componentOptions = _objectSpread(_objectSpread({}, _defaultData.defaultComponentOptions), props.componentOptions);
+  var componentOptions = props.defaultComponentOptions || _defaultDataEmpty.defaultComponentOptions;
+  componentOptions = _objectSpread(_objectSpread({}, _defaultDataEmpty.defaultComponentOptions), props.componentOptions);
   var apiMethods = {
     // getFromDatabase: props.getFromDatabase,
     getFromDataBase: props.getFromDataBase,
@@ -118,8 +118,8 @@ function Website(props) {
   var _useContextStorage = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "webStyle", {
     siteName: siteData.siteName,
     // Website colors
-    colors: props.colors || _defaultData.defaultWebStyles.colors,
-    componentStyles: props.componentStyles || _defaultData.defaultWebStyles.componentStyles
+    colors: props.colors || _defaultDataEmpty.defaultWebStyles.colors,
+    componentStyles: props.componentStyles || _defaultDataEmpty.defaultWebStyles.componentStyles
   }),
       _useContextStorage2 = _slicedToArray(_useContextStorage, 2),
       webStyle = _useContextStorage2[0],
