@@ -136,7 +136,7 @@ function DynamicPage(props) {
 
   var pagecomponents = [];
   var storedComponents = components || [];
-  components.forEach(function (el, index) {
+  storedComponents.forEach(function (el, index) {
     var componentOption = props.componentOptions[el.name];
     var Component = componentOption.component;
     var isNestedComponent = componentOption.isNestedComponent;
