@@ -26,7 +26,7 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
     // Save data
     useEffect(() => {
       if (msgPort === "save"){
-        alert("Saving ")
+        // alert("Saving ")
         apiMethods.setValueInDatabase(contextName,JSON.stringify(value))
         localStorage.removeItem(contextName)
       }

@@ -60,7 +60,7 @@ function useComponentStorage(componentID, initialState) {
 
   (0, _react.useEffect)(function () {
     if (msgPort === "save") {
-      alert("Saving ");
+      // alert("Saving ")
       apiMethods.setValueInDatabase(componentID, JSON.stringify(value));
       localStorage.removeItem(componentID);
     }

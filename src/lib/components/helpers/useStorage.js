@@ -30,7 +30,7 @@ export default function useComponentStorage(componentID, initialState){
     // Save data
     useEffect(() => {
         if (msgPort === "save"){
-            alert("Saving ")
+            // alert("Saving ")
             apiMethods.setValueInDatabase(componentID,JSON.stringify(value))
             localStorage.removeItem(componentID)
         }

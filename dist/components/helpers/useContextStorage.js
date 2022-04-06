@@ -58,7 +58,7 @@ function useContextStorage(adminSettings, apiMethods, msgPort, contextName, init
 
   (0, _react.useEffect)(function () {
     if (msgPort === "save") {
-      alert("Saving ");
+      // alert("Saving ")
       apiMethods.setValueInDatabase(contextName, JSON.stringify(value));
       localStorage.removeItem(contextName);
     }
