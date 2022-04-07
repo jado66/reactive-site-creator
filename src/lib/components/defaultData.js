@@ -203,14 +203,17 @@ export const defaultWebStyles = {
 
 export const defaultComponentOptions = {
   Header: {
+    componentName: "Header",
     component: Header,
     isNestedComponent: false
   },
   Footer: {
+    componentName: "Footer",
     component: Footer,
     isNestedComponent: false
   },
   Mosaic: {
+    componentName: "Mosaic",
     component: Mosaic,
     isNestedComponent: true
   }, 

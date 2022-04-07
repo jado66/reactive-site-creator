@@ -101,13 +101,10 @@ export default function DynamicPage(props) {
 
   let pagecomponents = [];
 
-  pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {-1}/>);
-
-
   const storedComponents = components || []
   storedComponents.forEach((el, index) => {
 
-    const componentOption = props.componentOptions[el.name]
+    const componentOption = props.componentOptions[el.name] 
     
     const Component = componentOption.component;
     const isNestedComponent = componentOption.isNestedComponent;
@@ -162,6 +159,14 @@ export default function DynamicPage(props) {
       pagecomponents.push(<div style={{height:".5em"}}></div>)
     }
   });
+
+  // Add first spacer if there is none
+  if (pagecomponents.length === 0 && adminSettings.isEditMode ){
+    pagecomponents.push(<Spacer insertComponent = {insertComponent} index = {-1}/>);
+
+  }
+
+
 
   let borderColor = webStyle.colors[webStyle.componentStyles.all.borderColor]  
   let shadowColor = webStyle.colors[webStyle.componentStyles.all.shadowColor]

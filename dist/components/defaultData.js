@@ -189,14 +189,17 @@ var defaultWebStyles = {
 exports.defaultWebStyles = defaultWebStyles;
 var defaultComponentOptions = {
   Header: {
+    componentName: "Header",
     component: _Header.default,
     isNestedComponent: false
   },
   Footer: {
+    componentName: "Footer",
     component: _Footer.default,
     isNestedComponent: false
   },
   Mosaic: {
+    componentName: "Mosaic",
     component: _Mosaic.default,
     isNestedComponent: true
   },
