@@ -37,12 +37,13 @@ export default function PictureFrame(props){
             apiMethods.uploadImageToDB(newImage, () => {})
 
             props.setImageName(newImage.name)
+            setImageName(newImage.name)
             encodeImageFileAsURL(newImage)
         }
     }
 
     const removePicture = () => {
-        props.setImageUrl("")
+        props.setImageName("")
         // setImageUrl("")
         // localStorage.removeItem(props.id);
     }
@@ -123,7 +124,7 @@ export default function PictureFrame(props){
             // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
             // const compressedResult = compress(newResult)
             setImageUrl(newResult)
-            props.setImageUrl(newResult)
+            // props.setImageUrl(newResult)
             // localStorage.setItem(props.id,compressedResult);
             // });
             // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);

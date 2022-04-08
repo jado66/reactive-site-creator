@@ -69,12 +69,13 @@ function PictureFrame(props) {
     if (newImage) {
       apiMethods.uploadImageToDB(newImage, function () {});
       props.setImageName(newImage.name);
+      setImageName(newImage.name);
       encodeImageFileAsURL(newImage);
     }
   };
 
   var removePicture = function removePicture() {
-    props.setImageUrl(""); // setImageUrl("")
+    props.setImageName(""); // setImageUrl("")
     // localStorage.removeItem(props.id);
   };
 
@@ -146,8 +147,8 @@ function PictureFrame(props) {
       var newResult = imageToDataUri(image, dims.width, dims.height); // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
       // const compressedResult = compress(newResult)
 
-      setImageUrl(newResult);
-      props.setImageUrl(newResult); // localStorage.setItem(props.id,compressedResult);
+      setImageUrl(newResult); // props.setImageUrl(newResult)
+      // localStorage.setItem(props.id,compressedResult);
       // });
       // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
     };
