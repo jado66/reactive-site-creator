@@ -11,6 +11,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _lzString = require("lz-string");
 
+var _Website = require("../Website");
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -29,19 +31,27 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-// const images = require.context('../../public/images', true);
 function PictureFrame(props) {
   var _useState = (0, _react.useState)(""),
       _useState2 = _slicedToArray(_useState, 2),
       imageUrl = _useState2[0],
       setImageUrl = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(null),
+  var _useState3 = (0, _react.useState)(""),
       _useState4 = _slicedToArray(_useState3, 2),
-      areButtonsVisible = _useState4[0],
-      setButtonsVisible = _useState4[1];
+      imageName = _useState4[0],
+      setImageName = _useState4[1];
 
-  var inputFile = (0, _react.useRef)(null); // Similar to componentDidMount and componentDidUpdate:
+  var _useState5 = (0, _react.useState)(null),
+      _useState6 = _slicedToArray(_useState5, 2),
+      areButtonsVisible = _useState6[0],
+      setButtonsVisible = _useState6[1];
+
+  var inputFile = (0, _react.useRef)(null);
+
+  var _useContext = (0, _react.useContext)(_Website.WebContext),
+      apiMethods = _useContext.apiMethods; // Similar to componentDidMount and componentDidUpdate:
+
 
   (0, _react.useEffect)(function () {
     // const images = props.images
@@ -57,6 +67,8 @@ function PictureFrame(props) {
 
   var updateImage = function updateImage(newImage) {
     if (newImage) {
+      apiMethods.uploadImageToDB(newImage, function () {});
+      props.setImageName(newImage.name);
       encodeImageFileAsURL(newImage);
     }
   };
@@ -120,6 +132,26 @@ function PictureFrame(props) {
   //     });
   // }
 
+
+  var resizeImageUri = function resizeImageUri(url) {
+    var image = new Image();
+    image.src = url;
+
+    image.onload = function () {
+      // access image size here 
+      // alert(`${this.width},${this.height}`);
+      // let ratio = this.height/this.width;
+      // let height = 350 * ratio
+      var dims = calculateAspectRatioFit(this.width, this.height, 600, 600);
+      var newResult = imageToDataUri(image, dims.width, dims.height); // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
+      // const compressedResult = compress(newResult)
+
+      setImageUrl(newResult);
+      props.setImageUrl(newResult); // localStorage.setItem(props.id,compressedResult);
+      // });
+      // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
+    };
+  };
 
   var encodeImageFileAsURL = function encodeImageFileAsURL(file) {
     var reader = new FileReader();
@@ -186,7 +218,9 @@ function PictureFrame(props) {
     style: {
       flex: "1"
     },
-    children: [imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
+      children: ["Image Name ", imageName]
+    }), imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: borderShape + " " + componentStyles.padding,
       style: {
         backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],

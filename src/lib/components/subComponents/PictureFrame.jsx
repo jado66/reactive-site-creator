@@ -3,13 +3,16 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { compress, decompress } from "lz-string"
 // const images = require.context('../../public/images', true);
 
+import { WebContext } from "../Website";
 
 export default function PictureFrame(props){
 
     const [imageUrl, setImageUrl] = useState("")
+    const [imageName, setImageName] = useState("")
     const [areButtonsVisible, setButtonsVisible] = useState(null)
     const inputFile = useRef(null) 
     
+    const {apiMethods} = useContext(WebContext)
 
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
@@ -30,6 +33,10 @@ export default function PictureFrame(props){
 
     const updateImage = (newImage) =>  {
         if (newImage){
+
+            apiMethods.uploadImageToDB(newImage, () => {})
+
+            props.setImageName(newImage.name)
             encodeImageFileAsURL(newImage)
         }
     }
@@ -99,6 +106,30 @@ export default function PictureFrame(props){
     //     });
     // }
 
+    const resizeImageUri = (url) => {
+        var image = new Image();
+        image.src = url;
+
+        image.onload = function() {
+            // access image size here 
+            // alert(`${this.width},${this.height}`);
+
+            // let ratio = this.height/this.width;
+            // let height = 350 * ratio
+            let dims = calculateAspectRatioFit(this.width, this.height, 600, 600)
+
+            let newResult = imageToDataUri(image,dims.width,dims.height)
+
+            // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
+            // const compressedResult = compress(newResult)
+            setImageUrl(newResult)
+            props.setImageUrl(newResult)
+            // localStorage.setItem(props.id,compressedResult);
+            // });
+            // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
+        }
+    }
+
     const encodeImageFileAsURL = (file) => {
         var reader = new FileReader();
         reader.onloadend = function() {
@@ -167,6 +198,7 @@ export default function PictureFrame(props){
     return(
         <div className={"relative-div "+props.className+(props.isNested?"":" px-5 mb-5")} onMouseEnter={()=>{setButtonsVisible(true)}} onMouseLeave={()=>{setButtonsVisible(false)}} style={{flex: "1"}}>
             {/* {props.webStyle.isEditMode?<span>Edit Mode</span>:<span>No Edit Mode</span>} */}
+            <span>Image Name {imageName}</span>
             {imageUrl ? 
                 <div className = {(borderShape)+" "+(componentStyles.padding)} style={{backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
                     <img className={(borderShape)+" w-100 no-select" } src={imageUrl} />

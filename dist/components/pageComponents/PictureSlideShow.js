@@ -48,7 +48,7 @@ function PictureSlideShow(props) {
 
   if (Object.keys(initialState).length === 0) {
     initialState = {
-      imageUrls: [""]
+      imageNames: [""]
     };
   }
 
@@ -72,13 +72,13 @@ function PictureSlideShow(props) {
       isShowButtons = _useState6[0],
       showButtons = _useState6[1];
 
-  var setPictureUrl = function setPictureUrl(index, value) {
+  var setPictureName = function setPictureName(index, value) {
     setContent(function (prevState) {
-      var newImageUrls = _toConsumableArray(prevState.imageUrls);
+      var newImageNames = _toConsumableArray(prevState.imageNames);
 
-      newImageUrls[index] = value;
+      newImageNames[index] = value;
       return _objectSpread(_objectSpread({}, prevState), {}, {
-        imageUrls: newImageUrls
+        imageNames: newImageNames
       });
     });
   };
@@ -165,9 +165,9 @@ function PictureSlideShow(props) {
       webStyle: webStyle,
       adminSettings: adminSettings,
       images: images,
-      imageUrl: content.imageUrls[pictureIndex],
-      setImageUrl: function setImageUrl(value) {
-        setPictureUrl(pictureIndex, value);
+      imageName: content.imageNames[pictureIndex],
+      setImageName: function setImageName(value) {
+        setPictureName(pictureIndex, value);
       },
       id: "".concat(props.id, "-P").concat(pictureIndex),
       isNested: true

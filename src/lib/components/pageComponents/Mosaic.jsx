@@ -13,14 +13,14 @@ export default function Mosaic(props){
     if (Object.keys(initialState).length === 0){
         initialState =
         {
-            lImageUrl: "",
+            lImageName: "",
     
             lTitle: "Title",
             lSubTitle: "SubTitle",
             lLinkText: `New Link`,
             lHref: "",
     
-            rImageUrl: "",
+            rImageName: "",
     
             rTitle: "Title",
             rSubTitle: "SubTitle",
@@ -58,8 +58,8 @@ export default function Mosaic(props){
                     webStyle = {webStyle} 
                     images = {images}
                     id = {leftPictureFrameID} 
-                    imageUrl = {content.lImageUrl} 
-                    setImageUrl = {(value)=>{handleContentEntryChange("lImageUrl",value)}} 
+                    imageName = {content.lImageUrl} 
+                    setImageName = {(value)=>{handleContentEntryChange("lImageUrl",value)}} 
                     isNested
                 />
             </div>     
@@ -74,9 +74,9 @@ export default function Mosaic(props){
                     adminSettings = {adminSettings} 
                     webStyle = {webStyle} 
                     images = {images}
-                    imageUrl = {content.rImageUrl} 
+                    imageName = {content.rImageUrl} 
                     id = {rightPictureFrameID} 
-                    setImageUrl = {(value)=>{handleContentEntryChange("rImageUrl",value)}} 
+                    setImageName = {(value)=>{handleContentEntryChange("rImageUrl",value)}} 
                     isNested
                 />
             </div>
@@ -145,7 +145,7 @@ export default function Mosaic(props){
                         <div className="row g-0 mb-5">
                             <PictureFrame  
                                  key = {leftPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                id = {leftPictureFrameID} imageUrl = {content.lImageUrl} setImageUrl = {(value)=>{handleContentEntryChange("lImageUrl",value)}} isNested
+                                id = {leftPictureFrameID} imageName = {content.lImageUrl} setImageName = {(value)=>{handleContentEntryChange("lImageUrl",value)}} isNested
                             />
                         </div>
                     </Fade>
@@ -162,7 +162,7 @@ export default function Mosaic(props){
                     <Fade>
                         <div className="row g-0 mb-5">
                             <PictureFrame key = {rightPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                          imageUrl = {content.rImageUrl}  setImageUrl = {(value)=>{handleContentEntryChange("rImageUrl",value)}} id = {rightPictureFrameID} isNested/>
+                                          imageName = {content.rImageUrl}  setImageName = {(value)=>{handleContentEntryChange("rImageUrl",value)}} id = {rightPictureFrameID} isNested/>
                         </div>
                     </Fade>
                     <Fade>

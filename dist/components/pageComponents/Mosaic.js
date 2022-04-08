@@ -44,12 +44,12 @@ function Mosaic(props) {
 
   if (Object.keys(initialState).length === 0) {
     initialState = {
-      lImageUrl: "",
+      lImageName: "",
       lTitle: "Title",
       lSubTitle: "SubTitle",
       lLinkText: "New Link",
       lHref: "",
-      rImageUrl: "",
+      rImageName: "",
       rTitle: "Title",
       rSubTitle: "SubTitle",
       rLinkText: "New Link",
@@ -89,8 +89,8 @@ function Mosaic(props) {
         webStyle: webStyle,
         images: images,
         id: leftPictureFrameID,
-        imageUrl: content.lImageUrl,
-        setImageUrl: function setImageUrl(value) {
+        imageName: content.lImageUrl,
+        setImageName: function setImageName(value) {
           handleContentEntryChange("lImageUrl", value);
         },
         isNested: true
@@ -105,9 +105,9 @@ function Mosaic(props) {
         adminSettings: adminSettings,
         webStyle: webStyle,
         images: images,
-        imageUrl: content.rImageUrl,
+        imageName: content.rImageUrl,
         id: rightPictureFrameID,
-        setImageUrl: function setImageUrl(value) {
+        setImageName: function setImageName(value) {
           handleContentEntryChange("rImageUrl", value);
         },
         isNested: true
@@ -204,8 +204,8 @@ function Mosaic(props) {
                 webStyle: webStyle,
                 images: images,
                 id: leftPictureFrameID,
-                imageUrl: content.lImageUrl,
-                setImageUrl: function setImageUrl(value) {
+                imageName: content.lImageUrl,
+                setImageName: function setImageName(value) {
                   handleContentEntryChange("lImageUrl", value);
                 },
                 isNested: true
@@ -245,8 +245,8 @@ function Mosaic(props) {
                 adminSettings: adminSettings,
                 webStyle: webStyle,
                 images: images,
-                imageUrl: content.rImageUrl,
-                setImageUrl: function setImageUrl(value) {
+                imageName: content.rImageUrl,
+                setImageName: function setImageName(value) {
                   handleContentEntryChange("rImageUrl", value);
                 },
                 id: rightPictureFrameID,

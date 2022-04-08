@@ -76,6 +76,16 @@ function Website(props) {
   var apiMethods = {
     // getFromDatabase: props.getFromDatabase,
     getFromDataBase: props.getFromDataBase,
+    uploadImageToDB: function uploadImageToDB(file, callback) {
+      if (props.uploadImageToDB) {
+        props.uploadImageToDB(file, callback);
+      }
+    },
+    retreiveImageFromDB: function retreiveImageFromDB(fileName) {
+      if (props.retreiveImageFromDB) {
+        props.retreiveImageFromDB(fileName);
+      }
+    },
     setValueInDatabase: function setValueInDatabase(id, componentState) {
       if (props.saveComponentToDB) {
         props.saveComponentToDB(id, componentState);

@@ -39,7 +39,16 @@ export default function Website(props) {
   const apiMethods = {
     // getFromDatabase: props.getFromDatabase,
     getFromDataBase: props.getFromDataBase,
-
+    uploadImageToDB: (file, callback) => {
+      if (props.uploadImageToDB){
+        props.uploadImageToDB(file,callback)
+      }
+    },
+    retreiveImageFromDB: (fileName) => {
+      if (props.retreiveImageFromDB){
+        props.retreiveImageFromDB(fileName)
+      }
+    },
     setValueInDatabase: (id,componentState) =>{
       if (props.saveComponentToDB){
         props.saveComponentToDB(id,componentState)

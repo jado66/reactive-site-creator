@@ -10,7 +10,7 @@ export default function PictureSlideShow(props){
     if (Object.keys(initialState).length === 0){
         initialState =
         {
-            imageUrls: [""]
+            imageNames: [""]
         }
     }
 
@@ -18,16 +18,16 @@ export default function PictureSlideShow(props){
     const [pictureIndex, setPictureIndex] = useState(0)
     const [pictureCount, setPictureCount] = useState(5)
     const [isShowButtons, showButtons] = useState(false)
-    const setPictureUrl = (index,value) =>{
+    const setPictureName = (index,value) =>{
         setContent((prevState) => {
 
-            let newImageUrls = [...prevState.imageUrls]
+            let newImageNames = [...prevState.imageNames]
 
-            newImageUrls[index] = value
+            newImageNames[index] = value
 
             return {
             ...prevState,
-            imageUrls: newImageUrls,
+            imageNames: newImageNames,
           }})
     }
 
@@ -72,8 +72,8 @@ export default function PictureSlideShow(props){
                 key = {`${props.id}-P${pictureIndex}`} 
                 adminSettings = {adminSettings} 
                 images = {images}
-                imageUrl = {content.imageUrls[pictureIndex]} 
-                setImageUrl = {(value)=>{setPictureUrl(pictureIndex,value)}} 
+                imageName = {content.imageNames[pictureIndex]} 
+                setImageName = {(value)=>{setPictureName(pictureIndex,value)}} 
                 id = {`${props.id}-P${pictureIndex}`} 
                 isNested
             />
