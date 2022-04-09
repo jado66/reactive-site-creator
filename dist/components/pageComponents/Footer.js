@@ -98,7 +98,7 @@ function SocialLinks(props) {
           icon: componentMapping[location]
         })
       }, location)
-    });
+    }, props.id + "sociallink" + link);
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "mt-3",

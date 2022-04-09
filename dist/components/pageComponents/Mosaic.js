@@ -95,7 +95,7 @@ function Mosaic(props) {
         },
         isNested: true
       }, leftPictureFrameID)
-    });
+    }, "leftPictureFrame");
   };
 
   var rightPictureFrame = function rightPictureFrame(divClass) {
@@ -112,7 +112,7 @@ function Mosaic(props) {
         },
         isNested: true
       }, rightPictureFrameID)
-    });
+    }, "rightPictureFrame");
   };
 
   var leftLinkBox = function leftLinkBox(divClass) {
@@ -141,7 +141,7 @@ function Mosaic(props) {
           handleContentEntryChange("lHref", value);
         }
       }, leftLinkBoxID)
-    });
+    }, "leftLinkBox");
   };
 
   var rightLinkBox = function rightLinkBox(divClass) {
@@ -169,7 +169,7 @@ function Mosaic(props) {
           handleContentEntryChange("rHref", value);
         }
       }, rightLinkBoxID)
-    });
+    }, "rightLinkBox");
   };
 
   var componentMap = {
@@ -285,7 +285,9 @@ function Mosaic(props) {
       style: _objectSpread({}, props.style),
       className: "row g-0 px-5",
       "data-no-dnd": "true",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+        children: JSON.stringify(content)
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "col me-3",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
           children: arrangement.split('-')[0].split(",").map(function (el, index) {

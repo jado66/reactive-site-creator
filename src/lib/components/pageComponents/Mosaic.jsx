@@ -51,7 +51,7 @@ export default function Mosaic(props){
 
     const leftPictureFrame  = (divClass) => {
         return(    
-            <div className={"g-0 " + (divClass)}>
+            <div className={"g-0 " + (divClass)} key = {"leftPictureFrame"}>
                 <PictureFrame  
                     key = {leftPictureFrameID} 
                     adminSettings = {adminSettings} 
@@ -68,7 +68,7 @@ export default function Mosaic(props){
 
     const rightPictureFrame = (divClass) => {
         return(
-            <div className={"g-0 " + (divClass)}>
+            <div className={"g-0 " + (divClass)} key = {"rightPictureFrame"}>
                 <PictureFrame 
                     key = {rightPictureFrameID} 
                     adminSettings = {adminSettings} 
@@ -85,7 +85,7 @@ export default function Mosaic(props){
 
     const leftLinkBox = (divClass) => {
         return(
-            <div className={"g-0 " + (divClass)}>
+            <div className={"g-0 " + (divClass)} key = {"leftLinkBox"}>
                 <LinkBox 
                     className="row g-0 "
                     key = {leftLinkBoxID} 
@@ -108,7 +108,7 @@ export default function Mosaic(props){
     
     const rightLinkBox = (divClass) => {
         return(
-            <div className={"g-0 " + (divClass)}>
+            <div className={"g-0 " + (divClass)} key = {"rightLinkBox"}>
                 <LinkBox 
                     key = {rightLinkBoxID} 
                     id = {rightLinkBoxID} 
@@ -179,7 +179,7 @@ export default function Mosaic(props){
     else{
         return(
             <div style={{...props.style}} className = {"row g-0 px-5"} data-no-dnd="true">
-                {/* <span>{arrangement}</span> */}
+                <span>{JSON.stringify(content)}</span>
 
                 <div className = {"col me-3"}>
                     <Fade>
