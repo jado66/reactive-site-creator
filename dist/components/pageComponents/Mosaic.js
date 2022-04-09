@@ -89,9 +89,9 @@ function Mosaic(props) {
         webStyle: webStyle,
         images: images,
         id: leftPictureFrameID,
-        imageName: content.lImageUrl,
+        imageName: content.lImageName,
         setImageName: function setImageName(value) {
-          handleContentEntryChange("lImageUrl", value);
+          handleContentEntryChange("lImageName", value);
         },
         isNested: true
       }, leftPictureFrameID)
@@ -105,10 +105,10 @@ function Mosaic(props) {
         adminSettings: adminSettings,
         webStyle: webStyle,
         images: images,
-        imageName: content.rImageUrl,
+        imageName: content.rImageName,
         id: rightPictureFrameID,
         setImageName: function setImageName(value) {
-          handleContentEntryChange("rImageUrl", value);
+          handleContentEntryChange("rImageName", value);
         },
         isNested: true
       }, rightPictureFrameID)
@@ -204,9 +204,9 @@ function Mosaic(props) {
                 webStyle: webStyle,
                 images: images,
                 id: leftPictureFrameID,
-                imageName: content.lImageUrl,
+                imageName: content.lImageName,
                 setImageName: function setImageName(value) {
-                  handleContentEntryChange("lImageUrl", value);
+                  handleContentEntryChange("lImageName", value);
                 },
                 isNested: true
               }, leftPictureFrameID)
@@ -245,9 +245,9 @@ function Mosaic(props) {
                 adminSettings: adminSettings,
                 webStyle: webStyle,
                 images: images,
-                imageName: content.rImageUrl,
+                imageName: content.rImageName,
                 setImageName: function setImageName(value) {
-                  handleContentEntryChange("rImageUrl", value);
+                  handleContentEntryChange("rImageName", value);
                 },
                 id: rightPictureFrameID,
                 isNested: true

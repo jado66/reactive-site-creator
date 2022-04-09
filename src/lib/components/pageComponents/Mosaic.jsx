@@ -58,8 +58,8 @@ export default function Mosaic(props){
                     webStyle = {webStyle} 
                     images = {images}
                     id = {leftPictureFrameID} 
-                    imageName = {content.lImageUrl} 
-                    setImageName = {(value)=>{handleContentEntryChange("lImageUrl",value)}} 
+                    imageName = {content.lImageName} 
+                    setImageName = {(value)=>{handleContentEntryChange("lImageName",value)}} 
                     isNested
                 />
             </div>     
@@ -74,9 +74,9 @@ export default function Mosaic(props){
                     adminSettings = {adminSettings} 
                     webStyle = {webStyle} 
                     images = {images}
-                    imageName = {content.rImageUrl} 
+                    imageName = {content.rImageName} 
                     id = {rightPictureFrameID} 
-                    setImageName = {(value)=>{handleContentEntryChange("rImageUrl",value)}} 
+                    setImageName = {(value)=>{handleContentEntryChange("rImageName",value)}} 
                     isNested
                 />
             </div>
@@ -145,7 +145,7 @@ export default function Mosaic(props){
                         <div className="row g-0 mb-5">
                             <PictureFrame  
                                  key = {leftPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                id = {leftPictureFrameID} imageName = {content.lImageUrl} setImageName = {(value)=>{handleContentEntryChange("lImageUrl",value)}} isNested
+                                id = {leftPictureFrameID} imageName = {content.lImageName} setImageName = {(value)=>{handleContentEntryChange("lImageName",value)}} isNested
                             />
                         </div>
                     </Fade>
@@ -162,7 +162,7 @@ export default function Mosaic(props){
                     <Fade>
                         <div className="row g-0 mb-5">
                             <PictureFrame key = {rightPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                          imageName = {content.rImageUrl}  setImageName = {(value)=>{handleContentEntryChange("rImageUrl",value)}} id = {rightPictureFrameID} isNested/>
+                                          imageName = {content.rImageName}  setImageName = {(value)=>{handleContentEntryChange("rImageName",value)}} id = {rightPictureFrameID} isNested/>
                         </div>
                     </Fade>
                     <Fade>
