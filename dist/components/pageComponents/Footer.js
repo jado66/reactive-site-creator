@@ -97,8 +97,8 @@ function SocialLinks(props) {
           className: "socialMediaLink m-auto",
           icon: componentMapping[location]
         })
-      }, location)
-    }, props.id + "sociallink" + link);
+      })
+    }, location);
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     className: "mt-3",

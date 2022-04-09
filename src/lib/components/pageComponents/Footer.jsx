@@ -54,9 +54,8 @@ export default function SocialLinks(props) {
       }
       return true;
     }).map(({link,location}) =>
-      <div className='col text-center' key = {props.id+"sociallink"+link}>
-        <Link  key = {location} to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
-
+      <div className='col text-center' key = {location}>
+        <Link  to={{ pathname: link}} target={"_blank"} style={{color:webStyle.colors[componentStyles.textColor]}}><FontAwesomeIcon className={"socialMediaLink m-auto"} icon={componentMapping[location]} /></Link>
       </div>
     );
 
