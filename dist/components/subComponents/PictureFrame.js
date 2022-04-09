@@ -66,7 +66,7 @@ function PictureFrame(props) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return apiMethods.retrieveImage(props.imageName);
+                return apiMethods.retreiveImageFromDB(props.imageName);
 
               case 2:
                 image = _context.sent;

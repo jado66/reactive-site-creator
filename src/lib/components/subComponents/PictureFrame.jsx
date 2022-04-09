@@ -17,7 +17,7 @@ export default function PictureFrame(props){
     // Similar to componentDidMount and componentDidUpdate:
     useEffect(() => {
         const fetchData = async () => {
-            const image = await apiMethods.retrieveImage(props.imageName)
+            const image = await apiMethods.retreiveImageFromDB(props.imageName)
             // setImageUrl(image)
             resizeImageUri(image)
         }
