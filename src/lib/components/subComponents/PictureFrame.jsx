@@ -15,11 +15,11 @@ export default function PictureFrame(props){
     const {apiMethods} = useContext(WebContext)
 
     // Similar to componentDidMount and componentDidUpdate:
-    useEffect(() => {
+    // useEffect(() => {
         // const images = props.images
 
-        if (props.imageUrl != ""){
-            setImageUrl(props.imageUrl)
+        // if (props.imageUrl != ""){
+            // setImageUrl(props.imageUrl)
             // try{
             //     let path = `./${props.imageUrl}`
             //     setImageUrl(images(path).default)
@@ -28,8 +28,8 @@ export default function PictureFrame(props){
 
             // }
             
-        }    
-    }, [props.imageUrl]);
+        // }    
+    // }, [props.imageUrl]);
 
     const updateImage = (newImage) =>  {
         if (newImage){
@@ -154,7 +154,7 @@ export default function PictureFrame(props){
                 // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
                 // const compressedResult = compress(newResult)
                 setImageUrl(newResult)
-                props.setImageUrl(newResult)
+                props.setImageName(file.name)
                 // localStorage.setItem(props.id,compressedResult);
                 // });
                 // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);

@@ -51,19 +51,19 @@ function PictureFrame(props) {
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       apiMethods = _useContext.apiMethods; // Similar to componentDidMount and componentDidUpdate:
+  // useEffect(() => {
+  // const images = props.images
+  // if (props.imageUrl != ""){
+  // setImageUrl(props.imageUrl)
+  // try{
+  //     let path = `./${props.imageUrl}`
+  //     setImageUrl(images(path).default)
+  // }
+  // catch{
+  // }
+  // }    
+  // }, [props.imageUrl]);
 
-
-  (0, _react.useEffect)(function () {
-    // const images = props.images
-    if (props.imageUrl != "") {
-      setImageUrl(props.imageUrl); // try{
-      //     let path = `./${props.imageUrl}`
-      //     setImageUrl(images(path).default)
-      // }
-      // catch{
-      // }
-    }
-  }, [props.imageUrl]);
 
   var updateImage = function updateImage(newImage) {
     if (newImage) {
@@ -174,7 +174,7 @@ function PictureFrame(props) {
         // const compressedResult = compress(newResult)
 
         setImageUrl(newResult);
-        props.setImageUrl(newResult); // localStorage.setItem(props.id,compressedResult);
+        props.setImageName(file.name); // localStorage.setItem(props.id,compressedResult);
         // });
         // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
       };
