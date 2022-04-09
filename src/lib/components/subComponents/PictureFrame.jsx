@@ -19,7 +19,10 @@ export default function PictureFrame(props){
         const fetchData = async () => {
             const image = await apiMethods.retreiveImageFromDB(props.imageName)
             // setImageUrl(image)
-            resizeImageUri(image)
+            if (image){
+                resizeImageUri(image)
+
+            }
         }
         
         // call the function

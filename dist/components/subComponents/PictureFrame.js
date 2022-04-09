@@ -70,8 +70,11 @@ function PictureFrame(props) {
 
               case 2:
                 image = _context.sent;
+
                 // setImageUrl(image)
-                resizeImageUri(image);
+                if (image) {
+                  resizeImageUri(image);
+                }
 
               case 4:
               case "end":
