@@ -15,21 +15,18 @@ export default function PictureFrame(props){
     const {apiMethods} = useContext(WebContext)
 
     // Similar to componentDidMount and componentDidUpdate:
-    // useEffect(() => {
-        // const images = props.images
+    useEffect(() => {
+        const fetchData = async () => {
+            const image = await apiMethods.retrieveImage(props.imageName)
+            // setImageUrl(image)
+            resizeImageUri(image)
+        }
+        
+        // call the function
+        fetchData()
+        .catch(console.error);
 
-        // if (props.imageUrl != ""){
-            // setImageUrl(props.imageUrl)
-            // try{
-            //     let path = `./${props.imageUrl}`
-            //     setImageUrl(images(path).default)
-            // }
-            // catch{
-
-            // }
-            
-        // }    
-    // }, [props.imageUrl]);
+    }, [props.imageName]);
 
     const updateImage = (newImage) =>  {
         if (newImage){
