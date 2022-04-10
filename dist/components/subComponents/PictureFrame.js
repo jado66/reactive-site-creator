@@ -247,9 +247,7 @@ function PictureFrame(props) {
     style: {
       flex: "1"
     },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
-      children: ["Image Name ", imageName]
-    }), imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    children: [imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: borderShape + " " + componentStyles.padding,
       style: {
         backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],

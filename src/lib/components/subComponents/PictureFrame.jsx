@@ -159,13 +159,6 @@ export default function PictureFrame(props){
                 // });
                 // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
             }
-
-        
-
-           
-
-            
-
         }
         reader.readAsDataURL(file);
       }
@@ -199,7 +192,7 @@ export default function PictureFrame(props){
     return(
         <div className={"relative-div "+props.className+(props.isNested?"":" px-5 mb-5")} onMouseEnter={()=>{setButtonsVisible(true)}} onMouseLeave={()=>{setButtonsVisible(false)}} style={{flex: "1"}}>
             {/* {props.webStyle.isEditMode?<span>Edit Mode</span>:<span>No Edit Mode</span>} */}
-            <span>Image Name {imageName}</span>
+            {/* <span>Image Name {imageName}</span> */}
             {imageUrl ? 
                 <div className = {(borderShape)+" "+(componentStyles.padding)} style={{backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
                     <img className={(borderShape)+" w-100 no-select" } src={imageUrl} />

@@ -38,7 +38,7 @@ function App() {
       // siteName = {"Jadon's Site"}
       isAdmin = {isAuthenticated}
       // basename = {"/site-creator"}
-      componentOptions = {componentOptions}
+      componentOptions = {componentOptions} 
 
       customShadowStyles = {
         [
