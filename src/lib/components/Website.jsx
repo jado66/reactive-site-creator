@@ -370,7 +370,7 @@ export default function Website(props) {
     let showTutorial = localStorage.getItem("showTutorial")
 
     if (!showTutorial){
-      showTutorial === '-1'
+      showTutorial = '-1'
     }
 
     if ((socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF") || showTutorial !== '-1'){

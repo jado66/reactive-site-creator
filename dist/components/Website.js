@@ -445,7 +445,7 @@ function Website(props) {
     var showTutorial = localStorage.getItem("showTutorial");
 
     if (!showTutorial) {
-      showTutorial === '-1';
+      showTutorial = '-1';
     }
 
     if (socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF" || showTutorial !== '-1') {
