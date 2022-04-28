@@ -44,7 +44,7 @@ export default function LinkBox(props){
 
 
   return(
-    <div className={"p-3 "+borderShape} style={{backgroundColor: props.webStyle.colors[props.webStyle.componentStyles.linkBox.backgroundColor], boxShadow: borderAndShadow}}>
+    <div className={"p-3 g-0 "+borderShape} style={{backgroundColor: props.webStyle.colors[props.webStyle.componentStyles.linkBox.backgroundColor], boxShadow: borderAndShadow}}>
       <ContentEditable
         style={{color: props.webStyle.colors[componentStyles.textColor]}}
         innerRef={contentEditable1}

@@ -3,7 +3,8 @@ import NavigationBar from "./pageComponents/NavigationBar";
 import StyledLink from './pageComponents/StyledLink'
 import TextEditor from "./pageComponents/TextEditor";
 import SubscriptionCards from "./pageComponents/SubscriptionCards";
-import PictureSlideShow from "./pageComponents/PictureSlideShow";
+import MediaSlideShow from "./pageComponents/MediaSlideShow";
+import MediaFrame from "./pageComponents/MediaFrame";
 import Mosaic from "./pageComponents/Mosaic";
 import Footer from "./pageComponents/Footer";
 import SubscriberBox from "./pageComponents/SubscriberBox";
@@ -150,9 +151,14 @@ export const defaultComponentOptions = {
     component: TextEditor,
     isNestedComponent: false
   }, 
-  PictureSlideShow: {
-    componentName: "Picture Slide Show",
-    component: PictureSlideShow,
+  MediaSlideShow: {
+    componentName: "Media Slide Show",
+    component: MediaSlideShow,
+    isNestedComponent: false
+  }, 
+  MediaFrame: {
+    componentName: "Media Frame",
+    component: MediaFrame,
     isNestedComponent: false
   }, 
   SubscriptionCards: {

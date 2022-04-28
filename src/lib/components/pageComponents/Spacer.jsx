@@ -36,6 +36,9 @@ export default function Spacer(props) {
         showBar(false);
       }}
       onClick={() => {
+        if (props.onClick){
+          props.onClick()
+        }
         setShowButtons(!isShowButtons);
       }}
     >
@@ -44,7 +47,7 @@ export default function Spacer(props) {
         className="m-0 px-5 mx-auto " 
       >
         <div >
-          <div className="row px-3 mx-auto rounded rounded-pill" style={{backgroundColor:"white",zIndex:2 }}>
+          <div className="row px-3 mx-auto rounded rounded-pill border border-dark" style={{backgroundColor:"white",zIndex:2 }}>
               <div style={{display:"flex", flexDirection:"row"}} >
                   {/* <button style={{width:"5%"}} className="btn btn-light btn-outline-secondary my-1 g-0" onClick={()=>{this.closeAddComponents()}}>{"X"}</button> */}
                   {/* <button style={{width:"5%"}} className="btn btn-light btn-outline-secondary my-1 g-0" onMouseUp={()=>{this.onMouseUp()}} onMouseDown={()=>{this.onMouseDown(true)}}>{"<"}</button> */}
@@ -57,7 +60,7 @@ export default function Spacer(props) {
       :
       <div className="px-5">
         <hr
-          className="m-0 p-0 w-100 mx-auto bg-primary"
+          className="m-0 p-0 w-100 mx-auto bg-primary border border-dark"
           style={{ height: "4px", display: isShowBar ? "" : "none" }}
         />
       </div>

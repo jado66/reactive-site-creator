@@ -181,7 +181,8 @@ export default function DynamicPage(props) {
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
 
   return (
-    <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor?"50px":""}}>
+    <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor && !props.showTutorial ?"50px":""}}> 
+    {/* marginTop:adminSettings.isShowEditor?"50px":"" */}
        {selectedComponents.length > 0 && 
         <div className="d-flex  " style={{position:"absolute", width:"100vw", zIndex:2000}}>
           <div className="d-flex w-100 flex-row">
@@ -207,7 +208,7 @@ export default function DynamicPage(props) {
 
         </div>
       }
-      <div id = "outerSection" className={"min-vh-100"+(localDisplaySettings.isMobile?" ":" container")} >
+      <div id = "outerSection " className={"min-vh-100 g-0 "+(localDisplaySettings.isMobile?" ":" container")} >
      
 
         <div 

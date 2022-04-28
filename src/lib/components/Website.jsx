@@ -5,6 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 
+
 // CSS
 import '../css/website.css';
 import '../css/index.css';
@@ -21,6 +22,10 @@ import Page404 from "./pages/Page404";
 import useContextStorage from "./helpers/useContextStorage";
 
 import { defaultSiteData, defaultWebStyles, defaultComponentOptions } from "./defaultDataEmpty"
+import ShopManager from "./pages/ShopManager";
+
+import {ciede2000, rgbToHex} from "./helpers/colorDiff";
+
 
 export const WebContext = createContext()
 
@@ -29,6 +34,7 @@ export default function Website(props) {
   const images = []// require.context('../../../public/images', true);
 
   const [siteIsDraft, setSiteIsDraft] = useState(false)
+  const [showTutorial, setShowTutorial] = useState(false)
 
   const siteData = props.defaultSiteData || defaultSiteData
 
@@ -103,6 +109,8 @@ export default function Website(props) {
     setSavedData: (state) => setSavedData(state),
     setPromoCodes: (state) => setPromoCodes(state),
     
+    setShowTutorial: (state) => setShowTutorial(state),
+
     addToCart: (cartItem) =>{
       // Check if we already have it in the cart
       if (cartItem.name in cart){
@@ -291,16 +299,91 @@ export default function Website(props) {
       }
       
       setSavedData(newSavedData)
-    }
-  }  
+    },
+    getRandomColors:()=>{
+      var url = "http://colormind.io/api/";
+      var data = {
+        model : "default",
+        input : [[Math.floor(Math.random() * 56),Math.floor(Math.random() * 56),Math.floor(Math.random() * 56)],"N","N","N",[Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220]]
+      }
+      
+      var http = new XMLHttpRequest();
+      
+      http.onreadystatechange = function() {
+        // alert(http.readyState)
+        if(http.readyState == 4 && http.status == 200) {
+          var palette = JSON.parse(http.responseText).result;
+          // var palette = [[190,213,243],[0,0,0],[255,255,255],[105,180,95],[3,8,9]]
+          var diff = []
+
+          for (var i = 0; i < 5; i++){
+            diff.push(ciede2000(palette[i],[0,0,0]))
+          }
+
+          //1) combine the arrays:
+          let list = [    
+            [palette[0], diff[0]],
+            [palette[1], diff[1]],
+            [palette[2], diff[2]],
+            [palette[3], diff[3]],
+            [palette[4], diff[4]]
+          ]
+          //2) sort:
+          list.sort((a, b) => b[1] - a[1]);
+
+          // alert(JSON.stringify(list))
+
+          let hexColors = []
+          //3) separate them back out:
+          for (var k = 0; k < 5; k++) {
+            hexColors.push(rgbToHex(list[k][0]));
+          }
+
+          appMethods.setWebStyle(
+            {
+              ...webStyle,
+              colors:{
+                ...webStyle.colors,
+                lightShade: hexColors[0],
+                lightAccent: hexColors[1],
+                mainBrandColor: hexColors[2],
+                darkAccent: hexColors[3],
+                darkShade: hexColors[4]
+              }
+            }
+          )     
+        }
+      }
+      
+      http.open("POST", url, true);
+      http.send(JSON.stringify(data));
+      }
+    }  
 
   function handleWindowSizeChange() {
     const isMobile = window.innerWidth <= 991
     setLocalDisplaySettings({...localDisplaySettings, isMobile:isMobile})
   }
 
+  function launchTutorial(){
+    
+    const showTutorial = localStorage.getItem("showTutorial")
+
+    if ((socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF") || showTutorial !== '-1'){
+      setShowTutorial(true)
+      
+      if (!showTutorial){
+        localStorage.setItem("showTutorial", 0)
+      }
+    }
+  }
+
   // Website init
   useEffect(() => {
+
+    if (adminSettings.isAdmin){
+      launchTutorial();
+    }
     setCartFromStorage();
 
     window.addEventListener('resize', handleWindowSizeChange);
@@ -365,9 +448,11 @@ export default function Website(props) {
     return(
       <Route basename={props.basename} exact path = {path+"/:pathParam?"} key = {name+"Route"}>
         {adminSettings.isAdmin && adminSettings.isShowEditor &&
-          <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
+          <StylesEditor customShadowStyles = {props.customShadowStyles || []} showTutorial = {showTutorial}/>
         }   
+        
         <DynamicPage   
+          showTutorial = {showTutorial}
           key = {id} 
           pageName = {name}
           pageID = {id}
@@ -381,6 +466,7 @@ export default function Website(props) {
   ) 
 
   return (
+    <>
     <WebContext.Provider value = {
       {
         images: images,
@@ -405,7 +491,18 @@ export default function Website(props) {
         <Switch>  
           {/* App pages */}
           {sitePageComponents}
-          
+          <Route path = "/admin/shop-manager">
+            <>
+              {adminSettings.isAdmin && adminSettings.isShowEditor &&
+                <StylesEditor customShadowStyles = {props.customShadowStyles || []}/>
+              }  
+              <ShopManager
+                key = {"Page"} 
+                pageName = {"ShopManager"}
+                pageID = {"ShopManager"}   
+              />
+            </>
+          </Route>
           <Route path = "*">
             <>
               {adminSettings.isAdmin && adminSettings.isShowEditor &&
@@ -424,6 +521,9 @@ export default function Website(props) {
         </Switch>
       </Router>
     </div>
-  </WebContext.Provider>
+    </WebContext.Provider>
+    </>
+    
   );
 }
+

@@ -2,20 +2,51 @@ import React from "react";
 import { useEffect, useState, useRef, useContext } from "react";
 import { compress, decompress } from "lz-string"
 // const images = require.context('../../public/images', true);
-
+import { Menu, MenuItem, MenuButton, MenuHeader,
+    MenuDivider, FocusableItem, SubMenu} from '@szhsin/react-menu';
 import { WebContext } from "../Website";
 
 export default function PictureFrame(props){
 
-    const [imageUrl, setImageUrl] = useState("")
+    // const content {type: "srcType", url: "" || name: "" } 
+    let initialURL = ""
+    let initialName = "null"
+
+    // try{
+    if (props.imageContent){
+        if (props.imageContent.type === "url"){
+            initialURL = props.imageContent.url
+        }
+    }
+
+    const [url, setUrl] = useState(initialURL)
+    const [videoFile, setVideoFile] = useState(null)
     const [imageName, setImageName] = useState("")
-    const [areButtonsVisible, setButtonsVisible] = useState(null)
-    const inputFile = useRef(null) 
-    
+    const [areButtonsVisible, setButtonsVisible] = useState(false)
+    const [width, setWidth] = useState(0)
+    const [height,setHeight] = useState(0)
+    const inputImageFile = useRef(null) 
+    const inputVideoFile = useRef(null)
+    const container = useRef(null)
+
+
     const {apiMethods} = useContext(WebContext)
 
     // Similar to componentDidMount and componentDidUpdate:
+    // setVideoRatio
+
     useEffect(() => {
+
+        if (props.imageContent.type == "youtube"){
+            setTimeout(() => {
+                setVideoRatio()
+            }, 1000)
+        }
+
+    }, []);
+
+    useEffect(() => {
+
         const fetchData = async () => {
             const image = await apiMethods.retreiveImageFromDB(props.imageName)
             // setImageUrl(image)
@@ -31,21 +62,47 @@ export default function PictureFrame(props){
 
     }, [props.imageName]);
 
+    useEffect(() => {
+        if (props.imageContent.type == "url"){
+            setUrl(props.imageContent.url)
+        }     
+    }, [props.imageContent]);
+
     const updateImage = (newImage) =>  {
         if (newImage){
 
             apiMethods.uploadImageToDB(newImage, () => {})
 
-            props.setImageName(newImage.name)
+            props.setImageContent({type:"file", name:newImage.name})
             setImageName(newImage.name)
             encodeImageFileAsURL(newImage)
         }
     }
 
+    const updateVideo = (newVideo) =>  {
+        if (newVideo){
+
+            // apiMethods.uploadImageToDB(newVideo, () => {})
+
+            props.setImageContent({type:"video", name:newVideo.name})
+            setUrl( URL.createObjectURL(newVideo));
+            // encodeImageFileAsURL(newVideo)
+        }
+    }
+
     const removePicture = () => {
-        props.setImageName("")
-        // setImageUrl("")
+        setUrl("")
+        props.setImageContent({type:""})
+
         // localStorage.removeItem(props.id);
+    }
+
+    const getRandomPicture = () => {
+        let keyword = props.webStyle.componentStyles.pictureFrame.randomImageKeyword
+        let randomNum = Math.floor(Math.random()*1000)
+        const url = `https://loremflickr.com/1024/1024/${keyword}?lock=${randomNum}"`
+        setUrl(url)
+        props.setImageContent({type:"url", url:url})
     }
 
     const imageToDataUri = (img, width, height) => {
@@ -107,6 +164,43 @@ export default function PictureFrame(props){
     //     });
     // }
 
+    const changeImageFromURL = () =>{
+        const imageUrl = window.prompt("Input the url")
+
+
+
+        setUrl(imageUrl)
+        props.setImageContent({type:"url",url:imageUrl})
+    }
+
+    const changeVideoFromURL = () =>{
+        const videoUrl = window.prompt("Input the url")
+
+        setUrl(videoUrl)
+        props.setImageContent({type:"video",url:videoUrl})
+    }
+
+    const setVideoRatio = () =>{
+        if(container.current){
+            setWidth(container.current.clientWidth) 
+
+            const height = Math.floor(9*container.current.clientWidth/16)
+              setHeight(height)
+            container.current.style.minHeight = `${height}px`
+          }
+    }
+
+    const embedVideoFromURL = () =>{
+        const videoUrl = window.prompt("Input the url")
+        
+            setTimeout(() => {
+                setVideoRatio()
+            }, 1000)
+          
+        setUrl(videoUrl)
+        props.setImageContent({type:"youtube",url:videoUrl})
+    }
+
     const resizeImageUri = (url) => {
         var image = new Image();
         image.src = url;
@@ -123,7 +217,7 @@ export default function PictureFrame(props){
 
             // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
             // const compressedResult = compress(newResult)
-            setImageUrl(newResult)
+            setUrl(newResult)
             // props.setImageUrl(newResult)
             // localStorage.setItem(props.id,compressedResult);
             // });
@@ -153,8 +247,8 @@ export default function PictureFrame(props){
 
                 // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
                 // const compressedResult = compress(newResult)
-                setImageUrl(newResult)
-                props.setImageName(file.name)
+                setUrl(newResult)
+                props.setImageContent({type:"file",name:file.name})
                 // localStorage.setItem(props.id,compressedResult);
                 // });
                 // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
@@ -189,40 +283,138 @@ export default function PictureFrame(props){
     }
     borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
 
+    const imageMenu = <>
+                        <MenuItem className={"px-0 py-2"}>
+                            <MenuButton 
+                                className={"btn p-0 px-4 text-start flex-grow-1"}
+                                onClick={()=>{inputImageFile.current.click()}}
+                            >
+                                {!url ?"Upload Image from File":"Change Image from File"}
+                            </MenuButton>
+                        </MenuItem>
+                        <MenuItem className={"px-0 py-2"}>
+                            <MenuButton 
+                                className={"btn p-0 px-4 text-start flex-grow-1"}
+                                onClick={changeImageFromURL}
+                            >
+                                {!url ?"Set Image from URL":"Change Image from URL"}
+                            </MenuButton>
+                        </MenuItem>
+                        <MenuItem className={"px-0 py-2"}>
+                            <MenuButton 
+                                className={"btn p-0 px-4 text-start flex-grow-1"}
+                                onClick={getRandomPicture}
+                            >
+                                Random Image
+                            </MenuButton>
+                        </MenuItem>
+                    </>
+
+
     return(
         <div className={"relative-div "+props.className+(props.isNested?"":" px-5 mb-5")} onMouseEnter={()=>{setButtonsVisible(true)}} onMouseLeave={()=>{setButtonsVisible(false)}} style={{flex: "1"}}>
-            {/* {props.webStyle.isEditMode?<span>Edit Mode</span>:<span>No Edit Mode</span>} */}
-            {/* <span>Image Name {imageName}</span> */}
-            {imageUrl ? 
-                <div className = {(borderShape)+" "+(componentStyles.padding)} style={{backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
-                    <img className={(borderShape)+" w-100 no-select" } src={imageUrl} />
+            {/* <span>{JSON.stringify(props.imageContent)}</span> */}
+            <div className = {(borderShape)+" "+(componentStyles.padding)} style={{minHeight:"300px",backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
+                { props.imageContent.type == "video" &&
+                <>
+                    <video className="d-flex flex-grow-1 w-100" src={url} controls>
+                        Your browser does not support the video tag.
+                    </video>
+                </>    
+                }
+                { props.imageContent.type == "youtube" &&    
+                <div  className="video-responsive">
+                    {/* <span>{width}x{height}</span> */}
+                    <iframe
+                        ref={container}
+                        // width="560" height="315"
+                        className="d-flex flex-grow-1 w-100 h-100"
+                        src={`https://www.youtube.com/embed/${props.imageContent.url}`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        title="Embedded youtube"
+                    />
                 </div>
+                }
+                { props.imageContent.type == "url" &&
+                <img className={(borderShape)+" w-100 no-select" } src={url} />
+                }
+            </div>
                 
-                :
-                <div className={(borderShape)+" blankDiv w-100"} style={{minHeight:"300px",backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}></div>
-            }
             {
                 areButtonsVisible && props.adminSettings.isEditMode &&
-                <div className="row relative-l">
-                    <div > 
-                        <input
-                            style={{display:"none"}}
-                            type="file"
-                            ref={inputFile} 
-                            onChange={(event) => {
-                                console.log(event.target.files[0]);
-                                updateImage(event.target.files[0]);
-                                }}
-                            />
-                        {!props.imageUrl ?
-                            <input type ="button" value="Upload Image" onClick={()=>{inputFile.current.click()}} style={buttonStyle}/>
-                            :
-                            <input type ="button" value="Change Image" onClick={()=>{inputFile.current.click()}} style={buttonStyle}/>
-                        }
-                        {props.imageUrl &&
-                            <input type ="button" value="Remove Picture" onClick={()=>removePicture()} style={buttonStyle}/>
-                        }
-                    </div>
+                <div className="d-flex flex-row relative" style={{left:0}}>
+                    <input
+                        style={{display:"none"}}
+                        type="file"
+                        ref={inputImageFile} 
+                        onChange={(event) => {
+                            console.log(event.target.files[0]);
+                            updateImage(event.target.files[0]);
+                            }}
+                    />
+                    <input
+                        style={{display:"none"}}
+                        type="file"
+                        ref={inputVideoFile} 
+                        onChange={(event) => {
+                            console.log(event.target.files[0]);
+                            updateVideo(event.target.files[0]);
+                            }}
+                    />
+                    {props.moveLeft &&
+                        <input className="ms-3 mt-2 btn btn-light border border-dark" type ="button" value="Move Left" onClick={()=>props.moveLeft()} style={buttonStyle}/>
+                    }
+                    <Menu className=" dropdown " menuClassName={"border  "} menuButton={<MenuButton className={"ms-2 mt-2 btn btn-light dropdown-toggle border border-dark "}>{props.imageContent.type !== ""?"Change Media":"Add Media"}</MenuButton>} transition>
+                        {
+                            props.includeVideos ?
+                        <>
+                            <SubMenu label = {"Image"} menuClassName={"border"}>
+                                {imageMenu}
+                            </SubMenu>
+                            <SubMenu label = {"Video"} menuClassName={"border"}>
+                                <MenuItem className={"px-0 py-2"}>
+                                    <MenuButton 
+                                        className={"btn p-0 px-4 text-start flex-grow-1"}
+                                        onClick={()=>{inputVideoFile.current.click()}}
+                                    >
+                                        {!url ?"Upload Video from File":"Change Video from File"}
+                                    </MenuButton>
+                                </MenuItem>
+                                <MenuItem className={"px-0 py-2"}>
+                                    <MenuButton 
+                                        className={"btn p-0 px-4 text-start flex-grow-1"}
+                                        onClick={changeVideoFromURL}
+                                    >
+                                        {!url ?"Set Video from URL":"Change Video from URL"}
+                                    </MenuButton>
+                                </MenuItem>
+                                <MenuItem className={"px-0 py-2"}>
+                                    <MenuButton 
+                                        className={"btn p-0 px-4 text-start flex-grow-1"}
+                                        onClick={embedVideoFromURL}
+                                    >
+                                        Embed YouTube Video
+                                    </MenuButton>
+                                </MenuItem>
+                                
+                            </SubMenu>
+                        </>
+                        
+                        :    
+                        <>
+                        {imageMenu}
+                        </>
+                    }
+                    </Menu>
+                   
+                    {props.imageContent.type &&
+                        <input className="ms-3 mt-2 btn btn-light border border-dark" type ="button" value="Remove Media" onClick={()=>removePicture()} style={buttonStyle}/>
+                    }
+                    {props.moveRight &&
+                        <input className="ms-3 mt-2 btn btn-light border border-dark" type ="button" value="Move Right" onClick={()=>props.moveRight()} style={buttonStyle}/>
+                    }
                 </div>
             }
             </div> 

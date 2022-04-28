@@ -759,6 +759,12 @@ export function PictureFrameMenu(props) {
               ]}       
           />
       </FocusableItem>
+      <FocusableItem>
+        <span className="me-2">Random Image Keyword: </span> 
+        <input 
+          onChange = {(evt)=>{props.handleStyleChange("pictureFrame","randomImageKeyword",evt.target.value)}}
+          value={props.webStyle.componentStyles.pictureFrame.randomImageKeyword}/>
+      </FocusableItem>
     </SubMenu>
   );
 }

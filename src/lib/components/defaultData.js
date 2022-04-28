@@ -3,7 +3,8 @@ import NavigationBar from "../components/pageComponents/NavigationBar";
 import StyledLink from '../components/pageComponents/StyledLink'
 import TextEditor from "../components/pageComponents/TextEditor";
 import SubscriptionCards from "../components/pageComponents/SubscriptionCards";
-import PictureSlideShow from "../components/pageComponents/PictureSlideShow";
+import MediaFrame from "./pageComponents/MediaFrame";
+import MediaSlideShow from "./pageComponents/MediaSlideShow";
 import Mosaic from "../components/pageComponents/Mosaic";
 import Footer from "../components/pageComponents/Footer";
 import SubscriberBox from "../components/pageComponents/SubscriberBox";
@@ -181,6 +182,7 @@ export const defaultWebStyles = {
     pictureFrame:{
       backgroundColor: "mainBrandColor",
       padding: "",
+      randomImageKeyword: "cat",
     },
     photoGallery:{
       margin: 8,
@@ -237,9 +239,14 @@ export const defaultComponentOptions = {
     component: TextEditor,
     isNestedComponent: false
   }, 
-  PictureSlideShow: {
-    componentName: "Picture Slide Show",
-    component: PictureSlideShow,
+  MediaSlideShow: {
+    componentName: "Media Slide Show",
+    component: MediaSlideShow,
+    isNestedComponent: false
+  }, 
+  MediaFrame: {
+    componentName: "Media Frame",
+    component: MediaFrame,
     isNestedComponent: false
   }, 
   SubscriptionCards: {

@@ -1,6 +1,7 @@
 
 import Website from './lib/components/Website';
 import { useEffect, useState } from 'react'
+import ciede2000 from "./lib/components/helpers/colorDiff"
 
 const componentOptions = {
   TestComponent: {
@@ -19,21 +20,22 @@ const componentOptions = {
 }
 
 function App() {
-  const [isAuthenticated, setIsAthenticated] = useState(false)
+  const [isAuthenticated, setIsAthenticated] = useState(true)
 
   useEffect(() => {
-    async function fetchMyAPI() {
-      checkIP().then(response =>{
-        setIsAthenticated(true)
-        // alert(response)
+    // async function fetchMyAPI() {
+    //   checkIP().then(response =>{
+    //     setIsAthenticated(true)
+    //     // alert(response)
 
-      })
-    }
+    //   })
+    // }
 
-    fetchMyAPI()
+    // fetchMyAPI()
   },[]);
 
   return (
+    <>
     <Website
       // siteName = {"Jadon's Site"}
       isAdmin = {isAuthenticated}
@@ -52,6 +54,8 @@ function App() {
 
       }
     />
+    </>
+    
   );
 }
 

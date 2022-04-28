@@ -28,7 +28,7 @@ import Header from "../pageComponents/Header";
 import NavigationBar from "../pageComponents/NavigationBar";
 import StyledLink from "../pageComponents/StyledLink"
 import TextEditor from "../pageComponents/TextEditor";
-import PictureSlideShow from "../pageComponents/PictureSlideShow";
+import MediaSlideShow from "../pageComponents/MediaSlideShow";
 import SubscriptionCards from "../pageComponents/SubscriptionCards";
 // import BlogPreview from "./BlogPreview";
 // import CaptionedPicture from "./pageComponents/CaptionedPicture";
@@ -132,7 +132,7 @@ export default function Page404(props) {
     SubscriberBox:SubscriberBox,
     StyledLink:StyledLink,
     TextEditor:TextEditor,
-    PictureSlideShow:PictureSlideShow,
+    MediaSlideShow:MediaSlideShow,
     SubscriptionCards:SubscriptionCards
 
     // VideoFrame:VideoFrame,

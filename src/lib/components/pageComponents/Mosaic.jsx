@@ -13,14 +13,14 @@ export default function Mosaic(props){
     if (Object.keys(initialState).length === 0){
         initialState =
         {
-            lImageName: "",
-    
+            lImageContent: {},
+
             lTitle: "Title",
             lSubTitle: "SubTitle",
             lLinkText: `New Link`,
             lHref: "",
     
-            rImageName: "",
+            rImageContent: {},
     
             rTitle: "Title",
             rSubTitle: "SubTitle",
@@ -58,8 +58,8 @@ export default function Mosaic(props){
                     webStyle = {webStyle} 
                     images = {images}
                     id = {leftPictureFrameID} 
-                    imageName = {content.lImageName} 
-                    setImageName = {(value)=>{handleContentEntryChange("lImageName",value)}} 
+                    imageContent = {content.lImageContent} 
+                    setImageContent = {(value)=>{handleContentEntryChange("lImageContent",value)}} 
                     isNested
                 />
             </div>     
@@ -74,9 +74,9 @@ export default function Mosaic(props){
                     adminSettings = {adminSettings} 
                     webStyle = {webStyle} 
                     images = {images}
-                    imageName = {content.rImageName} 
+                    imageContent = {content.rImageContent} 
                     id = {rightPictureFrameID} 
-                    setImageName = {(value)=>{handleContentEntryChange("rImageName",value)}} 
+                    setImageContent = {(value)=>{handleContentEntryChange("rImageContent",value)}} 
                     isNested
                 />
             </div>
@@ -145,7 +145,7 @@ export default function Mosaic(props){
                         <div className="row g-0 mb-5">
                             <PictureFrame  
                                  key = {leftPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                id = {leftPictureFrameID} imageName = {content.lImageName} setImageName = {(value)=>{handleContentEntryChange("lImageName",value)}} isNested
+                                id = {leftPictureFrameID} imageContent = {content.lImageContent} setImageContent = {(value)=>{handleContentEntryChange("lImageContent",value)}} isNested
                             />
                         </div>
                     </Fade>
@@ -162,7 +162,7 @@ export default function Mosaic(props){
                     <Fade>
                         <div className="row g-0 mb-5">
                             <PictureFrame key = {rightPictureFrameID} adminSettings = {adminSettings} webStyle = {webStyle} images = {images}
-                                          imageName = {content.rImageName}  setImageName = {(value)=>{handleContentEntryChange("rImageName",value)}} id = {rightPictureFrameID} isNested/>
+                                          imageContent = {content.rImageContent}  setImageContent = {(value)=>{handleContentEntryChange("rImageContent",value)}} id = {rightPictureFrameID} isNested/>
                         </div>
                     </Fade>
                     <Fade>
@@ -179,7 +179,7 @@ export default function Mosaic(props){
     else{
         return(
             <div style={{...props.style}} className = {"row g-0 px-5"} data-no-dnd="true">
-                <span>{JSON.stringify(content)}</span>
+                {/* <span>{JSON.stringify(content)}</span> */}
 
                 <div className = {"col me-3"}>
                     <Fade>
