@@ -367,9 +367,9 @@ export default function Website(props) {
 
   function launchTutorial(){
     
-    const showTutorial = localStorage.getItem("showTutorial")
+    let showTutorial = localStorage.getItem("showTutorial")
 
-    if ((socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF") || showTutorial !== '-1'){
+    if ((socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF") || (showTutorial && showTutorial !== '-1')){
       setShowTutorial(true)
       
       if (!showTutorial){
