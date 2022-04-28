@@ -15,7 +15,9 @@ var _TextEditor = _interopRequireDefault(require("./pageComponents/TextEditor"))
 
 var _SubscriptionCards = _interopRequireDefault(require("./pageComponents/SubscriptionCards"));
 
-var _PictureSlideShow = _interopRequireDefault(require("./pageComponents/PictureSlideShow"));
+var _MediaSlideShow = _interopRequireDefault(require("./pageComponents/MediaSlideShow"));
+
+var _MediaFrame = _interopRequireDefault(require("./pageComponents/MediaFrame"));
 
 var _Mosaic = _interopRequireDefault(require("./pageComponents/Mosaic"));
 
@@ -156,9 +158,14 @@ var defaultComponentOptions = {
     component: _TextEditor.default,
     isNestedComponent: false
   },
-  PictureSlideShow: {
-    componentName: "Picture Slide Show",
-    component: _PictureSlideShow.default,
+  MediaSlideShow: {
+    componentName: "Media Slide Show",
+    component: _MediaSlideShow.default,
+    isNestedComponent: false
+  },
+  MediaFrame: {
+    componentName: "Media Frame",
+    component: _MediaFrame.default,
     isNestedComponent: false
   },
   SubscriptionCards: {

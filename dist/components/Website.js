@@ -28,6 +28,10 @@ var _useContextStorage11 = _interopRequireDefault(require("./helpers/useContextS
 
 var _defaultDataEmpty = require("./defaultDataEmpty");
 
+var _ShopManager = _interopRequireDefault(require("./pages/ShopManager"));
+
+var _colorDiff = require("./helpers/colorDiff");
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -69,6 +73,11 @@ function Website(props) {
       siteIsDraft = _useState2[0],
       _setSiteIsDraft = _useState2[1];
 
+  var _useState3 = (0, _react.useState)(false),
+      _useState4 = _slicedToArray(_useState3, 2),
+      showTutorial = _useState4[0],
+      _setShowTutorial = _useState4[1];
+
   var siteData = props.defaultSiteData || _defaultDataEmpty.defaultSiteData; // Components
 
   var componentOptions = props.defaultComponentOptions || _defaultDataEmpty.defaultComponentOptions;
@@ -101,7 +110,7 @@ function Website(props) {
     }
   };
 
-  var _useState3 = (0, _react.useState)({
+  var _useState5 = (0, _react.useState)({
     isEditMode: props.isAdmin || false,
     isShowEditor: props.isAdmin || false,
     isAdmin: props.isAdmin || false,
@@ -109,21 +118,21 @@ function Website(props) {
     autoSaveEditsLocally: true,
     autoUpdateLiveWebsite: false
   }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      adminSettings = _useState4[0],
-      _setAdminSettings = _useState4[1];
+      _useState6 = _slicedToArray(_useState5, 2),
+      adminSettings = _useState6[0],
+      _setAdminSettings = _useState6[1];
 
-  var _useState5 = (0, _react.useState)({
+  var _useState7 = (0, _react.useState)({
     isMobile: false
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      localDisplaySettings = _useState6[0],
-      setLocalDisplaySettings = _useState6[1];
-
-  var _useState7 = (0, _react.useState)(""),
       _useState8 = _slicedToArray(_useState7, 2),
-      msgPort = _useState8[0],
-      setMsgPort = _useState8[1];
+      localDisplaySettings = _useState8[0],
+      setLocalDisplaySettings = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(""),
+      _useState10 = _slicedToArray(_useState9, 2),
+      msgPort = _useState10[0],
+      setMsgPort = _useState10[1];
 
   var _useContextStorage = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "webStyle", {
     siteName: siteData.siteName,
@@ -155,15 +164,15 @@ function Website(props) {
       promoCodes = _useContextStorage10[0],
       _setPromoCodes = _useContextStorage10[1];
 
-  var _useState9 = (0, _react.useState)({}),
-      _useState10 = _slicedToArray(_useState9, 2),
-      cart = _useState10[0],
-      _setCart = _useState10[1];
-
   var _useState11 = (0, _react.useState)({}),
       _useState12 = _slicedToArray(_useState11, 2),
-      savedData = _useState12[0],
-      _setSavedData = _useState12[1];
+      cart = _useState12[0],
+      _setCart = _useState12[1];
+
+  var _useState13 = (0, _react.useState)({}),
+      _useState14 = _slicedToArray(_useState13, 2),
+      savedData = _useState14[0],
+      _setSavedData = _useState14[1];
 
   var appMethods = {
     setWebStyle: function setWebStyle(state) {
@@ -192,6 +201,9 @@ function Website(props) {
     },
     setPromoCodes: function setPromoCodes(state) {
       return _setPromoCodes(state);
+    },
+    setShowTutorial: function setShowTutorial(state) {
+      return _setShowTutorial(state);
     },
     addToCart: function addToCart(cartItem) {
       // Check if we already have it in the cart
@@ -372,6 +384,53 @@ function Website(props) {
       }
 
       _setSavedData(newSavedData);
+    },
+    getRandomColors: function getRandomColors() {
+      var url = "http://colormind.io/api/";
+      var data = {
+        model: "default",
+        input: [[Math.floor(Math.random() * 56), Math.floor(Math.random() * 56), Math.floor(Math.random() * 56)], "N", "N", "N", [Math.floor(Math.random() * 36) + 220, Math.floor(Math.random() * 36) + 220, Math.floor(Math.random() * 36) + 220]]
+      };
+      var http = new XMLHttpRequest();
+
+      http.onreadystatechange = function () {
+        // alert(http.readyState)
+        if (http.readyState == 4 && http.status == 200) {
+          var palette = JSON.parse(http.responseText).result; // var palette = [[190,213,243],[0,0,0],[255,255,255],[105,180,95],[3,8,9]]
+
+          var diff = [];
+
+          for (var i = 0; i < 5; i++) {
+            diff.push((0, _colorDiff.ciede2000)(palette[i], [0, 0, 0]));
+          } //1) combine the arrays:
+
+
+          var list = [[palette[0], diff[0]], [palette[1], diff[1]], [palette[2], diff[2]], [palette[3], diff[3]], [palette[4], diff[4]]]; //2) sort:
+
+          list.sort(function (a, b) {
+            return b[1] - a[1];
+          }); // alert(JSON.stringify(list))
+
+          var hexColors = []; //3) separate them back out:
+
+          for (var k = 0; k < 5; k++) {
+            hexColors.push((0, _colorDiff.rgbToHex)(list[k][0]));
+          }
+
+          appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
+            colors: _objectSpread(_objectSpread({}, webStyle.colors), {}, {
+              lightShade: hexColors[0],
+              lightAccent: hexColors[1],
+              mainBrandColor: hexColors[2],
+              darkAccent: hexColors[3],
+              darkShade: hexColors[4]
+            })
+          }));
+        }
+      };
+
+      http.open("POST", url, true);
+      http.send(JSON.stringify(data));
     }
   };
 
@@ -380,10 +439,26 @@ function Website(props) {
     setLocalDisplaySettings(_objectSpread(_objectSpread({}, localDisplaySettings), {}, {
       isMobile: isMobile
     }));
+  }
+
+  function launchTutorial() {
+    var showTutorial = localStorage.getItem("showTutorial");
+
+    if (socialMedias.length === 0 && webStyle.colors.mainBrandColor === "#FFFFFF" || showTutorial !== '-1') {
+      _setShowTutorial(true);
+
+      if (!showTutorial) {
+        localStorage.setItem("showTutorial", 0);
+      }
+    }
   } // Website init
 
 
   (0, _react.useEffect)(function () {
+    if (adminSettings.isAdmin) {
+      launchTutorial();
+    }
+
     setCartFromStorage();
     window.addEventListener('resize', handleWindowSizeChange);
     return function () {
@@ -453,8 +528,10 @@ function Website(props) {
       exact: true,
       path: path + "/:pathParam?",
       children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
-        customShadowStyles: props.customShadowStyles || []
+        customShadowStyles: props.customShadowStyles || [],
+        showTutorial: showTutorial
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_DynamicPage.default, {
+        showTutorial: showTutorial,
         pageName: name,
         pageID: id,
         components: components,
@@ -463,46 +540,58 @@ function Website(props) {
       }, id)]
     }, name + "Route");
   });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
-    value: {
-      images: images,
-      localDisplaySettings: localDisplaySettings,
-      webStyle: webStyle,
-      socialMedias: socialMedias,
-      masterNavData: masterNavData,
-      pages: pages,
-      promoCodes: promoCodes,
-      cart: cart,
-      adminSettings: adminSettings,
-      siteIsDraft: siteIsDraft,
-      msgPort: msgPort,
-      savedData: savedData,
-      componentOptions: componentOptions,
-      appMethods: appMethods,
-      apiMethods: apiMethods
-    },
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "App",
-      style: {
-        minHeight: "100vh"
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
+      value: {
+        images: images,
+        localDisplaySettings: localDisplaySettings,
+        webStyle: webStyle,
+        socialMedias: socialMedias,
+        masterNavData: masterNavData,
+        pages: pages,
+        promoCodes: promoCodes,
+        cart: cart,
+        adminSettings: adminSettings,
+        siteIsDraft: siteIsDraft,
+        msgPort: msgPort,
+        savedData: savedData,
+        componentOptions: componentOptions,
+        appMethods: appMethods,
+        apiMethods: apiMethods
       },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
-        basename: props.basename,
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
-          children: [sitePageComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
-            path: "*",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-              children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
-                customShadowStyles: props.customShadowStyles || []
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Page.default, {
-                pageName: "404",
-                pageID: "404Page",
-                components: [],
-                defaultComponentList: ["Header", "Navbar"],
-                componentOptions: componentOptions
-              }, "404Page")]
-            })
-          })]
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "App",
+        style: {
+          minHeight: "100vh"
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
+          basename: props.basename,
+          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
+            children: [sitePageComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
+              path: "/admin/shop-manager",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+                children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
+                  customShadowStyles: props.customShadowStyles || []
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ShopManager.default, {
+                  pageName: "ShopManager",
+                  pageID: "ShopManager"
+                }, "Page")]
+              })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {
+              path: "*",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+                children: [adminSettings.isAdmin && adminSettings.isShowEditor && /*#__PURE__*/(0, _jsxRuntime.jsx)(_StylesEditor.default, {
+                  customShadowStyles: props.customShadowStyles || []
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Page.default, {
+                  pageName: "404",
+                  pageID: "404Page",
+                  components: [],
+                  defaultComponentList: ["Header", "Navbar"],
+                  componentOptions: componentOptions
+                }, "404Page")]
+              })
+            })]
+          })
         })
       })
     })

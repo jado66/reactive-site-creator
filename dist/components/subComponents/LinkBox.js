@@ -56,7 +56,7 @@ function LinkBox(props) {
 
   borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "p-3 " + borderShape,
+    className: "p-3 g-0 " + borderShape,
     style: {
       backgroundColor: props.webStyle.colors[props.webStyle.componentStyles.linkBox.backgroundColor],
       boxShadow: borderAndShadow

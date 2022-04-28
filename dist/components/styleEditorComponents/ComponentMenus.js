@@ -938,6 +938,16 @@ function PictureFrameMenu(props) {
         label: "Medium Padding"
       }]
     })]
+  }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-2",
+      children: "Random Image Keyword: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+      onChange: function onChange(evt) {
+        props.handleStyleChange("pictureFrame", "randomImageKeyword", evt.target.value);
+      },
+      value: props.webStyle.componentStyles.pictureFrame.randomImageKeyword
+    })]
   }));
 }
 

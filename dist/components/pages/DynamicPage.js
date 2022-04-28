@@ -225,7 +225,7 @@ function DynamicPage(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
       backgroundColor: marginColor,
-      marginTop: adminSettings.isShowEditor ? "50px" : ""
+      marginTop: adminSettings.isShowEditor && !props.showTutorial ? "50px" : ""
     },
     children: [selectedComponents.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "d-flex  ",
@@ -260,8 +260,8 @@ function DynamicPage(props) {
         })
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      id: "outerSection",
-      className: "min-vh-100" + (localDisplaySettings.isMobile ? " " : " container"),
+      id: "outerSection ",
+      className: "min-vh-100 g-0 " + (localDisplaySettings.isMobile ? " " : " container"),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         id: "innerSection",
         className: "col justify-items-baseline min-vh-100 pb-4 pt-4",

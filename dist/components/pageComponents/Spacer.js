@@ -72,13 +72,17 @@ function Spacer(props) {
       showBar(false);
     },
     onClick: function onClick() {
+      if (props.onClick) {
+        props.onClick();
+      }
+
       setShowButtons(!isShowButtons);
     },
     children: isShowButtons ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "m-0 px-5 mx-auto ",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          className: "row px-3 mx-auto rounded rounded-pill",
+          className: "row px-3 mx-auto rounded rounded-pill border border-dark",
           style: {
             backgroundColor: "white",
             zIndex: 2
@@ -95,7 +99,7 @@ function Spacer(props) {
     }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "px-5",
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("hr", {
-        className: "m-0 p-0 w-100 mx-auto bg-primary",
+        className: "m-0 p-0 w-100 mx-auto bg-primary border border-dark",
         style: {
           height: "4px",
           display: isShowBar ? "" : "none"

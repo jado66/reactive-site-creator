@@ -44,12 +44,12 @@ function Mosaic(props) {
 
   if (Object.keys(initialState).length === 0) {
     initialState = {
-      lImageName: "",
+      lImageContent: {},
       lTitle: "Title",
       lSubTitle: "SubTitle",
       lLinkText: "New Link",
       lHref: "",
-      rImageName: "",
+      rImageContent: {},
       rTitle: "Title",
       rSubTitle: "SubTitle",
       rLinkText: "New Link",
@@ -89,9 +89,9 @@ function Mosaic(props) {
         webStyle: webStyle,
         images: images,
         id: leftPictureFrameID,
-        imageName: content.lImageName,
-        setImageName: function setImageName(value) {
-          handleContentEntryChange("lImageName", value);
+        imageContent: content.lImageContent,
+        setImageContent: function setImageContent(value) {
+          handleContentEntryChange("lImageContent", value);
         },
         isNested: true
       }, leftPictureFrameID)
@@ -105,10 +105,10 @@ function Mosaic(props) {
         adminSettings: adminSettings,
         webStyle: webStyle,
         images: images,
-        imageName: content.rImageName,
+        imageContent: content.rImageContent,
         id: rightPictureFrameID,
-        setImageName: function setImageName(value) {
-          handleContentEntryChange("rImageName", value);
+        setImageContent: function setImageContent(value) {
+          handleContentEntryChange("rImageContent", value);
         },
         isNested: true
       }, rightPictureFrameID)
@@ -204,9 +204,9 @@ function Mosaic(props) {
                 webStyle: webStyle,
                 images: images,
                 id: leftPictureFrameID,
-                imageName: content.lImageName,
-                setImageName: function setImageName(value) {
-                  handleContentEntryChange("lImageName", value);
+                imageContent: content.lImageContent,
+                setImageContent: function setImageContent(value) {
+                  handleContentEntryChange("lImageContent", value);
                 },
                 isNested: true
               }, leftPictureFrameID)
@@ -245,9 +245,9 @@ function Mosaic(props) {
                 adminSettings: adminSettings,
                 webStyle: webStyle,
                 images: images,
-                imageName: content.rImageName,
-                setImageName: function setImageName(value) {
-                  handleContentEntryChange("rImageName", value);
+                imageContent: content.rImageContent,
+                setImageContent: function setImageContent(value) {
+                  handleContentEntryChange("rImageContent", value);
                 },
                 id: rightPictureFrameID,
                 isNested: true
@@ -285,9 +285,7 @@ function Mosaic(props) {
       style: _objectSpread({}, props.style),
       className: "row g-0 px-5",
       "data-no-dnd": "true",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-        children: JSON.stringify(content)
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "col me-3",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
           children: arrangement.split('-')[0].split(",").map(function (el, index) {

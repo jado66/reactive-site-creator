@@ -15,7 +15,9 @@ var _TextEditor = _interopRequireDefault(require("../components/pageComponents/T
 
 var _SubscriptionCards = _interopRequireDefault(require("../components/pageComponents/SubscriptionCards"));
 
-var _PictureSlideShow = _interopRequireDefault(require("../components/pageComponents/PictureSlideShow"));
+var _MediaFrame = _interopRequireDefault(require("./pageComponents/MediaFrame"));
+
+var _MediaSlideShow = _interopRequireDefault(require("./pageComponents/MediaSlideShow"));
 
 var _Mosaic = _interopRequireDefault(require("../components/pageComponents/Mosaic"));
 
@@ -166,7 +168,8 @@ var defaultWebStyles = {
     },
     pictureFrame: {
       backgroundColor: "mainBrandColor",
-      padding: ""
+      padding: "",
+      randomImageKeyword: "cat"
     },
     photoGallery: {
       margin: 8,
@@ -223,9 +226,14 @@ var defaultComponentOptions = {
     component: _TextEditor.default,
     isNestedComponent: false
   },
-  PictureSlideShow: {
-    componentName: "Picture Slide Show",
-    component: _PictureSlideShow.default,
+  MediaSlideShow: {
+    componentName: "Media Slide Show",
+    component: _MediaSlideShow.default,
+    isNestedComponent: false
+  },
+  MediaFrame: {
+    componentName: "Media Frame",
+    component: _MediaFrame.default,
     isNestedComponent: false
   },
   SubscriptionCards: {

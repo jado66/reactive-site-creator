@@ -11,6 +11,8 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _lzString = require("lz-string");
 
+var _reactMenu = require("@szhsin/react-menu");
+
 var _Website = require("../Website");
 
 var _jsxRuntime = require("react/jsx-runtime");
@@ -36,27 +38,62 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function PictureFrame(props) {
-  var _useState = (0, _react.useState)(""),
+  // const content {type: "srcType", url: "" || name: "" } 
+  var initialURL = "";
+  var initialName = "null"; // try{
+
+  if (props.imageContent) {
+    if (props.imageContent.type === "url") {
+      initialURL = props.imageContent.url;
+    }
+  }
+
+  var _useState = (0, _react.useState)(initialURL),
       _useState2 = _slicedToArray(_useState, 2),
-      imageUrl = _useState2[0],
-      setImageUrl = _useState2[1];
+      url = _useState2[0],
+      setUrl = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(""),
+  var _useState3 = (0, _react.useState)(null),
       _useState4 = _slicedToArray(_useState3, 2),
-      imageName = _useState4[0],
-      setImageName = _useState4[1];
+      videoFile = _useState4[0],
+      setVideoFile = _useState4[1];
 
-  var _useState5 = (0, _react.useState)(null),
+  var _useState5 = (0, _react.useState)(""),
       _useState6 = _slicedToArray(_useState5, 2),
-      areButtonsVisible = _useState6[0],
-      setButtonsVisible = _useState6[1];
+      imageName = _useState6[0],
+      setImageName = _useState6[1];
 
-  var inputFile = (0, _react.useRef)(null);
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      areButtonsVisible = _useState8[0],
+      setButtonsVisible = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(0),
+      _useState10 = _slicedToArray(_useState9, 2),
+      width = _useState10[0],
+      setWidth = _useState10[1];
+
+  var _useState11 = (0, _react.useState)(0),
+      _useState12 = _slicedToArray(_useState11, 2),
+      height = _useState12[0],
+      setHeight = _useState12[1];
+
+  var inputImageFile = (0, _react.useRef)(null);
+  var inputVideoFile = (0, _react.useRef)(null);
+  var container = (0, _react.useRef)(null);
 
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       apiMethods = _useContext.apiMethods; // Similar to componentDidMount and componentDidUpdate:
+  // setVideoRatio
 
 
+  (0, _react.useEffect)(function () {
+    if (props.imageContent.type == "youtube") {
+      setTimeout(function () {
+        setVideoRatio();
+      }, 1000);
+    }
+  }, []);
   (0, _react.useEffect)(function () {
     var fetchData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
@@ -92,19 +129,51 @@ function PictureFrame(props) {
 
     fetchData().catch(console.error);
   }, [props.imageName]);
+  (0, _react.useEffect)(function () {
+    if (props.imageContent.type == "url") {
+      setUrl(props.imageContent.url);
+    }
+  }, [props.imageContent]);
 
   var updateImage = function updateImage(newImage) {
     if (newImage) {
       apiMethods.uploadImageToDB(newImage, function () {});
-      props.setImageName(newImage.name);
+      props.setImageContent({
+        type: "file",
+        name: newImage.name
+      });
       setImageName(newImage.name);
       encodeImageFileAsURL(newImage);
     }
   };
 
+  var updateVideo = function updateVideo(newVideo) {
+    if (newVideo) {
+      // apiMethods.uploadImageToDB(newVideo, () => {})
+      props.setImageContent({
+        type: "video",
+        name: newVideo.name
+      });
+      setUrl(URL.createObjectURL(newVideo)); // encodeImageFileAsURL(newVideo)
+    }
+  };
+
   var removePicture = function removePicture() {
-    props.setImageName(""); // setImageUrl("")
-    // localStorage.removeItem(props.id);
+    setUrl("");
+    props.setImageContent({
+      type: ""
+    }); // localStorage.removeItem(props.id);
+  };
+
+  var getRandomPicture = function getRandomPicture() {
+    var keyword = props.webStyle.componentStyles.pictureFrame.randomImageKeyword;
+    var randomNum = Math.floor(Math.random() * 1000);
+    var url = "https://loremflickr.com/1024/1024/".concat(keyword, "?lock=").concat(randomNum, "\"");
+    setUrl(url);
+    props.setImageContent({
+      type: "url",
+      url: url
+    });
   };
 
   var imageToDataUri = function imageToDataUri(img, width, height) {
@@ -162,6 +231,47 @@ function PictureFrame(props) {
   // }
 
 
+  var changeImageFromURL = function changeImageFromURL() {
+    var imageUrl = window.prompt("Input the url");
+    setUrl(imageUrl);
+    props.setImageContent({
+      type: "url",
+      url: imageUrl
+    });
+  };
+
+  var changeVideoFromURL = function changeVideoFromURL() {
+    var videoUrl = window.prompt("Input the url");
+    setUrl(videoUrl);
+    props.setImageContent({
+      type: "video",
+      url: videoUrl
+    });
+  };
+
+  var setVideoRatio = function setVideoRatio() {
+    if (container.current) {
+      setWidth(container.current.clientWidth);
+
+      var _height = Math.floor(9 * container.current.clientWidth / 16);
+
+      setHeight(_height);
+      container.current.style.minHeight = "".concat(_height, "px");
+    }
+  };
+
+  var embedVideoFromURL = function embedVideoFromURL() {
+    var videoUrl = window.prompt("Input the url");
+    setTimeout(function () {
+      setVideoRatio();
+    }, 1000);
+    setUrl(videoUrl);
+    props.setImageContent({
+      type: "youtube",
+      url: videoUrl
+    });
+  };
+
   var resizeImageUri = function resizeImageUri(url) {
     var image = new Image();
     image.src = url;
@@ -175,7 +285,7 @@ function PictureFrame(props) {
       var newResult = imageToDataUri(image, dims.width, dims.height); // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
       // const compressedResult = compress(newResult)
 
-      setImageUrl(newResult); // props.setImageUrl(newResult)
+      setUrl(newResult); // props.setImageUrl(newResult)
       // localStorage.setItem(props.id,compressedResult);
       // });
       // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
@@ -201,8 +311,11 @@ function PictureFrame(props) {
         var newResult = imageToDataUri(image, dims.width, dims.height); // resizeBase64Img(result, dims.width, dims.height).then((compressedResult)=>{
         // const compressedResult = compress(newResult)
 
-        setImageUrl(newResult);
-        props.setImageName(file.name); // localStorage.setItem(props.id,compressedResult);
+        setUrl(newResult);
+        props.setImageContent({
+          type: "file",
+          name: file.name
+        }); // localStorage.setItem(props.id,compressedResult);
         // });
         // $('#imgresizepreview, #profilepicturepreview').attr('src', this.src);
       };
@@ -236,6 +349,32 @@ function PictureFrame(props) {
   }
 
   borderAndShadow += props.webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
+  var imageMenu = /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+      className: "px-0 py-2",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+        className: "btn p-0 px-4 text-start flex-grow-1",
+        onClick: function onClick() {
+          inputImageFile.current.click();
+        },
+        children: !url ? "Upload Image from File" : "Change Image from File"
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+      className: "px-0 py-2",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+        className: "btn p-0 px-4 text-start flex-grow-1",
+        onClick: changeImageFromURL,
+        children: !url ? "Set Image from URL" : "Change Image from URL"
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+      className: "px-0 py-2",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+        className: "btn p-0 px-4 text-start flex-grow-1",
+        onClick: getRandomPicture,
+        children: "Random Image"
+      })
+    })]
+  });
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     className: "relative-div " + props.className + (props.isNested ? "" : " px-5 mb-5"),
     onMouseEnter: function onMouseEnter() {
@@ -247,59 +386,130 @@ function PictureFrame(props) {
     style: {
       flex: "1"
     },
-    children: [imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
       className: borderShape + " " + componentStyles.padding,
-      style: {
-        backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],
-        boxShadow: borderAndShadow
-      },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
-        className: borderShape + " w-100 no-select",
-        src: imageUrl
-      })
-    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: borderShape + " blankDiv w-100",
       style: {
         minHeight: "300px",
         backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],
         boxShadow: borderAndShadow
-      }
-    }), areButtonsVisible && props.adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "row relative-l",
-      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          style: {
-            display: "none"
-          },
-          type: "file",
-          ref: inputFile,
-          onChange: function onChange(event) {
-            console.log(event.target.files[0]);
-            updateImage(event.target.files[0]);
-          }
-        }), !props.imageUrl ? /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          type: "button",
-          value: "Upload Image",
-          onClick: function onClick() {
-            inputFile.current.click();
-          },
-          style: buttonStyle
-        }) : /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          type: "button",
-          value: "Change Image",
-          onClick: function onClick() {
-            inputFile.current.click();
-          },
-          style: buttonStyle
-        }), props.imageUrl && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-          type: "button",
-          value: "Remove Picture",
-          onClick: function onClick() {
-            return removePicture();
-          },
-          style: buttonStyle
-        })]
-      })
+      },
+      children: [props.imageContent.type == "video" && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("video", {
+          className: "d-flex flex-grow-1 w-100",
+          src: url,
+          controls: true,
+          children: "Your browser does not support the video tag."
+        })
+      }), props.imageContent.type == "youtube" && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "video-responsive",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("iframe", {
+          ref: container // width="560" height="315"
+          ,
+          className: "d-flex flex-grow-1 w-100 h-100",
+          src: "https://www.youtube.com/embed/".concat(props.imageContent.url),
+          frameBorder: "0",
+          allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+          allowFullScreen: true,
+          title: "Embedded youtube"
+        })
+      }), props.imageContent.type == "url" && /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+        className: borderShape + " w-100 no-select",
+        src: url
+      })]
+    }), areButtonsVisible && props.adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "d-flex flex-row relative",
+      style: {
+        left: 0
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        style: {
+          display: "none"
+        },
+        type: "file",
+        ref: inputImageFile,
+        onChange: function onChange(event) {
+          console.log(event.target.files[0]);
+          updateImage(event.target.files[0]);
+        }
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        style: {
+          display: "none"
+        },
+        type: "file",
+        ref: inputVideoFile,
+        onChange: function onChange(event) {
+          console.log(event.target.files[0]);
+          updateVideo(event.target.files[0]);
+        }
+      }), props.moveLeft && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "ms-3 mt-2 btn btn-light border border-dark",
+        type: "button",
+        value: "Move Left",
+        onClick: function onClick() {
+          return props.moveLeft();
+        },
+        style: buttonStyle
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.Menu, {
+        className: " dropdown ",
+        menuClassName: "border  ",
+        menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+          className: "ms-2 mt-2 btn btn-light dropdown-toggle border border-dark ",
+          children: props.imageContent.type !== "" ? "Change Media" : "Add Media"
+        }),
+        transition: true,
+        children: props.includeVideos ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
+            label: "Image",
+            menuClassName: "border",
+            children: imageMenu
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+            label: "Video",
+            menuClassName: "border",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+              className: "px-0 py-2",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+                className: "btn p-0 px-4 text-start flex-grow-1",
+                onClick: function onClick() {
+                  inputVideoFile.current.click();
+                },
+                children: !url ? "Upload Video from File" : "Change Video from File"
+              })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+              className: "px-0 py-2",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+                className: "btn p-0 px-4 text-start flex-grow-1",
+                onClick: changeVideoFromURL,
+                children: !url ? "Set Video from URL" : "Change Video from URL"
+              })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+              className: "px-0 py-2",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+                className: "btn p-0 px-4 text-start flex-grow-1",
+                onClick: embedVideoFromURL,
+                children: "Embed YouTube Video"
+              })
+            })]
+          })]
+        }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+          children: imageMenu
+        })
+      }), props.imageContent.type && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "ms-3 mt-2 btn btn-light border border-dark",
+        type: "button",
+        value: "Remove Media",
+        onClick: function onClick() {
+          return removePicture();
+        },
+        style: buttonStyle
+      }), props.moveRight && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "ms-3 mt-2 btn btn-light border border-dark",
+        type: "button",
+        value: "Move Right",
+        onClick: function onClick() {
+          return props.moveRight();
+        },
+        style: buttonStyle
+      })]
     })]
   });
 }

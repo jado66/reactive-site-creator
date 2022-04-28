@@ -20,6 +20,8 @@ var _freeRegularSvgIcons = require("@fortawesome/free-regular-svg-icons");
 
 var _reactMenu = require("@szhsin/react-menu");
 
+var _colorDiff = require("./helpers/colorDiff");
+
 require("@szhsin/react-menu/dist/index.css");
 
 require("@szhsin/react-menu/dist/transitions/slide.css");
@@ -35,6 +37,8 @@ var _ColorSelect = _interopRequireDefault(require("./styleEditorComponents/custo
 var _OptionSelect = _interopRequireDefault(require("./styleEditorComponents/customSelects/OptionSelect"));
 
 var _ComponentMenus = require("./styleEditorComponents/ComponentMenus");
+
+var _Tutorial = _interopRequireDefault(require("./Tutorial"));
 
 var _jsxRuntime = require("react/jsx-runtime");
 
@@ -232,7 +236,57 @@ function StylesEditor(props) {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
       componentStyles: _objectSpread(_objectSpread({}, webStyle.componentStyles), {}, _defineProperty({}, component, _objectSpread(_objectSpread({}, webStyle.componentStyles[component]), {}, _defineProperty({}, style, value))))
     }));
-  };
+  }; // const getRandomColors = () =>{
+  //   var url = "http://colormind.io/api/";
+  //   var data = {
+  //     model : "default",
+  //     input : [[Math.floor(Math.random() * 56),Math.floor(Math.random() * 56),Math.floor(Math.random() * 56)],"N","N","N",[Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220]]
+  //   }
+  //   var http = new XMLHttpRequest();
+  //   http.onreadystatechange = function() {
+  //     // alert(http.readyState)
+  //     if(http.readyState == 4 && http.status == 200) {
+  //       var palette = JSON.parse(http.responseText).result;
+  //       // var palette = [[190,213,243],[0,0,0],[255,255,255],[105,180,95],[3,8,9]]
+  //       var diff = []
+  //       for (var i = 0; i < 5; i++){
+  //         diff.push(ciede2000(palette[i],[0,0,0]))
+  //       }
+  //       //1) combine the arrays:
+  //       let list = [    
+  //         [palette[0], diff[0]],
+  //         [palette[1], diff[1]],
+  //         [palette[2], diff[2]],
+  //         [palette[3], diff[3]],
+  //         [palette[4], diff[4]]
+  //       ]
+  //       //2) sort:
+  //       list.sort((a, b) => b[1] - a[1]);
+  //       // alert(JSON.stringify(list))
+  //       let hexColors = []
+  //       //3) separate them back out:
+  //       for (var k = 0; k < 5; k++) {
+  //         hexColors.push(rgbToHex(list[k][0]));
+  //       }
+  //       appMethods.setWebStyle(
+  //         {
+  //           ...webStyle,
+  //           colors:{
+  //             ...webStyle.colors,
+  //             lightShade: hexColors[0],
+  //             lightAccent: hexColors[1],
+  //             mainBrandColor: hexColors[2],
+  //             darkAccent: hexColors[3],
+  //             darkShade: hexColors[4]
+  //           }
+  //         }
+  //       )     
+  //     }
+  //   }
+  //   http.open("POST", url, true);
+  //   http.send(JSON.stringify(data));
+  // }
+
 
   var invertColors = function invertColors() {
     appMethods.setWebStyle(_objectSpread(_objectSpread({}, webStyle), {}, {
@@ -447,54 +501,80 @@ function StylesEditor(props) {
         })
       })]
     });
-  }); // let promoCodeMenus = Object.keys(promoCodes).map((code,index)=>{
-  //   return (
-  //     <SubMenu label={code} menuClassName={"border border-dark"}>
-  //       <FocusableItem>
-  //         <div className="input-group">
-  //           <span className="input-group-text">Code</span>
-  //           <input type="text" className="form-control" placeholder="Promo Code" value={code}/>
-  //         </div>
-  //       </FocusableItem>
-  //       <FocusableItem>
-  //         <div className="input-group">
-  //           <span className="input-group-text">Type</span>
-  //           <select className="form-select" aria-label="Default select example" value={promoCodes[code].type}>
-  //             <option selected style={{display:"none"}}>Pick A Type</option>
-  //             <option>% Off</option>
-  //             <option>$ Off</option>
-  //             <option>Free</option>
-  //           </select>
-  //         </div>
-  //       </FocusableItem>
-  //       {promoCodes[code].value &&
-  //           <FocusableItem>
-  //           <div className="input-group">
-  //             <span className="input-group-text">Value</span>
-  //             <input type="number" className="form-control" value={promoCodes[code].value}/>
-  //           </div>
-  //         </FocusableItem>
-  //       }
-  //     </SubMenu>
-  //   )
-  // })
-
+  });
+  var promoCodeMenus = Object.keys(promoCodes).map(function (code, index) {
+    return /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+      label: code,
+      menuClassName: "border border-dark",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "input-group",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+            className: "input-group-text",
+            children: "Code"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+            type: "text",
+            className: "form-control",
+            placeholder: "Promo Code",
+            value: code
+          })]
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "input-group",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+            className: "input-group-text",
+            children: "Type"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+            className: "form-select",
+            "aria-label": "Default select example",
+            value: promoCodes[code].type,
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              selected: true,
+              style: {
+                display: "none"
+              },
+              children: "Pick A Type"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              children: "% Off"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              children: "$ Off"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              children: "Free"
+            })]
+          })]
+        })
+      }), promoCodes[code].value && /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "input-group",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+            className: "input-group-text",
+            children: "Value"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+            type: "number",
+            className: "form-control",
+            value: promoCodes[code].value
+          })]
+        })
+      })]
+    });
+  });
   var showRibbonClass = ""; // 
 
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "nav nav-fill container-fluid border-bottom border-dark g-0 bg-light  " + showRibbonClass,
+    className: "nav nav-fill container-fluid  g-0   " + showRibbonClass,
     style: {
-      position: "fixed",
       top: 0,
-      zIndex: 999
+      zIndex: 999,
+      position: props.showTutorial ? "" : "fixed"
     },
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(UserPreferencesContext.Provider, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(UserPreferencesContext.Provider, {
       value: {
         userEditorPreferences: userEditorPreferences,
         setShowTooltips: setShowTooltips
       },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "row m-auto w-100 ",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "row m-auto w-100 border-bottom border-dark bg-light",
         style: {
           zIndex: 2
         },
@@ -516,7 +596,7 @@ function StylesEditor(props) {
               label: "Color Options",
               menuClassName: "border border-dark",
               children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuHeader, {
-                children: "Main Colors"
+                children: "Main Color Palette"
               }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
                 children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
                   type: "color",
@@ -588,14 +668,26 @@ function StylesEditor(props) {
                   }
                 }), " - Dark Shade (Font) "]
               }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.MenuItemTT, {
+                className: "px-0 py-2",
                 ttText: "Click to invert the website colors - Use this to toggle \"darkmode\"",
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
-                  className: "btn p-0",
+                  className: "btn p-0 ps-4 text-start flex-grow-1",
                   onClick: function onClick(evt) {
                     invertColors();
                     evt.stopPropagation();
                   },
                   children: "Invert Main Colors"
+                })
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.MenuItemTT, {
+                className: "px-0 py-2",
+                ttText: "Click replace the current colors with a new AI generated color palette.",
+                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+                  className: "btn p-0 ps-4 text-start flex-grow-1",
+                  onClick: function onClick(evt) {
+                    appMethods.getRandomColors();
+                    evt.stopPropagation();
+                  },
+                  children: "Generate New Color Palette"
                 })
               })]
             }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
@@ -943,10 +1035,10 @@ function StylesEditor(props) {
                   children: "Live Website"
                 })]
               })]
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
               label: "Editor Settings",
               menuClassName: "border border-dark",
-              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
                   onClick: function onClick(evt) {
                     appMethods.setAdminSettings(function (prevState) {
@@ -957,15 +1049,7 @@ function StylesEditor(props) {
                   },
                   children: "Hide Editor Ribbon"
                 })
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
-                children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("a", {
-                  onClick: function onClick(evt) {
-                    setShowTooltips(!userEditorPreferences.showTooltips);
-                    evt.stopPropagation();
-                  },
-                  children: [userEditorPreferences.showTooltips ? "Hide" : "Show", " Tooltips"]
-                })
-              })]
+              })
             })]
           })
         }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
@@ -1008,8 +1092,12 @@ function StylesEditor(props) {
             menuClassName: "border border-dark",
             menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
               className: "styleEditorIcon dropdown-toggle font-shrink-md m-0",
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                icon: _freeBrandsSvgIcons.faTwitter
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+                className: "mb-1",
+                style: {
+                  height: "32px"
+                },
+                src: "data:image/png;base64,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"
               })
             }),
             transition: true,
@@ -1022,6 +1110,68 @@ function StylesEditor(props) {
               },
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
                 icon: _freeSolidSvgIcons.faPlus
+              })
+            })]
+          })
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
+          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
+            className: "nav-item dropdown",
+            menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+              className: "styleEditorIcon dropdown-toggle font-shrink-md m-0",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                icon: _freeSolidSvgIcons.faShoppingBag
+              })
+            }),
+            transition: true,
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.SubMenu, {
+              label: "Promo Codes",
+              children: [promoCodeMenus, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+                className: "justify-content-center",
+                children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+                  onClick: function onClick() {
+                    alert("Add Promo Code");
+                  },
+                  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                    icon: _freeSolidSvgIcons.faPlus
+                  })
+                })
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.MenuItemTT, {
+              ttText: "Go to Shop Manager",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+                to: "/admin/shop-manager",
+                children: "Visit Shop Manager"
+              })
+            })]
+          })
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "col text-center " + (localDisplaySettings.isMobile ? "mx-1 g-0" : "mx-4"),
+          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.Menu, {
+            className: "nav-item dropdown",
+            menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
+              className: "styleEditorIcon dropdown-toggle font-shrink-md m-0",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                icon: _freeRegularSvgIcons.faQuestionCircle
+              })
+            }),
+            transition: true,
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+              children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("a", {
+                onClick: function onClick(evt) {
+                  setShowTooltips(!userEditorPreferences.showTooltips);
+                  evt.stopPropagation();
+                },
+                children: [userEditorPreferences.showTooltips ? "Hide" : "Show", " Tooltips"]
+              })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.MenuItemTT, {
+              ttText: "Start Tutorial",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+                onClick: function onClick(evt) {
+                  appMethods.setShowTutorial(true);
+                  evt.stopPropagation();
+                },
+                children: "Start Tutorial"
               })
             })]
           })
@@ -1061,7 +1211,7 @@ function StylesEditor(props) {
             children: siteIsDraft ? "Draft Site" : "Live Site"
           })]
         })]
-      })
+      }), props.showTutorial && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tutorial.default, {})]
     })
   });
 }
