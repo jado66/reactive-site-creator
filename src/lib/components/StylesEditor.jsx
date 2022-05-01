@@ -740,25 +740,7 @@ const socialMediaSelectOptions = [
                           let sureDelete = prompt(`Are you sure you would like to delete all site data? This action is irreversible. Type "YES" to start over:`, "");
 
                           if (sureDelete === "YES"){
-                            appMethods.setWebStyle({
-                              siteName: defaultSiteData.siteName,
-                              colors: defaultWebStyles.colors,
-                              componentStyles : defaultWebStyles.componentStyles
-                            })
-                            appMethods.setPages(defaultSiteData.pages)
-                            appMethods.setMasterNavData(defaultSiteData.masterNavBarData)
-                            appMethods.setSocialMedias(defaultSiteData.socialMedias)
-                            // localStorage.setItem("showTutorial",'-1')
-
-                            appMethods.setShowTutorial(true)
-                            
-
-                            setTimeout(()=>{
-                              apiMethods.setSiteIsDraft(false)
-                              localStorage.clear()
-
-                            },
-                            1000)
+                            appMethods.startOver()
                           }
                         }}
                       >

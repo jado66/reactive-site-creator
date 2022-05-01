@@ -431,6 +431,22 @@ function Website(props) {
 
       http.open("POST", url, true);
       http.send(JSON.stringify(data));
+    },
+    startOver: function startOver() {
+      appMethods.setWebStyle({
+        siteName: _defaultDataEmpty.defaultSiteData.siteName,
+        colors: _defaultDataEmpty.defaultWebStyles.colors,
+        componentStyles: _defaultDataEmpty.defaultWebStyles.componentStyles
+      });
+      appMethods.setPages(_defaultDataEmpty.defaultSiteData.pages);
+      appMethods.setMasterNavData(_defaultDataEmpty.defaultSiteData.masterNavBarData);
+      appMethods.setSocialMedias(_defaultDataEmpty.defaultSiteData.socialMedias); // localStorage.setItem("showTutorial",'-1')
+
+      appMethods.setShowTutorial(true);
+      setTimeout(function () {
+        apiMethods.setSiteIsDraft(false);
+        localStorage.clear();
+      }, 1000);
     }
   };
 

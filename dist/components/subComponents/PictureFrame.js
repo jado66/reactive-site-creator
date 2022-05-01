@@ -88,10 +88,12 @@ function PictureFrame(props) {
 
 
   (0, _react.useEffect)(function () {
-    if (props.imageContent.type == "youtube") {
-      setTimeout(function () {
-        setVideoRatio();
-      }, 1000);
+    if (props.imageContent) {
+      if (props.imageContent.type == "youtube") {
+        setTimeout(function () {
+          setVideoRatio();
+        }, 1000);
+      }
     }
   }, []);
   (0, _react.useEffect)(function () {
@@ -130,8 +132,10 @@ function PictureFrame(props) {
     fetchData().catch(console.error);
   }, [props.imageName]);
   (0, _react.useEffect)(function () {
-    if (props.imageContent.type == "url") {
-      setUrl(props.imageContent.url);
+    if (props.imageContent) {
+      if (props.imageContent.type == "url") {
+        setUrl(props.imageContent.url);
+      }
     }
   }, [props.imageContent]);
 
@@ -339,6 +343,7 @@ function PictureFrame(props) {
     };
   } catch (error) {}
 
+  var backgroundColor = props.webStyle.colors[componentStyles.backgroundColor];
   var borderShape = props.webStyle.componentStyles.all.borderShape;
   var borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor];
   var shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor];
@@ -375,6 +380,14 @@ function PictureFrame(props) {
       })
     })]
   });
+  var imageContent = props.imageContent;
+
+  if (!imageContent) {
+    imageContent = {
+      type: ""
+    };
+  }
+
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     className: "relative-div " + props.className + (props.isNested ? "" : " px-5 mb-5"),
     onMouseEnter: function onMouseEnter() {
@@ -390,17 +403,17 @@ function PictureFrame(props) {
       className: borderShape + " " + componentStyles.padding,
       style: {
         minHeight: "300px",
-        backgroundColor: props.webStyle.colors[componentStyles.backgroundColor],
+        backgroundColor: backgroundColor,
         boxShadow: borderAndShadow
       },
-      children: [props.imageContent.type == "video" && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+      children: [imageContent.type == "video" && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)("video", {
           className: "d-flex flex-grow-1 w-100",
           src: url,
           controls: true,
           children: "Your browser does not support the video tag."
         })
-      }), props.imageContent.type == "youtube" && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      }), imageContent.type == "youtube" && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "video-responsive",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)("iframe", {
           ref: container // width="560" height="315"
@@ -412,7 +425,7 @@ function PictureFrame(props) {
           allowFullScreen: true,
           title: "Embedded youtube"
         })
-      }), props.imageContent.type == "url" && /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
+      }), imageContent.type == "url" && /*#__PURE__*/(0, _jsxRuntime.jsx)("img", {
         className: borderShape + " w-100 no-select",
         src: url
       })]
@@ -454,7 +467,7 @@ function PictureFrame(props) {
         menuClassName: "border  ",
         menuButton: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuButton, {
           className: "ms-2 mt-2 btn btn-light dropdown-toggle border border-dark ",
-          children: props.imageContent.type !== "" ? "Change Media" : "Add Media"
+          children: imageContent.type !== "" ? "Change Media" : "Add Media"
         }),
         transition: true,
         children: props.includeVideos ? /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
@@ -493,7 +506,7 @@ function PictureFrame(props) {
         }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
           children: imageMenu
         })
-      }), props.imageContent.type && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+      }), imageContent.type && /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         className: "ms-3 mt-2 btn btn-light border border-dark",
         type: "button",
         value: "Remove Media",

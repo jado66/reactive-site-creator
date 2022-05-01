@@ -1064,20 +1064,7 @@ function StylesEditor(props) {
                     var sureDelete = prompt("Are you sure you would like to delete all site data? This action is irreversible. Type \"YES\" to start over:", "");
 
                     if (sureDelete === "YES") {
-                      appMethods.setWebStyle({
-                        siteName: _defaultDataEmpty.defaultSiteData.siteName,
-                        colors: _defaultDataEmpty.defaultWebStyles.colors,
-                        componentStyles: _defaultDataEmpty.defaultWebStyles.componentStyles
-                      });
-                      appMethods.setPages(_defaultDataEmpty.defaultSiteData.pages);
-                      appMethods.setMasterNavData(_defaultDataEmpty.defaultSiteData.masterNavBarData);
-                      appMethods.setSocialMedias(_defaultDataEmpty.defaultSiteData.socialMedias); // localStorage.setItem("showTutorial",'-1')
-
-                      appMethods.setShowTutorial(true);
-                      setTimeout(function () {
-                        apiMethods.setSiteIsDraft(false);
-                        localStorage.clear();
-                      }, 1000);
+                      appMethods.startOver();
                     }
                   },
                   children: "Delete Site Data"

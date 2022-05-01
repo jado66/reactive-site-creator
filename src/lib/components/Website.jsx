@@ -357,6 +357,28 @@ export default function Website(props) {
       
       http.open("POST", url, true);
       http.send(JSON.stringify(data));
+      },
+
+      startOver:()=>{
+        appMethods.setWebStyle({
+          siteName: defaultSiteData.siteName,
+          colors: defaultWebStyles.colors,
+          componentStyles : defaultWebStyles.componentStyles
+        })
+        appMethods.setPages(defaultSiteData.pages)
+        appMethods.setMasterNavData(defaultSiteData.masterNavBarData)
+        appMethods.setSocialMedias(defaultSiteData.socialMedias)
+        // localStorage.setItem("showTutorial",'-1')
+
+        appMethods.setShowTutorial(true)
+        
+
+        setTimeout(()=>{
+          apiMethods.setSiteIsDraft(false)
+          localStorage.clear()
+
+        },
+        1000)
       }
     }  
 

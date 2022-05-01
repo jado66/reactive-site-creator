@@ -36,12 +36,14 @@ export default function PictureFrame(props){
     // setVideoRatio
 
     useEffect(() => {
-
-        if (props.imageContent.type == "youtube"){
-            setTimeout(() => {
-                setVideoRatio()
-            }, 1000)
+        if (props.imageContent){
+            if (props.imageContent.type == "youtube"){
+                setTimeout(() => {
+                    setVideoRatio()
+                }, 1000)
+            }
         }
+       
 
     }, []);
 
@@ -63,9 +65,12 @@ export default function PictureFrame(props){
     }, [props.imageName]);
 
     useEffect(() => {
-        if (props.imageContent.type == "url"){
-            setUrl(props.imageContent.url)
-        }     
+        if (props.imageContent){
+            if (props.imageContent.type == "url"){
+                setUrl(props.imageContent.url)
+            } 
+        }
+            
     }, [props.imageContent]);
 
     const updateImage = (newImage) =>  {
@@ -272,7 +277,7 @@ export default function PictureFrame(props){
         
     }
 
-
+    let backgroundColor = props.webStyle.colors[componentStyles.backgroundColor]
     let borderShape = props.webStyle.componentStyles.all.borderShape
     let borderColor = props.webStyle.colors[props.webStyle.componentStyles.all.borderColor]
     let shadowColor = props.webStyle.colors[props.webStyle.componentStyles.all.shadowColor]
@@ -311,18 +316,28 @@ export default function PictureFrame(props){
                     </>
 
 
+    let imageContent = props.imageContent
+
+    if (!imageContent){
+        imageContent = {
+            type: ""
+        }
+    }
+
     return(
         <div className={"relative-div "+props.className+(props.isNested?"":" px-5 mb-5")} onMouseEnter={()=>{setButtonsVisible(true)}} onMouseLeave={()=>{setButtonsVisible(false)}} style={{flex: "1"}}>
             {/* <span>{JSON.stringify(props.imageContent)}</span> */}
-            <div className = {(borderShape)+" "+(componentStyles.padding)} style={{minHeight:"300px",backgroundColor:props.webStyle.colors[componentStyles.backgroundColor],boxShadow:borderAndShadow}}>
-                { props.imageContent.type == "video" &&
+            <div 
+                className = {(borderShape)+" "+(componentStyles.padding)} 
+                style={{minHeight:"300px",backgroundColor:backgroundColor,boxShadow:borderAndShadow}}>
+                { imageContent.type == "video" &&
                 <>
                     <video className="d-flex flex-grow-1 w-100" src={url} controls>
                         Your browser does not support the video tag.
                     </video>
                 </>    
                 }
-                { props.imageContent.type == "youtube" &&    
+                { imageContent.type == "youtube" &&    
                 <div  className="video-responsive">
                     {/* <span>{width}x{height}</span> */}
                     <iframe
@@ -337,7 +352,7 @@ export default function PictureFrame(props){
                     />
                 </div>
                 }
-                { props.imageContent.type == "url" &&
+                { imageContent.type == "url" &&
                 <img className={(borderShape)+" w-100 no-select" } src={url} />
                 }
             </div>
@@ -366,7 +381,7 @@ export default function PictureFrame(props){
                     {props.moveLeft &&
                         <input className="ms-3 mt-2 btn btn-light border border-dark" type ="button" value="Move Left" onClick={()=>props.moveLeft()} style={buttonStyle}/>
                     }
-                    <Menu className=" dropdown " menuClassName={"border  "} menuButton={<MenuButton className={"ms-2 mt-2 btn btn-light dropdown-toggle border border-dark "}>{props.imageContent.type !== ""?"Change Media":"Add Media"}</MenuButton>} transition>
+                    <Menu className=" dropdown " menuClassName={"border  "} menuButton={<MenuButton className={"ms-2 mt-2 btn btn-light dropdown-toggle border border-dark "}>{imageContent.type !== ""?"Change Media":"Add Media"}</MenuButton>} transition>
                         {
                             props.includeVideos ?
                         <>
@@ -409,7 +424,7 @@ export default function PictureFrame(props){
                     }
                     </Menu>
                    
-                    {props.imageContent.type &&
+                    {imageContent.type &&
                         <input className="ms-3 mt-2 btn btn-light border border-dark" type ="button" value="Remove Media" onClick={()=>removePicture()} style={buttonStyle}/>
                     }
                     {props.moveRight &&
