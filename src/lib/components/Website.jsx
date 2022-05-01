@@ -377,7 +377,7 @@ export default function Website(props) {
         setTimeout(()=>{
           apiMethods.setSiteIsDraft(false)
           localStorage.clear()
-
+          window.location.href='/'
         },
         1000)
       }

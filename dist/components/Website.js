@@ -447,6 +447,7 @@ function Website(props) {
       setTimeout(function () {
         apiMethods.setSiteIsDraft(false);
         localStorage.clear();
+        window.location.href = '/';
       }, 1000);
     }
   };
