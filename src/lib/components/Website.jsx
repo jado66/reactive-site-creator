@@ -3,7 +3,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+    
 } from "react-router-dom";
+import { createBrowserHistory } from "history";
 
 
 // CSS
@@ -30,6 +32,10 @@ import {ciede2000, rgbToHex} from "./helpers/colorDiff";
 export const WebContext = createContext()
 
 export default function Website(props) {
+
+  // const history = useHistory();
+  const history = createBrowserHistory();
+
 
   const images = []// require.context('../../../public/images', true);
 
@@ -372,12 +378,15 @@ export default function Website(props) {
         // localStorage.setItem("showTutorial",'-1')
 
         appMethods.setShowTutorial(true)
-        
+        localStorage.clear()
+
+        appMethods.sendMsgPortMsg("clear")
 
         setTimeout(()=>{
+          
           apiMethods.setSiteIsDraft(false)
-          localStorage.clear()
-          window.location.href='/'
+
+          // window.location.href='/'
         },
         1000)
       }
@@ -514,7 +523,7 @@ export default function Website(props) {
       }
     }>
     <div className="App" style={{minHeight:"100vh"}}>
-      <Router basename={props.basename}>
+      <Router history={history} basename={props.basename}>
         <Switch>  
           {/* App pages */}
           {sitePageComponents}

@@ -59,6 +59,7 @@ function DynamicPage(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
       adminSettings = _useContext.adminSettings,
+      msgPort = _useContext.msgPort,
       localDisplaySettings = _useContext.localDisplaySettings;
 
   var initialState = props.components;
@@ -77,6 +78,12 @@ function DynamicPage(props) {
       activeID = _useState2[0],
       setActiveID = _useState2[1];
 
+  (0, _react.useEffect)(function () {
+    // Update the document title using the browser API
+    if (msgPort === 'clear') {
+      setComponents([]);
+    }
+  }, [msgPort]);
   var sensors = (0, _core.useSensors)((0, _core.useSensor)(_DndSensors.MouseSensor, {
     activationConstraint: {
       delay: 250,

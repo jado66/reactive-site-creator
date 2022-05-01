@@ -10,6 +10,8 @@ var _react = require("react");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _history = require("history");
+
 require("../css/website.css");
 
 require("../css/index.css");
@@ -66,6 +68,8 @@ var WebContext = /*#__PURE__*/(0, _react.createContext)();
 exports.WebContext = WebContext;
 
 function Website(props) {
+  // const history = useHistory();
+  var history = (0, _history.createBrowserHistory)();
   var images = []; // require.context('../../../public/images', true);
 
   var _useState = (0, _react.useState)(false),
@@ -444,10 +448,10 @@ function Website(props) {
       appMethods.setSocialMedias(_defaultDataEmpty.defaultSiteData.socialMedias); // localStorage.setItem("showTutorial",'-1')
 
       appMethods.setShowTutorial(true);
+      localStorage.clear();
+      appMethods.sendMsgPortMsg("clear");
       setTimeout(function () {
-        apiMethods.setSiteIsDraft(false);
-        localStorage.clear();
-        window.location.href = '/';
+        apiMethods.setSiteIsDraft(false); // window.location.href='/'
       }, 1000);
     }
   };
@@ -587,6 +591,7 @@ function Website(props) {
           minHeight: "100vh"
         },
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.BrowserRouter, {
+          history: history,
           basename: props.basename,
           children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactRouterDom.Switch, {
             children: [sitePageComponents, /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Route, {

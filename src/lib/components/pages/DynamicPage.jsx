@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Fade from 'react-reveal/Fade'; // Importing Zoom effect
 
 // Drag and drop stuff
@@ -34,7 +34,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import Spacer from "../pageComponents/Spacer";
 
 export default function DynamicPage(props) {
-  const {webStyle, adminSettings, localDisplaySettings} = useContext(WebContext);
+  const {webStyle, adminSettings, msgPort, localDisplaySettings, } = useContext(WebContext);
 
   const initialState = props.components
   if (!props.components){
@@ -43,6 +43,13 @@ export default function DynamicPage(props) {
 
   const [ components, setComponents] = useComponentStorage(props.pageID+"-page",initialState);
   const [ activeID, setActiveID ] = useState(null)
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    if (msgPort === 'clear'){
+      setComponents([])
+    }
+  },[msgPort]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
