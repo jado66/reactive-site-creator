@@ -1,8 +1,14 @@
 html,
 body,
 #root {
-  height: 100%;
+  /* height: 100%; */
   overflow-x: hidden;
+  overflow-y: auto;
+  
+}
+
+#root::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
 }
 
 /* input {

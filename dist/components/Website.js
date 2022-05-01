@@ -433,6 +433,7 @@ function Website(props) {
       http.send(JSON.stringify(data));
     },
     startOver: function startOver() {
+      document.documentElement.scrollTop = 0;
       appMethods.setWebStyle({
         siteName: _defaultDataEmpty.defaultSiteData.siteName,
         colors: _defaultDataEmpty.defaultWebStyles.colors,

@@ -14,11 +14,11 @@ code {
 
 @import url("https://fonts.googleapis.com/css2?family=Merienda&display=swap");
 
-html,
-body {
-  height: 100%;
+/* html, */
+/* body { */
+  /* height: 100%; */
   /* background-color: pink; */
-}
+/* } */
 
 .full-height {
   height: 100%;
@@ -95,10 +95,10 @@ body {
   /* font-family: "Great Vibes", cursive; */
 }
 
-.App {
+/* .App { */
   /* background-color: pink; */
-  height: 100%;
-}
+  /* height: 100%; */
+/* } */
 
 .socialMediaLink {
   font-size: xx-large;

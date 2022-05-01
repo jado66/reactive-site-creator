@@ -360,6 +360,7 @@ export default function Website(props) {
       },
 
       startOver:()=>{
+        document.documentElement.scrollTop = 0;
         appMethods.setWebStyle({
           siteName: defaultSiteData.siteName,
           colors: defaultWebStyles.colors,
