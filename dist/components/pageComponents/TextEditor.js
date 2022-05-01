@@ -17,6 +17,8 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -106,102 +108,106 @@ function TextEditor(props) {
   }
 
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _objectSpread({}, props.style),
-    className: "px-5 text-center relative-div ",
-    "data-no-dnd": "true",
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: [!isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      style: {
-        backgroundColor: backgroundColor,
-        boxShadow: content.isBacked ? borderAndShadow : ""
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    componentName: "textEditor",
+    webStyle: webStyle,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      style: _objectSpread({}, props.style),
+      className: "flex-grow-1 text-center relative-div ",
+      "data-no-dnd": "true",
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
       },
-      className: "px-5 " + borderShape + (content.isBacked ? "  py-5" : ""),
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
-        adminSettings: adminSettings,
-        webStyle: webStyle,
-        className: "paragraph text-start",
-        html: content.html,
-        isEditMode: isEditMode,
-        setHtml: function setHtml(value) {
-          handleContentChange("html", value);
-        },
-        saveEdits: function saveEdits() {
-          setIsEditMode(!isEditMode);
-        },
-        style: {
-          color: textColor || webStyle.colors.darkShade
-        }
-      })
-    }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
+      },
+      children: [!isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         style: {
           backgroundColor: backgroundColor,
           boxShadow: content.isBacked ? borderAndShadow : ""
         },
-        className: "px-5 " + borderShape + (content.isBacked ? " pt-3 pb-5" : ""),
-        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
-          className: "col",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
-            children: "Text Editor Settings"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-            class: "form-check d-flex align-items-start",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              class: "form-check-input",
-              type: "checkbox",
-              checked: content.isBacked,
-              onClick: function onClick() {
-                handleCheckbox("isBacked");
-              }
-            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-              class: "form-check-label ms-3",
-              for: "flexCheckDefault",
-              children: "Background?"
-            })]
-          })]
-        })
-      })
-    }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "relative d-flex  ",
-        children: [!isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-          className: " btn p-0",
-          style: {
-            marginRight: "1.5em"
+        className: "px-5 " + borderShape + (content.isBacked ? "  py-5" : ""),
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
+          adminSettings: adminSettings,
+          webStyle: webStyle,
+          className: "paragraph text-start",
+          html: content.html,
+          isEditMode: isEditMode,
+          setHtml: function setHtml(value) {
+            handleContentChange("html", value);
           },
-          "data-no-dnd": "true",
-          onClick: function onClick() {
+          saveEdits: function saveEdits() {
             setIsEditMode(!isEditMode);
           },
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faPencilAlt,
-            style: {
-              color: textColor
-            }
-          })
-        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-          className: "btn " + (isEditMode ? "" : "p-0"),
           style: {
-            marginRight: "2.5em"
+            color: textColor || webStyle.colors.darkShade
+          }
+        })
+      }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          style: {
+            backgroundColor: backgroundColor,
+            boxShadow: content.isBacked ? borderAndShadow : ""
           },
-          "data-no-dnd": "true",
-          onClick: function onClick() {
-            setIsSettingsMode(!isSettingsMode);
-          },
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faCog,
-            style: {
-              color: textColor
-            }
+          className: "px-5 " + borderShape + (content.isBacked ? " pt-3 pb-5" : ""),
+          children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
+            className: "col",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
+              children: "Text Editor Settings"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+              class: "form-check d-flex align-items-start",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                class: "form-check-input",
+                type: "checkbox",
+                checked: content.isBacked,
+                onClick: function onClick() {
+                  handleCheckbox("isBacked");
+                }
+              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                class: "form-check-label ms-3",
+                for: "flexCheckDefault",
+                children: "Background?"
+              })]
+            })]
           })
-        })]
-      })
-    })]
+        })
+      }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "relative d-flex  ",
+          children: [!isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            className: " btn p-0",
+            style: {
+              marginRight: "1.5em"
+            },
+            "data-no-dnd": "true",
+            onClick: function onClick() {
+              setIsEditMode(!isEditMode);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+              icon: _freeSolidSvgIcons.faPencilAlt,
+              style: {
+                color: textColor
+              }
+            })
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            className: "btn " + (isEditMode ? "" : "p-0"),
+            style: {
+              marginRight: "2.5em"
+            },
+            "data-no-dnd": "true",
+            onClick: function onClick() {
+              setIsSettingsMode(!isSettingsMode);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+              icon: _freeSolidSvgIcons.faCog,
+              style: {
+                color: textColor
+              }
+            })
+          })]
+        })
+      })]
+    })
   });
 }
 

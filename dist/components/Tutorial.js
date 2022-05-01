@@ -94,6 +94,7 @@ function Tutorial(props) {
     appMethods: appMethods
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Step1, {
     completeStep: completeStep,
+    appMethods: appMethods,
     webStyle: webStyle
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)(Step2, {
     completeStep: completeStep,
@@ -244,7 +245,7 @@ function Step1(props) {
       setCanContinue = _useState6[1];
 
   var completeStep = function completeStep() {
-    alert("complete");
+    // alert("complete")
     props.appMethods.setWebStyle(function (prevState) {
       return _objectSpread(_objectSpread({}, prevState), {}, {
         siteName: siteName

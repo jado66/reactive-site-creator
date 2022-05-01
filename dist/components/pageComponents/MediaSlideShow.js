@@ -13,6 +13,8 @@ var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
 var _Website = require("../Website");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -192,71 +194,75 @@ function MediaSlideShow(props) {
     userSelect: "none",
     zIndex: 1
   };
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _objectSpread({}, props.style),
-    className: "px-5 text-center relative-div ",
-    "data-no-dnd": "true",
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: [pictureIndex > 0 && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-      style: _objectSpread(_objectSpread({}, arrow), {}, {
-        left: "-.25em"
-      }),
-      onClick: function onClick() {
-        nextSlide(-1);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    webStyle: webStyle,
+    componentName: "pictureFrame",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      style: _objectSpread({}, props.style),
+      className: "flex-grow-1 text-center relative-div ",
+      "data-no-dnd": "true",
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
       },
-      children: "\u276E"
-    }), pictureIndex < content.pictureCount - 1 && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-      style: _objectSpread(_objectSpread({}, arrow), {}, {
-        right: "-.25em"
-      }),
-      onClick: function onClick() {
-        nextSlide(1);
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
       },
-      children: "\u276F"
-    }), pictureIndex == content.pictureCount - 1 && adminSettings.isEditMode && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-      style: _objectSpread(_objectSpread({}, arrow), {}, {
-        top: "35%",
-        right: "-.25em"
-      }),
-      onClick: function onClick() {
-        addSlide();
-      },
-      children: "+"
-    }), pictureIndex == content.pictureCount - 1 && content.pictureCount > 1 && adminSettings.isEditMode && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
-      style: _objectSpread(_objectSpread({}, arrow), {}, {
-        bottom: "35%",
-        right: "-.25em"
-      }),
-      onClick: function onClick() {
-        removeSlide();
-      },
-      children: "-"
-    }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "numberText",
-      style: numbertext,
-      children: [pictureIndex + 1, " / ", content.pictureCount]
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
-      webStyle: webStyle,
-      adminSettings: adminSettings,
-      images: images,
-      imageContent: content.mediaContentList[pictureIndex],
-      setImageContent: function setImageContent(value) {
-        setPictureContent(pictureIndex, value);
-      },
-      id: "".concat(props.id, "-P").concat(content.ids[pictureIndex]),
-      moveRight: pictureIndex != content.pictureCount - 1 ? function () {
-        swapMedia(true, pictureIndex);
-      } : null,
-      moveLeft: pictureIndex != 0 ? function () {
-        swapMedia(false, pictureIndex);
-      } : null,
-      includeVideos: true,
-      isNested: true
-    }, "".concat(props.id, "-P").concat(pictureIndex))]
+      children: [pictureIndex > 0 && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+        style: _objectSpread(_objectSpread({}, arrow), {}, {
+          left: "-.25em"
+        }),
+        onClick: function onClick() {
+          nextSlide(-1);
+        },
+        children: "\u276E"
+      }), pictureIndex < content.pictureCount - 1 && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+        style: _objectSpread(_objectSpread({}, arrow), {}, {
+          right: "-.25em"
+        }),
+        onClick: function onClick() {
+          nextSlide(1);
+        },
+        children: "\u276F"
+      }), pictureIndex == content.pictureCount - 1 && adminSettings.isEditMode && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+        style: _objectSpread(_objectSpread({}, arrow), {}, {
+          top: "35%",
+          right: "-.25em"
+        }),
+        onClick: function onClick() {
+          addSlide();
+        },
+        children: "+"
+      }), pictureIndex == content.pictureCount - 1 && content.pictureCount > 1 && adminSettings.isEditMode && isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+        style: _objectSpread(_objectSpread({}, arrow), {}, {
+          bottom: "35%",
+          right: "-.25em"
+        }),
+        onClick: function onClick() {
+          removeSlide();
+        },
+        children: "-"
+      }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "numberText",
+        style: numbertext,
+        children: [pictureIndex + 1, " / ", content.pictureCount]
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
+        webStyle: webStyle,
+        adminSettings: adminSettings,
+        images: images,
+        imageContent: content.mediaContentList[pictureIndex],
+        setImageContent: function setImageContent(value) {
+          setPictureContent(pictureIndex, value);
+        },
+        id: "".concat(props.id, "-P").concat(content.ids[pictureIndex]),
+        moveRight: pictureIndex != content.pictureCount - 1 ? function () {
+          swapMedia(true, pictureIndex);
+        } : null,
+        moveLeft: pictureIndex != 0 ? function () {
+          swapMedia(false, pictureIndex);
+        } : null,
+        includeVideos: true,
+        isNested: true
+      }, "".concat(props.id, "-P").concat(pictureIndex))]
+    })
   });
 }

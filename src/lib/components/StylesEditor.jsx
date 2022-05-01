@@ -13,6 +13,8 @@ import {
   Link
 } from "react-router-dom";
 
+import {defaultSiteData, defaultWebStyles} from './defaultDataEmpty'
+
 import {FocusableItemTT, MenuItemTT, MenuButtonTT} from './styleEditorComponents/MenuTooltipItems'
 
 import { useLocation, useHistory } from 'react-router-dom'
@@ -300,7 +302,6 @@ export default function StylesEditor(props) {
 
   const componentStyleMenus = {
     "Photo Gallery": <PhotoGalleryMenu webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
-    Background: <BackgroundMenu webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     Footer: <FooterMenu webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     Header: <HeaderMenu webStyle = {webStyle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>,
     "Styled Link": <StyledLinkMenu webStyle = {webStyle} handleSelectChange = {handleSelectChange } handleStyleChange = {handleStyleChange}/>,
@@ -450,6 +451,8 @@ const socialMediaSelectOptions = [
                 {/* <FocusableItem><a onClick={invertColors}>Invert Main Colors</a> </FocusableItem> */}
               </SubMenu>
               <SubMenu label = {"Website Styles"} menuClassName={"border border-dark"}>
+                <BackgroundMenu webStyle = {webStyle} handleStyleToggle = {handleStyleToggle} handleSelectChange = {handleSelectChange} handleStyleChange = {handleStyleChange}/>
+                <SubMenu label = {"Default Component Styles"} menuClassName={"border border-dark"}>
                 <MenuHeader>Website Borders</MenuHeader>
                   
                   <FocusableItemTT ttText = {"This is the default border thickness"}>
@@ -572,6 +575,9 @@ const socialMediaSelectOptions = [
                       ]}
                     />
                   </FocusableItemTT>
+
+                </SubMenu>
+                  
               </SubMenu>
               <SubMenu label = {"Component Styles"} menuClassName={"border border-dark"}>
                 <MenuHeader>Individual Component Options</MenuHeader>
@@ -727,7 +733,41 @@ const socialMediaSelectOptions = [
                     </MenuItem>
                     
                   </SubMenu>
-                  
+                  <SubMenu label={"Danger Zone"} menuClassName={"border border-dark"}>
+                    <MenuItem>
+                      <a onClick={(evt)=>
+                        {   
+                          let sureDelete = prompt(`Are you sure you would like to delete all site data? This action is irreversible. Type "YES" to start over:`, "");
+
+                          if (sureDelete === "YES"){
+                            appMethods.setWebStyle({
+                              siteName: defaultSiteData.siteName,
+                              colors: defaultWebStyles.colors,
+                              componentStyles : defaultWebStyles.componentStyles
+                            })
+                            appMethods.setPages(defaultSiteData.pages)
+                            appMethods.setMasterNavData(defaultSiteData.masterNavBarData)
+                            appMethods.setSocialMedias(defaultSiteData.socialMedias)
+                            // localStorage.setItem("showTutorial",'-1')
+
+                            appMethods.setShowTutorial(true)
+                            
+
+                            setTimeout(()=>{
+                              apiMethods.setSiteIsDraft(false)
+                              localStorage.clear()
+
+                            },
+                            1000)
+                          }
+                        }}
+                      >
+
+                        Delete Site Data
+                      </a>
+                    </MenuItem>
+                    
+                  </SubMenu>
 
                   
               </Menu>

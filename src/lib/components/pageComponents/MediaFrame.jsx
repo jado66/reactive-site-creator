@@ -3,6 +3,7 @@ import PictureFrame from "../subComponents/PictureFrame";
 import useComponentStorage from "../helpers/useStorage";
 import { WebContext } from "../Website";
 import { useContext } from "react"
+import ComponentMargin from "../subComponents/ComponentMargin";
 
 export default function MediaFrame(props){
     
@@ -28,9 +29,10 @@ export default function MediaFrame(props){
     }
 
     return(
+        <ComponentMargin webStyle = {webStyle} componentName = {"pictureFrame"}>
         <div 
             style={{...props.style}}      
-            className="px-5 text-center relative-div " 
+            className="flex-grow-1 text-center relative-div " 
             data-no-dnd="true"        
             onMouseEnter={() => {
             showButtons(true);
@@ -57,6 +59,9 @@ export default function MediaFrame(props){
                 </div>
             }
         </div>
+
+        </ComponentMargin>
+        
         )
     
 }

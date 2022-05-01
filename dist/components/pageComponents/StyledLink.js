@@ -19,6 +19,8 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _EditableLink = _interopRequireDefault(require("../subComponents/EditableLink"));
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -100,71 +102,75 @@ function QuickLink(props) {
   }
 
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "px-5 text-center ",
-    "data-no-dnd": "true",
-    style: _objectSpread(_objectSpread({}, props.style), {}, {
-      marginTop: "-.8em",
-      marginBottom: "-.8em"
-    }),
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "relative-div ",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableLink.default, {
-        webStyle: webStyle,
-        linkText: content.linkText,
-        href: content.href,
-        adminSettings: adminSettings,
-        localDisplaySettings: localDisplaySettings,
-        setLinkText: function setLinkText(value) {
-          return handleContentChange("linkText", value);
-        },
-        setHref: function setHref(value) {
-          return handleContentChange("href", value);
-        },
-        divStyle: {
-          backgroundColor: webStyle.colors[componentStyles.backgroundColor],
-          boxShadow: borderAndShadow
-        },
-        divClass: "py-3 mx-auto justify-content-center " + borderShape,
-        linkStyle: {
-          color: webStyle.colors[componentStyles.textColor],
-          textDecoration: "none"
-        },
-        linkClass: "h5 m-0"
-      }), (isShowButtons || isSettingsMode) && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "relative-r btn d-flex col pt-3",
-        style: {
-          top: 0
-        },
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-          className: "d-flex bg-transparent border-0",
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    componentName: "styledLink",
+    webStyle: webStyle,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "flex-grow-1 text-center ",
+      "data-no-dnd": "true",
+      style: _objectSpread(_objectSpread({}, props.style), {}, {
+        marginTop: ".4em",
+        marginBottom: ".4em"
+      }),
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
+      },
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "relative-div ",
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_EditableLink.default, {
+          webStyle: webStyle,
+          linkText: content.linkText,
+          href: content.href,
+          adminSettings: adminSettings,
+          localDisplaySettings: localDisplaySettings,
+          setLinkText: function setLinkText(value) {
+            return handleContentChange("linkText", value);
+          },
+          setHref: function setHref(value) {
+            return handleContentChange("href", value);
+          },
+          divStyle: {
+            backgroundColor: webStyle.colors[componentStyles.backgroundColor],
+            boxShadow: borderAndShadow
+          },
+          divClass: "py-3 mx-auto justify-content-center " + borderShape,
+          linkStyle: {
+            color: webStyle.colors[componentStyles.textColor],
+            textDecoration: "none"
+          },
+          linkClass: "h5 m-0"
+        }), (isShowButtons || isSettingsMode) && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "relative-r btn d-flex col pt-3",
           style: {
-            marginRight: "2.5em"
+            top: 0
           },
-          "data-no-dnd": "true",
-          onClick: function onClick() {
-            setIsSettingsMode(!isSettingsMode);
-          },
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-            icon: _freeSolidSvgIcons.faCog,
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            className: "d-flex bg-transparent border-0",
             style: {
-              color: webStyle.colors.darkShade
-            }
+              marginRight: "2.5em"
+            },
+            "data-no-dnd": "true",
+            onClick: function onClick() {
+              setIsSettingsMode(!isSettingsMode);
+            },
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+              icon: _freeSolidSvgIcons.faCog,
+              style: {
+                color: webStyle.colors.darkShade
+              }
+            })
           })
+        })]
+      }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          class: "input-group my-3 w-75 mx-auto",
+          children: "Styles Go Here"
         })
       })]
-    }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        class: "input-group my-3 w-75 mx-auto",
-        children: "Styles Go Here"
-      })
-    })]
+    })
   });
 }
 

@@ -161,8 +161,8 @@ function DynamicPage(props) {
         isSelected: selectedComponents.includes(el.id),
         id: el.id,
         addSelected: addSelected,
-        removeSelected: removeSelected,
-        className: "py-3 ",
+        removeSelected: removeSelected // className={"py-3 "}
+        ,
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(Component, {
           id: el.id + "c",
           index: index,
@@ -222,6 +222,7 @@ function DynamicPage(props) {
   }
 
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C', shadowColor);
+  var includeMargins = webStyle.componentStyles.all.includeMargins;
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
       backgroundColor: marginColor,
@@ -261,10 +262,10 @@ function DynamicPage(props) {
       })
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       id: "outerSection ",
-      className: "min-vh-100 g-0 " + (localDisplaySettings.isMobile ? " " : " container"),
+      className: "min-vh-100 g-0 " + (localDisplaySettings.isMobile ? " " : includeMargins ? " container" : ""),
       children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         id: "innerSection",
-        className: "col justify-items-baseline min-vh-100 pb-4 pt-4",
+        className: "col justify-items-baseline min-vh-100 ",
         style: {
           backgroundColor: backgroundColor,
           boxShadow: webStyle.componentStyles.background.applyBackground ? borderAndShadow : "none"

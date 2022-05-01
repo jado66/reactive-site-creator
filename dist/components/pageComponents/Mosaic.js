@@ -17,6 +17,8 @@ var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
 var _Fade = _interopRequireDefault(require("react-reveal/Fade"));
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -189,7 +191,9 @@ function Mosaic(props) {
 
   if (localDisplaySettings.isMobile) {
     return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      style: _objectSpread({}, props.style),
+      style: _objectSpread(_objectSpread({}, props.style), {}, {
+        backgroundColor: webStyle.colors[webStyle.componentStyles.mosaic.backgroundColor]
+      }),
       className: "row " + (localDisplaySettings.isMobile ? "px-2 " : "px-5"),
       "data-no-dnd": "true",
       children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
@@ -281,33 +285,36 @@ function Mosaic(props) {
       })
     });
   } else {
-    return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      style: _objectSpread({}, props.style),
-      className: "row g-0 px-5",
-      "data-no-dnd": "true",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col me-3",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
-          children: arrangement.split('-')[0].split(",").map(function (el, index) {
-            if (index === 0) {
-              return componentMap[el]("mb-5");
-            } else {
-              return componentMap[el]("");
-            }
+    return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_ComponentMargin.default, {
+        componentName: "mosaic",
+        webStyle: webStyle,
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "col me-3",
+          "data-no-dnd": "true",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
+            children: arrangement.split('-')[0].split(",").map(function (el, index) {
+              if (index === 0) {
+                return componentMap[el]("mb-5");
+              } else {
+                return componentMap[el]("");
+              }
+            })
           })
-        })
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        className: "col ms-3",
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
-          children: arrangement.split('-')[1].split(",").map(function (el, index) {
-            if (index === 0) {
-              return componentMap[el]("mb-5");
-            } else {
-              return componentMap[el]("");
-            }
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          className: "col ms-3",
+          "data-no-dnd": "true",
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_Fade.default, {
+            children: arrangement.split('-')[1].split(",").map(function (el, index) {
+              if (index === 0) {
+                return componentMap[el]("mb-5");
+              } else {
+                return componentMap[el]("");
+              }
+            })
           })
-        })
-      })]
+        })]
+      })
     });
   }
 }

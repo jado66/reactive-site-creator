@@ -23,6 +23,8 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -156,42 +158,46 @@ function SubscriptionCards(props) {
     }, content.styles);
   } catch (error) {}
 
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "d-flex text-center px-5" + (localDisplaySettings.isMobile ? " flex-column" : ""),
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
-      maxHeight: maxHeight,
-      getMaxHeight: getMaxHeight,
-      componentStyle: componentStyle,
-      data: content.data[0],
-      webStyle: webStyle,
-      id: props.id + "-1",
-      adminSettings: adminSettings,
-      index: 0,
-      handleDataChange: handleDataChange,
-      className: 'g-0 ' + (localDisplaySettings.isMobile ? "mb-3" : "me-3 ")
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
-      maxHeight: maxHeight,
-      getMaxHeight: getMaxHeight,
-      componentStyle: componentStyle,
-      data: content.data[1],
-      webStyle: webStyle,
-      id: props.id + "-2",
-      adminSettings: adminSettings,
-      index: 1,
-      handleDataChange: handleDataChange,
-      className: 'g-0 ' + (localDisplaySettings.isMobile ? "my-3" : "mx-3")
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
-      maxHeight: maxHeight,
-      getMaxHeight: getMaxHeight,
-      componentStyle: componentStyle,
-      data: content.data[2],
-      webStyle: webStyle,
-      id: props.id + "-3",
-      adminSettings: adminSettings,
-      index: 2,
-      handleDataChange: handleDataChange,
-      className: 'g-0 ' + (localDisplaySettings.isMobile ? "mt-3" : "ms-3")
-    })]
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    webStyle: webStyle,
+    componentName: "subscriptionCard",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "flex-grow-1 text-center " + (localDisplaySettings.isMobile ? " flex-column" : " d-flex flex-row"),
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+        maxHeight: maxHeight,
+        getMaxHeight: getMaxHeight,
+        componentStyle: componentStyle,
+        data: content.data[0],
+        webStyle: webStyle,
+        id: props.id + "-1",
+        adminSettings: adminSettings,
+        index: 0,
+        handleDataChange: handleDataChange,
+        className: 'g-0 ' + (localDisplaySettings.isMobile ? "mb-3" : "me-3 ")
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+        maxHeight: maxHeight,
+        getMaxHeight: getMaxHeight,
+        componentStyle: componentStyle,
+        data: content.data[1],
+        webStyle: webStyle,
+        id: props.id + "-2",
+        adminSettings: adminSettings,
+        index: 1,
+        handleDataChange: handleDataChange,
+        className: 'g-0 ' + (localDisplaySettings.isMobile ? "my-3" : "mx-3")
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(SubscriptionCard, {
+        maxHeight: maxHeight,
+        getMaxHeight: getMaxHeight,
+        componentStyle: componentStyle,
+        data: content.data[2],
+        webStyle: webStyle,
+        id: props.id + "-3",
+        adminSettings: adminSettings,
+        index: 2,
+        handleDataChange: handleDataChange,
+        className: 'g-0 ' + (localDisplaySettings.isMobile ? "mt-3" : "ms-3")
+      })]
+    })
   });
 }
 

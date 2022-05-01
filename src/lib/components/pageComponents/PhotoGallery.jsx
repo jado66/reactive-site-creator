@@ -6,6 +6,7 @@ import Gallery from "react-photo-gallery";
 import { WebContext } from "../Website";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faAlignRight, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import ComponentMargin from '../subComponents/ComponentMargin';
 
 export default function PhotoGallery(props){
 
@@ -240,13 +241,14 @@ export default function PhotoGallery(props){
     );
     
     return (
-        <div 
-            className='px-5 mt-3 justify-contents-around g-0 relative-div' 
-            data-no-dnd = "true" 
-            style={{cursor:"auto"}}
-            onMouseEnter={()=>{setShowButtons(true)}} 
-            onMouseLeave={()=>{setShowButtons(false)}}
-        >
+        <ComponentMargin webStyle = {webStyle} componentName = {"photoGallery"}>
+            <div 
+                className='flex-grow-1 mt-3 justify-contents-around g-0 relative-div' 
+                data-no-dnd = "true" 
+                style={{cursor:"auto"}}
+                onMouseEnter={()=>{setShowButtons(true)}} 
+                onMouseLeave={()=>{setShowButtons(false)}}
+            >
             {/* {JSON.stringify(selectedPictures)} */}
             { selectedPictures.length > 0 &&
                 <div className={'top-toolbar border-0 text-center '+(adminSettings.isShowEditor?" mt-5":"")}>
@@ -273,6 +275,8 @@ export default function PhotoGallery(props){
             }
            
         </div>
+        </ComponentMargin>
+        
     );
 }
 

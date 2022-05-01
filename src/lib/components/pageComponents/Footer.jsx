@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import {WebContext} from "../Website"
+import ComponentMargin from '../subComponents/ComponentMargin';
 
 
 export default function SocialLinks(props) {
@@ -62,12 +63,15 @@ export default function SocialLinks(props) {
 
 
     return(
-            <div className='mt-3' style = {{...props.style, width:`50%`, margin:"25px auto"}} data-no-dnd = "true">
-              {/* {JSON.stringify(webStyle.componentStyles)} */}
-              <div className='row' style={{justifyContent:"space-around"}}>
-                {socialLinkComponents}
-              </div>
-            </div>)
+      <ComponentMargin  componentName = {"header"} webStyle = {webStyle}>
+        <div className='mx-auto w-50' style = {{...props.style}} data-no-dnd = "true">
+          {/* {JSON.stringify(webStyle.componentStyles)} */}
+          <div className='row' style={{justifyContent:"space-around"}}>
+            {socialLinkComponents}
+          </div>
+        </div>
+      </ComponentMargin>
+            )
   
 };
 

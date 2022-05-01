@@ -19,6 +19,8 @@ var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
 var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -99,105 +101,109 @@ function Header(props) {
     }, content.styles);
   } catch (error) {}
 
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _objectSpread({}, props.style),
-    className: "px-5 text-center relative-div ",
-    "data-no-dnd": "true",
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
-      className: "apply-font-primary mb-0",
-      style: {
-        color: webStyle.colors[componentStyle.textColor]
-      },
-      spellCheck: "false",
-      innerRef: contentEditable,
-      html: content.header // innerHTML of the editable div
-      ,
-      disabled: !adminSettings.isEditMode // use true to disable editing
-      ,
-      onChange: function onChange(evt) {
-        return handleContentChange("header", evt.target.value);
-      } // handle innerHTML change
-      ,
-      tagName: componentStyle.size // Use a custom HTML tag (uses a div by default)
-
-    }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        class: "input-group mt-3 mb-1 w-75 mx-auto",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-          class: "input-group-text",
-          for: "inputGroupSelect01",
-          children: "Header Size"
-        }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-          onChange: function onChange(evt) {
-            return handleStyleChange("size", evt.target.value);
-          },
-          value: componentStyle.size,
-          className: "form-select",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h1",
-            children: "X-Large (h1)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h2",
-            children: "Large (h2)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h3",
-            children: "Medium (h3)"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "h4",
-            children: "Small (h4)"
-          })]
-        })]
-      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        class: "input-group mb-3 w-75 mx-auto",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-          class: "input-group-text",
-          for: "inputGroupSelect01",
-          children: "Text Color"
-        }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
-          value: componentStyle.color,
-          onChange: function onChange(evt) {
-            handleStyleChange("textColor", evt.target.value);
-          },
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "lightShade",
-            children: "Light Shade"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "lightAccent",
-            children: "Light Accent"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "mainBrandColor",
-            children: "Main Brand Color"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "darkAccent",
-            children: "Dark Accent"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
-            value: "darkShade",
-            children: "Dark Shade"
-          })]
-        })]
-      })]
-    }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-      className: "relative-r btn",
-      style: {
-        marginRight: "2.5em"
-      },
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    componentName: "header",
+    webStyle: webStyle,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      style: _objectSpread({}, props.style),
+      className: " flex-grow-1 text-center  relative-div ",
       "data-no-dnd": "true",
-      onClick: function onClick() {
-        setIsSettingsMode(!isSettingsMode);
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
       },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-        icon: _freeSolidSvgIcons.faCog,
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactContenteditable.default, {
+        className: "apply-font-primary mb-0",
         style: {
-          color: webStyle.colors.darkShade
-        }
-      })
-    })]
+          color: webStyle.colors[componentStyle.textColor]
+        },
+        spellCheck: "false",
+        innerRef: contentEditable,
+        html: content.header // innerHTML of the editable div
+        ,
+        disabled: !adminSettings.isEditMode // use true to disable editing
+        ,
+        onChange: function onChange(evt) {
+          return handleContentChange("header", evt.target.value);
+        } // handle innerHTML change
+        ,
+        tagName: componentStyle.size // Use a custom HTML tag (uses a div by default)
+
+      }), isSettingsMode && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          class: "input-group mt-3 mb-1 w-75 mx-auto",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+            class: "input-group-text",
+            for: "inputGroupSelect01",
+            children: "Header Size"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+            onChange: function onChange(evt) {
+              return handleStyleChange("size", evt.target.value);
+            },
+            value: componentStyle.size,
+            className: "form-select",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "h1",
+              children: "X-Large (h1)"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "h2",
+              children: "Large (h2)"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "h3",
+              children: "Medium (h3)"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "h4",
+              children: "Small (h4)"
+            })]
+          })]
+        }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          class: "input-group mb-3 w-75 mx-auto",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+            class: "input-group-text",
+            for: "inputGroupSelect01",
+            children: "Text Color"
+          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("select", {
+            value: componentStyle.color,
+            onChange: function onChange(evt) {
+              handleStyleChange("textColor", evt.target.value);
+            },
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "lightShade",
+              children: "Light Shade"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "lightAccent",
+              children: "Light Accent"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "mainBrandColor",
+              children: "Main Brand Color"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "darkAccent",
+              children: "Dark Accent"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+              value: "darkShade",
+              children: "Dark Shade"
+            })]
+          })]
+        })]
+      }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+        className: "relative-r btn",
+        style: {
+          marginRight: "2.5em"
+        },
+        "data-no-dnd": "true",
+        onClick: function onClick() {
+          setIsSettingsMode(!isSettingsMode);
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+          icon: _freeSolidSvgIcons.faCog,
+          style: {
+            color: webStyle.colors.darkShade
+          }
+        })
+      })]
+    })
   });
 }
 

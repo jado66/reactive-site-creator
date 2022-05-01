@@ -63,7 +63,7 @@ export default function Tutorial(props){
 
   const steps = [
     <Step0 completeStep = {completeStep} appMethods = {appMethods}/>,
-    <Step1 completeStep = {completeStep} webStyle = {webStyle}/>,
+    <Step1 completeStep = {completeStep} appMethods = {appMethods} webStyle = {webStyle}/>,
     <Step2 completeStep = {completeStep} appMethods = {appMethods} webStyle = {webStyle}/>,
     <Step3 completeStep = {completeStep} socialMedias = {socialMedias}/>,
     <Step4 completeStep = {completeStep} pages = {pages}/>,
@@ -181,7 +181,7 @@ function Step1(props){
   const [canContinue, setCanContinue] = useState(false)
   
   const completeStep = () =>{
-    alert("complete")
+    // alert("complete")
     props.appMethods.setWebStyle((prevState) => ({
       ...prevState,
       siteName: siteName

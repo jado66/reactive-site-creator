@@ -6,6 +6,7 @@ import { WebContext } from "../Website";
 import useComponentStorage from '../helpers/useStorage';
 
 import Fade from 'react-reveal/Fade';
+import ComponentMargin from "../subComponents/ComponentMargin";
 
 export default function Mosaic(props){
 
@@ -138,7 +139,7 @@ export default function Mosaic(props){
 
     if (localDisplaySettings.isMobile){
         return(
-        <div style={{...props.style}} className = {"row "+(localDisplaySettings.isMobile?"px-2 ":"px-5")} data-no-dnd="true">
+        <div style={{...props.style, backgroundColor:webStyle.colors[webStyle.componentStyles.mosaic.backgroundColor]}} className = {"row "+(localDisplaySettings.isMobile?"px-2 ":"px-5")} data-no-dnd="true">
             <div className="col">
                 <div className = {"row g-0 mb-5" }>
                     <Fade>
@@ -178,10 +179,9 @@ export default function Mosaic(props){
     }
     else{
         return(
-            <div style={{...props.style}} className = {"row g-0 px-5"} data-no-dnd="true">
-                {/* <span>{JSON.stringify(content)}</span> */}
-
-                <div className = {"col me-3"}>
+            <Fade>
+            <ComponentMargin componentName = {"mosaic"} webStyle = {webStyle}>
+                <div className = {"col me-3"} data-no-dnd="true">
                     <Fade>
                         {arrangement.split('-')[0].split(",").map((el, index,) => 
                             {
@@ -195,7 +195,7 @@ export default function Mosaic(props){
                         )}
                     </Fade>
                 </div>
-                <div className = {"col ms-3"}>
+                <div className = {"col ms-3"} data-no-dnd="true">
                     <Fade>
                         {arrangement.split('-')[1].split(",").map((el, index,) => 
                             {
@@ -209,7 +209,9 @@ export default function Mosaic(props){
                         )}                      
                     </Fade>
                 </div>  
-            </div>
+            </ComponentMargin>  
+            </Fade>          
         )
     }
 }
+

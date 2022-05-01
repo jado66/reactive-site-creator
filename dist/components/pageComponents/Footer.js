@@ -17,7 +17,11 @@ var _reactRouterDom = require("react-router-dom");
 
 var _Website = require("../Website");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
@@ -100,19 +104,20 @@ function SocialLinks(props) {
       })
     }, location);
   });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    className: "mt-3",
-    style: _objectSpread(_objectSpread({}, props.style), {}, {
-      width: "50%",
-      margin: "25px auto"
-    }),
-    "data-no-dnd": "true",
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    componentName: "header",
+    webStyle: webStyle,
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "row",
-      style: {
-        justifyContent: "space-around"
-      },
-      children: socialLinkComponents
+      className: "mx-auto w-50",
+      style: _objectSpread({}, props.style),
+      "data-no-dnd": "true",
+      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "row",
+        style: {
+          justifyContent: "space-around"
+        },
+        children: socialLinkComponents
+      })
     })
   });
 }

@@ -5,6 +5,7 @@ import { WebContext } from "../Website";
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import EditableLink from '../subComponents/EditableLink';
+import ComponentMargin from '../subComponents/ComponentMargin';
 
 export default function QuickLink(props){
 
@@ -50,10 +51,10 @@ export default function QuickLink(props){
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
 
   return(
-
+    <ComponentMargin componentName = "styledLink" webStyle = {webStyle} >
     <div 
-      className="px-5 text-center " data-no-dnd="true"
-      style={{...props.style, marginTop:"-.8em",marginBottom:"-.8em"}}
+      className="flex-grow-1 text-center " data-no-dnd="true"
+      style={{...props.style, marginTop:".4em",marginBottom:".4em"}}
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -96,5 +97,7 @@ export default function QuickLink(props){
       {/*  */}
       
     </div>
+    </ComponentMargin>
+    
     )
 };

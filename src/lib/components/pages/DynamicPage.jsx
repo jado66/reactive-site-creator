@@ -132,7 +132,7 @@ export default function DynamicPage(props) {
           id={el.id}
           addSelected={addSelected}
           removeSelected={removeSelected}
-          className={"py-3 "}
+          // className={"py-3 "}
         >
           <Component 
             key={el.id + "c"} id={el.id + "c"} index = {index} pageName = {props.pageName} pageID = {props.pageID}
@@ -180,6 +180,8 @@ export default function DynamicPage(props) {
   }
   borderAndShadow += webStyle.componentStyles.all.shadowStyle.replaceAll('C',shadowColor)
 
+  let includeMargins = webStyle.componentStyles.all.includeMargins
+
   return (
     <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor && !props.showTutorial ?"50px":""}}> 
     {/* marginTop:adminSettings.isShowEditor?"50px":"" */}
@@ -208,12 +210,13 @@ export default function DynamicPage(props) {
 
         </div>
       }
-      <div id = "outerSection " className={"min-vh-100 g-0 "+(localDisplaySettings.isMobile?" ":" container")} >
+      {/* container */}
+      <div id = "outerSection " className={"min-vh-100 g-0 "+(localDisplaySettings.isMobile?" ":(includeMargins?" container":""))} >
      
 
         <div 
           id = "innerSection"
-          className={"col justify-items-baseline min-vh-100 pb-4 pt-4"} 
+          className={"col justify-items-baseline min-vh-100 "} 
           style={{backgroundColor:backgroundColor,boxShadow:(webStyle.componentStyles.background.applyBackground?borderAndShadow:"none")}}
         >
           {/* <span>{JSON.stringify(selectedComponents)}</span> */}
@@ -275,3 +278,4 @@ export default function DynamicPage(props) {
 function OverlaySpot(props){
   return(<div className="text-center"></div>)
 } 
+

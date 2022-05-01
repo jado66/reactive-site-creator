@@ -57,7 +57,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 function BackgroundMenu(props) {
   return /*#__PURE__*/(0, _react.createElement)(_reactMenu.SubMenu, _objectSpread(_objectSpread({}, props), {}, {
-    label: "Website Background",
+    label: "Page Styles",
     key: "backgroundMenu",
     position: "auto",
     align: "end",
@@ -79,34 +79,6 @@ function BackgroundMenu(props) {
         children: "Website Content"
       })
     })
-  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.FocusableItemTT, {
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: "form-check",
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-        className: "form-check-input me-3",
-        type: "checkbox",
-        checked: props.webStyle.componentStyles.background.applyBackground,
-        onClick: function onClick() {
-          return props.handleStyleToggle("background", "applyBackground");
-        }
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-        className: "form-check-label",
-        for: "flexCheckDefault",
-        children: "Apply Shadow to Background"
-      })]
-    })
-  }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
-    ttText: "This is the color of the website margins",
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-      className: "me-2",
-      children: "Margin Color: "
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
-      value: props.webStyle.componentStyles.background.marginColor,
-      onChange: function onChange(selectedOption) {
-        props.handleSelectChange("background", "marginColor", selectedOption);
-      },
-      colors: props.webStyle.colors
-    })]
   }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
     ttText: "This is the color of the inner website section",
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
@@ -119,6 +91,67 @@ function BackgroundMenu(props) {
       },
       colors: props.webStyle.colors
     })]
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.FocusableItem, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "me-2 form-check",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "form-check-input me-3",
+        type: "checkbox",
+        checked: props.webStyle.componentStyles.all.includeMargins,
+        onClick: function onClick() {
+          return props.handleStyleToggle("all", "includeMargins");
+        }
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+        className: "form-check-label",
+        children: "Include Page Margins"
+      })]
+    })
+  }), props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_jsxRuntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.FocusableItemTT, {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: "form-check",
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+          className: "form-check-input me-3",
+          type: "checkbox",
+          checked: props.webStyle.componentStyles.background.applyBackground,
+          onClick: function onClick() {
+            return props.handleStyleToggle("background", "applyBackground");
+          }
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+          className: "form-check-label",
+          for: "flexCheckDefault",
+          children: "Apply Shadow to Background"
+        })]
+      })
+    }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_MenuTooltipItems.FocusableItemTT, {
+      ttText: "This is the color of the website margins",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+        className: "me-2",
+        children: "Margin Color: "
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+        value: props.webStyle.componentStyles.background.marginColor,
+        onChange: function onChange(selectedOption) {
+          props.handleSelectChange("background", "marginColor", selectedOption);
+        },
+        colors: props.webStyle.colors
+      })]
+    })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsx)(_MenuTooltipItems.FocusableItemTT, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "form-check",
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+        className: "form-check-input me-3",
+        type: "checkbox",
+        checked: props.webStyle.componentStyles.all.includeComponentMargins,
+        onClick: function onClick() {
+          return props.handleStyleToggle("all", "includeComponentMargins");
+        }
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+        className: "form-check-label",
+        for: "flexCheckDefault",
+        children: "Add margins to components"
+      })]
+    })
   }));
 }
 
@@ -359,6 +392,17 @@ function FooterMenu(props) {
         props.handleSelectChange("footer", "textColor", selectedOption);
       }
     })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.footer.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("footer", "marginColor", selectedOption);
+      }
+    })]
   }));
 } // TODO
 
@@ -416,7 +460,7 @@ function MosaicMenu(props) {
   }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
     children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
       className: "me-3",
-      children: "Mosaic Arrangement: "
+      children: "Subcomponent Arrangement: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_OptionSelect.default, {
       onChange: function onChange(selectedOption) {
         props.handleSelectChange("mosaic", "arrangement", selectedOption);
@@ -433,6 +477,17 @@ function MosaicMenu(props) {
         value: 'LL,LP-RP,RL',
         label: "Row 1:      Link   -   Picture\nRow 2:      Picture - Link"
       }]
+    })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.mosaic.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("mosaic", "marginColor", selectedOption);
+      }
     })]
   }));
 }
@@ -470,6 +525,17 @@ function HeaderMenu(props) {
       value: props.webStyle.componentStyles.header.textColor,
       onChange: function onChange(selectedOption) {
         props.handleSelectChange("header", "textColor", selectedOption);
+      }
+    })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.header.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("header", "marginColor", selectedOption);
       }
     })]
   }));
@@ -559,7 +625,7 @@ function NavigationBarMenu(props) {
       children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
         className: "form-check-input me-3",
         type: "checkbox",
-        checked: props.webStyle.componentStyles.navigationBar.includeHeader,
+        checked: props.webStyle.componentStyles.all.includeHeader,
         onClick: function onClick() {
           return props.handleStyleToggle("navigationBar", "includeHeader");
         }
@@ -667,6 +733,17 @@ function NavigationBarMenu(props) {
         }), " button to hide the ribbon) "]
       })]
     })
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.navigationBar.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("navigationBar", "marginColor", selectedOption);
+      }
+    })]
   }));
 }
 
@@ -791,6 +868,17 @@ function TextEditorMenu(props) {
         props.handleSelectChange("textEditor", "textColor", selectedOption);
       }
     })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.textEditor.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("textEditor", "marginColor", selectedOption);
+      }
+    })]
   }));
 }
 
@@ -876,6 +964,17 @@ function StyledLinkMenu(props) {
         label: "Round Corners 6"
       }]
     })]
+  }), !props.webStyle.componentStyles.all.includeMargins && /*#__PURE__*/(0, _jsxRuntime.jsxs)(_reactMenu.FocusableItem, {
+    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+      className: "me-3",
+      children: "Margin Color: "
+    }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      colors: props.webStyle.colors,
+      value: props.webStyle.componentStyles.styledLink.marginColor,
+      onChange: function onChange(selectedOption) {
+        props.handleSelectChange("styledLink", "marginColor", selectedOption);
+      }
+    })]
   }));
 }
 
@@ -928,13 +1027,13 @@ function PictureFrameMenu(props) {
         value: "",
         label: "None"
       }, {
-        value: 'p-1 border',
+        value: 'p-1 ',
         label: "Small Padding"
       }, {
-        value: 'p-2 border',
+        value: 'p-2 ',
         label: "Medium Small Padding"
       }, {
-        value: 'p-3 border',
+        value: 'p-3 ',
         label: "Medium Padding"
       }]
     })]

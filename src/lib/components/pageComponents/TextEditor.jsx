@@ -5,6 +5,7 @@ import QuillComponent from "../subComponents/QuillComponent"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import ComponentMargin from "../subComponents/ComponentMargin";
 
 export default function TextEditor(props) {
 
@@ -66,9 +67,10 @@ export default function TextEditor(props) {
 
 
   return(
+    <ComponentMargin componentName = {"textEditor"} webStyle = {webStyle}>
     <div 
       style={{...props.style}}
-      className="px-5 text-center relative-div " data-no-dnd="true"
+      className="flex-grow-1 text-center relative-div " data-no-dnd="true"
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -139,5 +141,7 @@ export default function TextEditor(props) {
       }
       
     </div>
+    </ComponentMargin>
+    
     )
 };

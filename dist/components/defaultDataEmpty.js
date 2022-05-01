@@ -58,6 +58,8 @@ var defaultWebStyles = {
   },
   componentStyles: {
     all: {
+      includeMargins: true,
+      includeComponentMargins: false,
       shadowStyle: " ",
       borderSize: 0,
       borderShape: "",
@@ -72,12 +74,16 @@ var defaultWebStyles = {
     },
     header: {
       size: "h2",
-      textColor: "darkShade"
+      textColor: "darkShade",
+      backgroundColor: "lightShade",
+      marginColor: ""
     },
     mosaic: {
-      arrangement: "LP,RL-LL,RP"
+      arrangement: "LP,RL-LL,RP",
+      marginColor: ""
     },
     navigationBar: {
+      marginColor: "",
       includeHeader: false,
       topBarMargin: false,
       isSticky: false,
@@ -93,12 +99,14 @@ var defaultWebStyles = {
       linkColor: "darkAccent"
     },
     subscriptionCard: {
+      marginColor: "",
       headerTextColor: "lightShade",
       headerBackgroundColor: "darkAccent",
       bodyTextColor: "darkShade",
       bodyBackgroundColor: "lightShade"
     },
     subscriberBox: {
+      marginColor: "",
       headerTextColor: "lightShade",
       backgroundColor: "darkAccent"
     },
@@ -116,6 +124,7 @@ var defaultWebStyles = {
       textColor: "lightShade"
     },
     footer: {
+      marginColor: "",
       textColor: "darkShade"
     },
     textEditor: {

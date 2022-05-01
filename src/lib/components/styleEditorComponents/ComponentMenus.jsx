@@ -29,7 +29,7 @@ applyStatics(SubMenu)(PhotoGalleryMenu);
 
 export function BackgroundMenu(props){
   return (
-  <SubMenu {...props} label="Website Background" key={"backgroundMenu"} position={"auto"} align = {"end"}  menuoverflow={"auto"} menuClassName={"border border-dark"} >
+  <SubMenu {...props} label="Page Styles" key={"backgroundMenu"} position={"auto"} align = {"end"}  menuoverflow={"auto"} menuClassName={"border border-dark"} >
     <MenuHeader>Background Options</MenuHeader>
       <FocusableItem
         className={"focusItem1"}
@@ -49,35 +49,65 @@ export function BackgroundMenu(props){
           </div>
         </MockMenuComponent>
       </FocusableItem>
-    
-    <FocusableItemTT >
-      <div className="form-check">
-        <input className="form-check-input me-3" type="checkbox" 
-          checked={props.webStyle.componentStyles.background.applyBackground} 
-          onClick={()=>props.handleStyleToggle("background","applyBackground")}
+      <FocusableItemTT ttText = {"This is the color of the inner website section"}>
+        <span className="me-2">Background Color: </span> 
+        {/* <select value ={webStyle.componentStyles.all.shadowColor} onChange = {(evt)=>{handleComponentStyleChange("all","shadowColor",evt.target.value)}}> */}
+        <ColorSelect 
+          value ={props.webStyle.componentStyles.background.backgroundColor} 
+          onChange = {(selectedOption)=>{props.handleSelectChange("background","backgroundColor",selectedOption)}}  
+          colors = {props.webStyle.colors} 
         />
-        <label className="form-check-label" for="flexCheckDefault">
-          Apply Shadow to Background
-        </label>
-      </div>
-    </FocusableItemTT>
-    <FocusableItemTT ttText = {"This is the color of the website margins"}>
-      <span className="me-2">Margin Color: </span> 
-      <ColorSelect 
-        value ={props.webStyle.componentStyles.background.marginColor} 
-        onChange = {(selectedOption)=>{props.handleSelectChange("background","marginColor",selectedOption)}}  
-        colors = {props.webStyle.colors} 
-      />
-    </FocusableItemTT>
-    <FocusableItemTT ttText = {"This is the color of the inner website section"}>
-      <span className="me-2">Background Color: </span> 
-      {/* <select value ={webStyle.componentStyles.all.shadowColor} onChange = {(evt)=>{handleComponentStyleChange("all","shadowColor",evt.target.value)}}> */}
-      <ColorSelect 
-        value ={props.webStyle.componentStyles.background.backgroundColor} 
-        onChange = {(selectedOption)=>{props.handleSelectChange("background","backgroundColor",selectedOption)}}  
-        colors = {props.webStyle.colors} 
-      />
-    </FocusableItemTT>
+      </FocusableItemTT>
+      <FocusableItem>
+        <div className="me-2 form-check">
+          <input className="form-check-input me-3" type="checkbox" 
+              checked={props.webStyle.componentStyles.all.includeMargins} 
+              onClick={()=>props.handleStyleToggle("all","includeMargins")}
+          />
+          <label className="form-check-label">
+            Include Page Margins
+          </label>
+        </div>
+      </FocusableItem>
+      {props.webStyle.componentStyles.all.includeMargins &&
+        <>
+          <FocusableItemTT >
+            <div className="form-check">
+              <input className="form-check-input me-3" type="checkbox" 
+                checked={props.webStyle.componentStyles.background.applyBackground} 
+                onClick={()=>props.handleStyleToggle("background","applyBackground")}
+              />
+              <label className="form-check-label" for="flexCheckDefault">
+                Apply Shadow to Background
+              </label>
+            </div>
+          </FocusableItemTT>
+          <FocusableItemTT ttText = {"This is the color of the website margins"}>
+            <span className="me-2">Margin Color: </span> 
+            <ColorSelect 
+              value ={props.webStyle.componentStyles.background.marginColor} 
+              onChange = {(selectedOption)=>{props.handleSelectChange("background","marginColor",selectedOption)}}  
+              colors = {props.webStyle.colors} 
+            />
+          </FocusableItemTT>
+        </>
+      }
+      {!props.webStyle.componentStyles.all.includeMargins &&
+        
+        <FocusableItemTT >
+          <div className="form-check">
+            <input className="form-check-input me-3" type="checkbox" 
+              checked={props.webStyle.componentStyles.all.includeComponentMargins} 
+              onClick={()=>props.handleStyleToggle("all","includeComponentMargins")}
+            />
+            <label className="form-check-label" for="flexCheckDefault">
+              Add margins to components
+            </label>
+          </div>
+        </FocusableItemTT>
+      }
+    
+    
     
   </SubMenu>
   )
@@ -289,6 +319,16 @@ export function FooterMenu(props) {
           onChange = {(selectedOption)=>{props.handleSelectChange("footer","textColor",selectedOption)}}  
         />
       </FocusableItem>
+      { !props.webStyle.componentStyles.all.includeMargins && 
+        <FocusableItem>
+          <span className="me-3">Margin Color: </span> 
+          <ColorSelect 
+            colors = {props.webStyle.colors} 
+            value = {props.webStyle.componentStyles.footer.marginColor}
+            onChange = {(selectedOption)=>{props.handleSelectChange("footer","marginColor",selectedOption)}}  
+          />
+        </FocusableItem>
+      }
     </SubMenu>
   );
 }
@@ -335,7 +375,7 @@ export function MosaicMenu(props) {
         </MockMenuComponent>
       </FocusableItem>
       <FocusableItem>
-        <span className="me-3">Mosaic Arrangement: </span> 
+        <span className="me-3">Subcomponent Arrangement: </span> 
         <OptionSelect
           onChange = {(selectedOption)=>{props.handleSelectChange("mosaic","arrangement",selectedOption)}}
           value = {props.webStyle.componentStyles.mosaic.arrangement}
@@ -349,7 +389,19 @@ export function MosaicMenu(props) {
               ]
             }          
         />
-      </FocusableItem> 
+         
+      </FocusableItem>
+      { !props.webStyle.componentStyles.all.includeMargins && 
+        <FocusableItem>
+          <span className="me-3">Margin Color: </span> 
+          <ColorSelect 
+            colors = {props.webStyle.colors} 
+            value = {props.webStyle.componentStyles.mosaic.marginColor}
+            onChange = {(selectedOption)=>{props.handleSelectChange("mosaic","marginColor",selectedOption)}}  
+          />
+        </FocusableItem>
+      }
+      
     </SubMenu>
   );
 }
@@ -385,6 +437,17 @@ export function HeaderMenu(props) {
             onChange = {(selectedOption)=>{props.handleSelectChange("header","textColor",selectedOption)}}  
           />
         </FocusableItem>
+        { !props.webStyle.componentStyles.all.includeMargins && 
+          <FocusableItem>
+            <span className="me-3">Margin Color: </span> 
+            <ColorSelect 
+              colors = {props.webStyle.colors} 
+              value = {props.webStyle.componentStyles.header.marginColor}
+              onChange = {(selectedOption)=>{props.handleSelectChange("header","marginColor",selectedOption)}}  
+            />
+          </FocusableItem>
+        }
+      
       </SubMenu>
   );
 }
@@ -459,7 +522,7 @@ export function NavigationBarMenu(props) {
       <FocusableItem>
         <div className="me-2 form-check">
           <input className="form-check-input me-3" type="checkbox" 
-            checked={props.webStyle.componentStyles.navigationBar.includeHeader} 
+            checked={props.webStyle.componentStyles.all.includeHeader} 
             onClick={()=>props.handleStyleToggle("navigationBar","includeHeader")}
           />
           <label className="form-check-label">
@@ -544,6 +607,16 @@ export function NavigationBarMenu(props) {
 
         </div>
       </FocusableItem>}
+      { !props.webStyle.componentStyles.all.includeMargins && 
+        <FocusableItem>
+          <span className="me-3">Margin Color: </span> 
+          <ColorSelect 
+            colors = {props.webStyle.colors} 
+            value = {props.webStyle.componentStyles.navigationBar.marginColor}
+            onChange = {(selectedOption)=>{props.handleSelectChange("navigationBar","marginColor",selectedOption)}}  
+          />
+        </FocusableItem>
+      }
     </SubMenu>
   );
 }
@@ -605,6 +678,7 @@ export function PictureSlideShowMenu(props) {
     <SubMenu {...props} label="Picture Slide Show" key={"pictureSlideShowStyleMenu"} position={"auto"} align = {"end"}  menuoverflow={"auto"} menuClassName={"border border-dark"} >
       <MenuHeader>Picture Slide Show Box Styles</MenuHeader>
       <MenuDivider />
+      
     </SubMenu>
   );
 }
@@ -648,6 +722,16 @@ export function TextEditorMenu(props) {
           onChange = {(selectedOption)=>{props.handleSelectChange("textEditor","textColor",selectedOption)}}  
         />
       </FocusableItem>
+      { !props.webStyle.componentStyles.all.includeMargins && 
+          <FocusableItem>
+            <span className="me-3">Margin Color: </span> 
+            <ColorSelect 
+              colors = {props.webStyle.colors} 
+              value = {props.webStyle.componentStyles.textEditor.marginColor}
+              onChange = {(selectedOption)=>{props.handleSelectChange("textEditor","marginColor",selectedOption)}}  
+            />
+          </FocusableItem>
+        }
     </SubMenu>
   );
 }
@@ -708,7 +792,16 @@ export function StyledLinkMenu(props) {
           ]}
         />
       </FocusableItem>
-
+      { !props.webStyle.componentStyles.all.includeMargins && 
+          <FocusableItem>
+            <span className="me-3">Margin Color: </span> 
+            <ColorSelect 
+              colors = {props.webStyle.colors} 
+              value = {props.webStyle.componentStyles.styledLink.marginColor}
+              onChange = {(selectedOption)=>{props.handleSelectChange("styledLink","marginColor",selectedOption)}}  
+            />
+          </FocusableItem>
+        }
     </SubMenu>
   );
 }
@@ -752,9 +845,9 @@ export function PictureFrameMenu(props) {
             options = 
               {[
                 {value:"", label:"None"},
-                {value:'p-1 border', label:"Small Padding"},
-                {value:'p-2 border', label:"Medium Small Padding"},
-                {value:'p-3 border', label:"Medium Padding"}
+                {value:'p-1 ', label:"Small Padding"},
+                {value:'p-2 ', label:"Medium Small Padding"},
+                {value:'p-3 ', label:"Medium Padding"}
                 
               ]}       
           />

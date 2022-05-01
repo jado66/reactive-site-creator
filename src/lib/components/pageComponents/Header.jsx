@@ -5,6 +5,7 @@ import { WebContext } from "../Website";
 
 import { faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ComponentMargin from '../subComponents/ComponentMargin';
 
 export default function Header(props){
   const contentEditable = React.createRef();
@@ -60,10 +61,10 @@ export default function Header(props){
   
 
   return(
-
+    <ComponentMargin componentName = {"header"} webStyle = {webStyle}>
     <div 
       style={{...props.style,}}
-      className="px-5 text-center relative-div " data-no-dnd="true"
+      className=" flex-grow-1 text-center  relative-div " data-no-dnd="true"
       onMouseEnter={() => {
         showButtons(true);
       }}
@@ -114,5 +115,7 @@ export default function Header(props){
         <FontAwesomeIcon icon={faCog} style={{color:webStyle.colors.darkShade}} />
       </button>}
     </div>
+    </ComponentMargin>
+    
     )
 };

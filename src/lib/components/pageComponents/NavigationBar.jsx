@@ -37,6 +37,7 @@ import {
 } from "react-router-dom";
 import  useComponentStorage  from "../helpers/useStorage";
 import QuillComponent from "../subComponents/QuillComponent";
+import ComponentMargin from "../subComponents/ComponentMargin";
 
 
 // TODO dropdowns need to open only their dropdowns
@@ -237,6 +238,7 @@ export default function NavigationBar(props) {
     );
 
   return (
+    <ComponentMargin componentName = {"navigationBar"} webStyle = {webStyle}>
     <div
       style={{...props.style}}
       className={(props.index === 0 && ! webStyle.componentStyles.navigationBar.topBarMargin ?"navbarTop ":" ")+(webStyle.componentStyles.navigationBar.navbarStyle)} 
@@ -457,7 +459,8 @@ export default function NavigationBar(props) {
           </nav>
         </div>
         
-      </div>
+    </div>
+    </ComponentMargin>
   );
 
   function handleContentCheckbox(key){

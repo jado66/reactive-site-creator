@@ -35,6 +35,8 @@ var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
 var _QuillComponent = _interopRequireDefault(require("../subComponents/QuillComponent"));
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -297,206 +299,266 @@ function NavigationBar(props) {
       }, "Nav - ".concat(componentMapping[location]))
     });
   });
-  return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-    style: _objectSpread({}, props.style),
-    className: (props.index === 0 && !webStyle.componentStyles.navigationBar.topBarMargin ? "navbarTop " : " ") + webStyle.componentStyles.navigationBar.navbarStyle,
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-      className: " ",
-      style: {
-        backgroundColor: webStyle.colors[componentStyles.backgroundColor],
-        color: webStyle.colors[componentStyles.textColor],
-        boxShadow: borderAndShadow
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    componentName: "navigationBar",
+    webStyle: webStyle,
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      style: _objectSpread({}, props.style),
+      className: (props.index === 0 && !webStyle.componentStyles.navigationBar.topBarMargin ? "navbarTop " : " ") + webStyle.componentStyles.navigationBar.navbarStyle,
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
       },
-      children: [webStyle.componentStyles.navigationBar.includeHeader && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        className: "container mx-auto pt-3 relative-div",
-        "data-no-dnd": "true",
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
-          adminSettings: adminSettings,
-          variables: {
-            pageName: props.pageName,
-            siteName: webStyle.siteName
-          },
-          color: webStyle.colors[componentStyles.textColor],
-          webStyle: webStyle,
-          className: "navbar-header ",
-          html: content.html,
-          isEditMode: isEditHeader,
-          setHtml: function setHtml(value) {
-            saveHtml(value);
-          },
-          saveEdits: function saveEdits() {
-            setIsEditHeader(!isEditHeader);
-          }
-        }), isShowButtons && !isEditHeader && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-          className: "relative",
-          "data-no-dnd": "true",
-          children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-            className: "btn ",
-            onClick: function onClick() {
-              return setIsEditHeader(true);
-            },
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-              style: {
-                color: webStyle.colors[componentStyles.textColor]
-              },
-              icon: _freeSolidSvgIcons.faPencilAlt
-            })
-          })
-        })]
-      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("nav", {
-        className: "navbar navbar-expand-lg px-4 container mx-auto py-0",
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
+      },
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+        className: " ",
         style: {
-          position: "sticky",
-          top: "2em",
-          alignSelf: "flex-start"
+          backgroundColor: webStyle.colors[componentStyles.backgroundColor],
+          color: webStyle.colors[componentStyles.textColor],
+          boxShadow: borderAndShadow
         },
-        children: !isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-          className: "container-fluid g-0 " + (localDisplaySettings.isMobile ? " ms-3" : ""),
-          children: [isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            "data-no-dnd": "true",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-              // style ={{,color:props.webStyle.colors.lightShade}}
-              style: {
-                color: webStyle.colors[componentStyles.textColor],
-                width: "".concat(content.homeLinkText.length + 2, "ch")
-              },
-              className: "form-control-plaintext navbar-brand me-0",
-              value: content.homeLinkText,
-              onChange: function onChange(evt) {
-                handleHomeLinkText(evt.target.value);
-              }
-            })
-          }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-            "data-no-dnd": "true",
-            className: "navbar-brand",
-            to: "/",
-            style: {
-              color: webStyle.colors[componentStyles.textColor]
+        children: [webStyle.componentStyles.navigationBar.includeHeader && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+          className: "container mx-auto pt-3 relative-div",
+          "data-no-dnd": "true",
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_QuillComponent.default, {
+            adminSettings: adminSettings,
+            variables: {
+              pageName: props.pageName,
+              siteName: webStyle.siteName
             },
-            children: content.homeLinkText
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+            color: webStyle.colors[componentStyles.textColor],
+            webStyle: webStyle,
+            className: "navbar-header ",
+            html: content.html,
+            isEditMode: isEditHeader,
+            setHtml: function setHtml(value) {
+              saveHtml(value);
+            },
+            saveEdits: function saveEdits() {
+              setIsEditHeader(!isEditHeader);
+            }
+          }), isShowButtons && !isEditHeader && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+            className: "relative",
             "data-no-dnd": "true",
-            className: "navbar-toggler btn",
-            type: "button",
-            "data-bs-toggle": "collapse",
-            "data-bs-target": "#navbarSupportedContent",
-            "aria-controls": "navbarSupportedContent",
-            "aria-expanded": "false",
-            "aria-label": "Toggle navigation",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+              className: "btn ",
+              onClick: function onClick() {
+                return setIsEditHeader(true);
+              },
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                style: {
+                  color: webStyle.colors[componentStyles.textColor]
+                },
+                icon: _freeSolidSvgIcons.faPencilAlt
+              })
+            })
+          })]
+        }), /*#__PURE__*/(0, _jsxRuntime.jsx)("nav", {
+          className: "navbar navbar-expand-lg px-4 container mx-auto py-0",
+          style: {
+            position: "sticky",
+            top: "2em",
+            alignSelf: "flex-start"
+          },
+          children: !isSettingsMode ? /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+            className: "container-fluid g-0 " + (localDisplaySettings.isMobile ? " ms-3" : ""),
+            children: [isEdit ? /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+              "data-no-dnd": "true",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                // style ={{,color:props.webStyle.colors.lightShade}}
+                style: {
+                  color: webStyle.colors[componentStyles.textColor],
+                  width: "".concat(content.homeLinkText.length + 2, "ch")
+                },
+                className: "form-control-plaintext navbar-brand me-0",
+                value: content.homeLinkText,
+                onChange: function onChange(evt) {
+                  handleHomeLinkText(evt.target.value);
+                }
+              })
+            }) : /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+              "data-no-dnd": "true",
+              className: "navbar-brand",
+              to: "/",
               style: {
                 color: webStyle.colors[componentStyles.textColor]
               },
-              icon: _freeSolidSvgIcons.faBars
-            })
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-            className: "collapse navbar-collapse",
-            id: "navbarSupportedContent",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
-              className: "navbar-nav flex-grow-1 mb-2 mb-lg-0 " + (localDisplaySettings.isMobile ? " " : "align-items-center ") + webStyle.componentStyles.navigationBar.justifyButtons,
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
-                sensors: sensors,
-                modifiers: [localDisplaySettings.isMobile ? _modifiers.restrictToVerticalAxis : _modifiers.restrictToHorizontalAxis],
-                collisionDetection: _core.closestCenter,
-                onDragStart: function onDragStart() {
-                  showDeleteSpot(true);
-                },
-                onDragEnd: function onDragEnd(evt) {
-                  handleDragEnd(evt);
-                  showDeleteSpot(false);
-                },
-                children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
-                  items: content.navData,
-                  strategy: localDisplaySettings.isMobile ? _sortable.verticalListSortingStrategy : _sortable.horizontalListSortingStrategy,
-                  children: [navItems, isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-                    className: "py-2",
-                    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
-                      id: "deleteDrop"
-                    })
-                  })]
-                })
-              })
-            }), isShowButtons && adminSettings.isEditMode && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+              children: content.homeLinkText
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
               "data-no-dnd": "true",
-              className: "btn-group  ",
-              role: "group",
-              "aria-label": "Basic example" // onClick={()=>{alert("group")}}
-              ,
-              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                className: "btn border-end mx-2",
-                type: "button",
-                onClick: function onClick() {
-                  addLink();
+              className: "navbar-toggler btn",
+              type: "button",
+              "data-bs-toggle": "collapse",
+              "data-bs-target": "#navbarSupportedContent",
+              "aria-controls": "navbarSupportedContent",
+              "aria-expanded": "false",
+              "aria-label": "Toggle navigation",
+              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                style: {
+                  color: webStyle.colors[componentStyles.textColor]
                 },
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                  icon: _freeSolidSvgIcons.faPlusSquare,
-                  style: {
-                    color: webStyle.colors[componentStyles.textColor]
-                  }
+                icon: _freeSolidSvgIcons.faBars
+              })
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+              className: "collapse navbar-collapse",
+              id: "navbarSupportedContent",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("ul", {
+                className: "navbar-nav flex-grow-1 mb-2 mb-lg-0 " + (localDisplaySettings.isMobile ? " " : "align-items-center ") + webStyle.componentStyles.navigationBar.justifyButtons,
+                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_core.DndContext, {
+                  sensors: sensors,
+                  modifiers: [localDisplaySettings.isMobile ? _modifiers.restrictToVerticalAxis : _modifiers.restrictToHorizontalAxis],
+                  collisionDetection: _core.closestCenter,
+                  onDragStart: function onDragStart() {
+                    showDeleteSpot(true);
+                  },
+                  onDragEnd: function onDragEnd(evt) {
+                    handleDragEnd(evt);
+                    showDeleteSpot(false);
+                  },
+                  children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(_sortable.SortableContext, {
+                    items: content.navData,
+                    strategy: localDisplaySettings.isMobile ? _sortable.verticalListSortingStrategy : _sortable.horizontalListSortingStrategy,
+                    children: [navItems, isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+                      className: "py-2",
+                      children: /*#__PURE__*/(0, _jsxRuntime.jsx)(DeleteDrop, {
+                        id: "deleteDrop"
+                      })
+                    })]
+                  })
                 })
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                className: "btn mx-1 px-0",
-                type: "button",
-                onClick: function onClick() {
-                  addLink(true);
-                },
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                  icon: _freeSolidSvgIcons.faCaretSquareDown,
-                  style: {
-                    color: webStyle.colors[componentStyles.textColor]
-                  }
-                })
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                className: "btn border-start mx-2",
-                type: "button",
-                onClick: function onClick() {
-                  setIsEdit(!isEdit);
-                },
-                children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                  icon: isEdit ? _freeSolidSvgIcons.faCheck : _freeSolidSvgIcons.faPencilAlt,
-                  style: {
-                    color: webStyle.colors[componentStyles.textColor]
-                  }
-                })
-              })]
-            }), content.includeSocials && /*#__PURE__*/(0, _jsxRuntime.jsxs)("ul", {
-              className: "navbar-nav sm-icons justify-content-start me-0 ",
-              style: {
-                float: 0
-              },
-              children: [socialLinks, Object.keys(cart).length != 0 && /*#__PURE__*/(0, _jsxRuntime.jsxs)("li", {
-                className: "position-relative",
-                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
-                  className: "col ms-3",
-                  to: "/checkout",
-                  style: {
-                    color: webStyle.colors[componentStyles.textColor]
+              }), isShowButtons && adminSettings.isEditMode && !isShowDeleteSpot && /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+                "data-no-dnd": "true",
+                className: "btn-group  ",
+                role: "group",
+                "aria-label": "Basic example" // onClick={()=>{alert("group")}}
+                ,
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+                  className: "btn border-end mx-2",
+                  type: "button",
+                  onClick: function onClick() {
+                    addLink();
                   },
                   children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                    className: "m-icons",
-                    icon: _freeSolidSvgIcons.faShoppingCart
+                    icon: _freeSolidSvgIcons.faPlusSquare,
+                    style: {
+                      color: webStyle.colors[componentStyles.textColor]
+                    }
                   })
-                }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
-                  className: "position-absolute top-0 start-100 translate-middle badge rounded-pill ",
-                  children: [Object.keys(cart).length, /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
-                    className: "visually-hidden",
-                    children: "unread messages"
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+                  className: "btn mx-1 px-0",
+                  type: "button",
+                  onClick: function onClick() {
+                    addLink(true);
+                  },
+                  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                    icon: _freeSolidSvgIcons.faCaretSquareDown,
+                    style: {
+                      color: webStyle.colors[componentStyles.textColor]
+                    }
+                  })
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+                  className: "btn border-start mx-2",
+                  type: "button",
+                  onClick: function onClick() {
+                    setIsEdit(!isEdit);
+                  },
+                  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                    icon: isEdit ? _freeSolidSvgIcons.faCheck : _freeSolidSvgIcons.faPencilAlt,
+                    style: {
+                      color: webStyle.colors[componentStyles.textColor]
+                    }
+                  })
+                })]
+              }), content.includeSocials && /*#__PURE__*/(0, _jsxRuntime.jsxs)("ul", {
+                className: "navbar-nav sm-icons justify-content-start me-0 ",
+                style: {
+                  float: 0
+                },
+                children: [socialLinks, Object.keys(cart).length != 0 && /*#__PURE__*/(0, _jsxRuntime.jsxs)("li", {
+                  className: "position-relative",
+                  children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_reactRouterDom.Link, {
+                    className: "col ms-3",
+                    to: "/checkout",
+                    style: {
+                      color: webStyle.colors[componentStyles.textColor]
+                    },
+                    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                      className: "m-icons",
+                      icon: _freeSolidSvgIcons.faShoppingCart
+                    })
+                  }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("span", {
+                    className: "position-absolute top-0 start-100 translate-middle badge rounded-pill ",
+                    children: [Object.keys(cart).length, /*#__PURE__*/(0, _jsxRuntime.jsx)("span", {
+                      className: "visually-hidden",
+                      children: "unread messages"
+                    })]
                   })]
                 })]
+              }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+                className: "relative-r h-100 d-flex",
+                children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+                  className: "btn",
+                  style: {
+                    marginRight: "-2.5em",
+                    top: ".2em"
+                  },
+                  "data-no-dnd": "true",
+                  onClick: function onClick() {
+                    setIsSettingsMode(!isSettingsMode);
+                  },
+                  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
+                    icon: _freeSolidSvgIcons.faCog,
+                    style: {
+                      color: webStyle.colors[componentStyles.textColor]
+                    }
+                  })
+                })
               })]
-            }), isShowButtons && adminSettings.isEditMode && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-              className: "relative-r h-100 d-flex",
+            })]
+          }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+            className: "text-center w-100 py-3",
+            "data-no-dnd": "true",
+            children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
+              children: "Navigation Bar Settings"
+            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
+              className: "text-start",
+              children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+                class: "form-check mb-3",
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                  class: "form-check-input",
+                  type: "checkbox",
+                  checked: content.isUnique,
+                  onClick: toggleUnique,
+                  id: "flexCheckDefault"
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                  class: "form-check-label",
+                  for: "flexCheckDefault",
+                  children: "Is this Navigation Bar unique?"
+                })]
+              }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+                class: "form-check mb-3",
+                children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
+                  class: "form-check-input",
+                  type: "checkbox",
+                  checked: content.includeSocials,
+                  onClick: function onClick() {
+                    return handleContentCheckbox("includeSocials");
+                  },
+                  id: "flexCheckDefault"
+                }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
+                  class: "form-check-label",
+                  for: "flexCheckDefault",
+                  children: "Include social medias?"
+                })]
+              })]
+            }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+              className: "relative-r mt-2",
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-                className: "btn",
+                className: "btn d-flex",
                 style: {
                   marginRight: "-2.5em",
-                  top: ".2em"
+                  top: "0"
                 },
                 "data-no-dnd": "true",
                 onClick: function onClick() {
@@ -510,65 +572,9 @@ function NavigationBar(props) {
                 })
               })
             })]
-          })]
-        }) : /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-          className: "text-center w-100 py-3",
-          "data-no-dnd": "true",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("h3", {
-            children: "Navigation Bar Settings"
-          }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("form", {
-            className: "text-start",
-            children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-              class: "form-check mb-3",
-              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-                class: "form-check-input",
-                type: "checkbox",
-                checked: content.isUnique,
-                onClick: toggleUnique,
-                id: "flexCheckDefault"
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-                class: "form-check-label",
-                for: "flexCheckDefault",
-                children: "Is this Navigation Bar unique?"
-              })]
-            }), /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-              class: "form-check mb-3",
-              children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("input", {
-                class: "form-check-input",
-                type: "checkbox",
-                checked: content.includeSocials,
-                onClick: function onClick() {
-                  return handleContentCheckbox("includeSocials");
-                },
-                id: "flexCheckDefault"
-              }), /*#__PURE__*/(0, _jsxRuntime.jsx)("label", {
-                class: "form-check-label",
-                for: "flexCheckDefault",
-                children: "Include social medias?"
-              })]
-            })]
-          }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-            className: "relative-r mt-2",
-            children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-              className: "btn d-flex",
-              style: {
-                marginRight: "-2.5em",
-                top: "0"
-              },
-              "data-no-dnd": "true",
-              onClick: function onClick() {
-                setIsSettingsMode(!isSettingsMode);
-              },
-              children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactFontawesome.FontAwesomeIcon, {
-                icon: _freeSolidSvgIcons.faCog,
-                style: {
-                  color: webStyle.colors[componentStyles.textColor]
-                }
-              })
-            })
-          })]
-        })
-      })]
+          })
+        })]
+      })
     })
   });
 

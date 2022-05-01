@@ -134,6 +134,8 @@ export const defaultWebStyles = {
   },
   componentStyles :{
     all:{
+      includeMargins: true,
+      includeComponentMargins: false,
       shadowStyle: "C85 0px 16px 38px -12px, C1f 0px 4px 25px 0px, C33 0px 8px 10px -5px ",
       borderSize: 0,
       borderShape: "",
@@ -148,13 +150,18 @@ export const defaultWebStyles = {
       applyBackground: false
     },
     header:{
+      marginColor: "",
       size: "h2",
       textColor: "darkShade",
+      backgroundColor: "lightShade",
+
     },
     mosaic:{
-      arrangement: "LP,RL-LL,RP"
+      marginColor: "",
+      arrangement: "LP,RL-LL,RP",
     },
     navigationBar:{
+      marginColor: "",
       includeHeader: false,
       topBarMargin: false,
       isSticky: false,
@@ -165,38 +172,46 @@ export const defaultWebStyles = {
       navbarStyle: "fullWidth"
     },
     linkBox:{
+      marginColor: "",
       backgroundColor: "lightShade",
       textColor: "darkShade",
       linkColor: "darkAccent"
     },
     subscriptionCard:{
+      marginColor: "",
       headerTextColor: "lightShade",
       headerBackgroundColor: "darkAccent",
       bodyTextColor: "darkShade",
       bodyBackgroundColor: "lightShade"
     },
     subscriberBox:{
+      marginColor: "",
       headerTextColor: "lightShade",
       backgroundColor: "darkAccent",
     },
     pictureFrame:{
+      marginColor: "",
       backgroundColor: "mainBrandColor",
       padding: "",
       randomImageKeyword: "cat",
     },
     photoGallery:{
+      marginColor: "",
       margin: 8,
       fullBorder: false
     },
     styledLink:{
+      marginColor: "",
       borderShape: 'rounded-6',
       backgroundColor: "darkAccent",
       textColor: "lightShade",
     },
     footer:{
+      marginColor: "",
       textColor: "darkShade",
     },
     textEditor:{
+      marginColor: "",
       backgroundColor: "lightShade",
       textColor: "darkShade",
     },

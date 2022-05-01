@@ -19,6 +19,8 @@ var _reactFontawesome = require("@fortawesome/react-fontawesome");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -400,53 +402,57 @@ function PhotoGallery(props) {
       top: top
     }, key);
   }, [borderShape, borderAndShadow, corners, content.photos, webStyle, selectedPictures]);
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    className: "px-5 mt-3 justify-contents-around g-0 relative-div",
-    "data-no-dnd": "true",
-    style: {
-      cursor: "auto"
-    },
-    onMouseEnter: function onMouseEnter() {
-      setShowButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      setShowButtons(false);
-    },
-    children: [selectedPictures.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: 'top-toolbar border-0 text-center ' + (adminSettings.isShowEditor ? " mt-5" : ""),
-      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("button", {
-        onClick: deletePictures,
-        className: "mx-auto mt-3 btn btn-light btn-outline-dark",
-        children: ["Delete Selected Picture", selectedPictures.length > 1 ? "s" : ""]
-      })
-    }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: 'g-0 ' + borderShape,
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    webStyle: webStyle,
+    componentName: "photoGallery",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      className: "flex-grow-1 mt-3 justify-contents-around g-0 relative-div",
+      "data-no-dnd": "true",
       style: {
-        boxShadow: componentStyles.fullBorder ? borderAndShadow : ""
+        cursor: "auto"
       },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-        // className='bg-info'
-        style: {
-          margin: "-".concat(componentStyles.margin, "px")
-        },
-        children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactPhotoGallery.default, {
-          photos: content.photos,
-          renderImage: imageRenderer,
-          margin: componentStyles.margin
+      onMouseEnter: function onMouseEnter() {
+        setShowButtons(true);
+      },
+      onMouseLeave: function onMouseLeave() {
+        setShowButtons(false);
+      },
+      children: [selectedPictures.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: 'top-toolbar border-0 text-center ' + (adminSettings.isShowEditor ? " mt-5" : ""),
+        children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("button", {
+          onClick: deletePictures,
+          className: "mx-auto mt-3 btn btn-light btn-outline-dark",
+          children: ["Delete Selected Picture", selectedPictures.length > 1 ? "s" : ""]
         })
-      })
-    }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "position-absolute d-flex w-100",
-      style: {
-        bottom: 0,
-        right: 0
-      },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
-        onClick: addPicture,
-        className: "mx-auto btn btn-light btn-outline-dark",
-        children: "Add Picture"
-      })
-    })]
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: 'g-0 ' + borderShape,
+        style: {
+          boxShadow: componentStyles.fullBorder ? borderAndShadow : ""
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+          // className='bg-info'
+          style: {
+            margin: "-".concat(componentStyles.margin, "px")
+          },
+          children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactPhotoGallery.default, {
+            photos: content.photos,
+            renderImage: imageRenderer,
+            margin: componentStyles.margin
+          })
+        })
+      }), isShowButtons && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "position-absolute d-flex w-100",
+        style: {
+          bottom: 0,
+          right: 0
+        },
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("button", {
+          onClick: addPicture,
+          className: "mx-auto btn btn-light btn-outline-dark",
+          children: "Add Picture"
+        })
+      })]
+    })
   });
 }
 

@@ -13,6 +13,8 @@ var _useStorage = _interopRequireDefault(require("../helpers/useStorage"));
 
 var _Website = require("../Website");
 
+var _ComponentMargin = _interopRequireDefault(require("../subComponents/ComponentMargin"));
+
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -70,31 +72,35 @@ function MediaFrame(props) {
     });
   };
 
-  return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-    style: _objectSpread({}, props.style),
-    className: "px-5 text-center relative-div ",
-    "data-no-dnd": "true",
-    onMouseEnter: function onMouseEnter() {
-      showButtons(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      showButtons(false);
-    },
-    children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
-      webStyle: webStyle,
-      adminSettings: adminSettings,
-      imageContent: content.mediaContent,
-      setImageContent: function setImageContent(value) {
-        setMediaContent(value);
+  return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ComponentMargin.default, {
+    webStyle: webStyle,
+    componentName: "pictureFrame",
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      style: _objectSpread({}, props.style),
+      className: "flex-grow-1 text-center relative-div ",
+      "data-no-dnd": "true",
+      onMouseEnter: function onMouseEnter() {
+        showButtons(true);
       },
-      id: "".concat(props.id, "-Media"),
-      includeVideos: true,
-      isNested: true
-    }, "".concat(props.id, "-Media")), content.caption !== null && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "mt-4 px-3",
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("p", {
-        children: "Here is a caption"
-      })
-    })]
+      onMouseLeave: function onMouseLeave() {
+        showButtons(false);
+      },
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_PictureFrame.default, {
+        webStyle: webStyle,
+        adminSettings: adminSettings,
+        imageContent: content.mediaContent,
+        setImageContent: function setImageContent(value) {
+          setMediaContent(value);
+        },
+        id: "".concat(props.id, "-Media"),
+        includeVideos: true,
+        isNested: true
+      }, "".concat(props.id, "-Media")), content.caption !== null && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+        className: "mt-4 px-3",
+        children: /*#__PURE__*/(0, _jsxRuntime.jsx)("p", {
+          children: "Here is a caption"
+        })
+      })]
+    })
   });
 }

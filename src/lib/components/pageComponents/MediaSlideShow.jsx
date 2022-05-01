@@ -3,6 +3,7 @@ import PictureFrame from "../subComponents/PictureFrame";
 import useComponentStorage from "../helpers/useStorage";
 import { WebContext } from "../Website";
 import { useContext } from "react"
+import ComponentMargin from "../subComponents/ComponentMargin";
 
 export default function MediaSlideShow(props){
     
@@ -16,7 +17,7 @@ export default function MediaSlideShow(props){
         }
     }
 
-    
+
     const [content, setContent] = useComponentStorage(props.pageID+props.id,initialState);
     const [pictureIndex, setPictureIndex] = useState(0)
     const [isShowButtons, showButtons] = useState(false)
@@ -131,43 +132,46 @@ export default function MediaSlideShow(props){
                     color: webStyle.colors.darkShade, fontWeight: "bold", fontSize: "x-large", borderRadius: "0 3px 3px 0", userSelect: "none", zIndex:1}
             
     return(
+        <ComponentMargin webStyle = {webStyle} componentName = {"pictureFrame"}>
         <div 
-            style={{...props.style}}      
-            className="px-5 text-center relative-div " 
-            data-no-dnd="true"        
-            onMouseEnter={() => {
-            showButtons(true);
-          }}
-          onMouseLeave={() => {
-            showButtons(false);
-          }}
-        >
-            {pictureIndex >0 && isShowButtons &&
-                <a style={{...arrow,left:"-.25em"}} onClick = {()=>{nextSlide(-1)}}>&#10094;</a>}
-            {pictureIndex < content.pictureCount - 1 && isShowButtons &&
-                <a style={{...arrow,right:"-.25em"}} onClick = {()=>{nextSlide(1)}}>&#10095;</a>}
-            {pictureIndex == content.pictureCount - 1 && adminSettings.isEditMode && isShowButtons && 
-                <a style={{...arrow,top:"35%",right:"-.25em"}} onClick = {()=>{addSlide()}}>&#x002B;</a>}
-            {pictureIndex == content.pictureCount - 1 && content.pictureCount > 1 && adminSettings.isEditMode && isShowButtons && 
-                <a style={{...arrow,bottom:"35%",right:"-.25em"}} onClick = {()=>{removeSlide()}}>-</a>}
-            {isShowButtons &&<div  className="numberText" style={numbertext}>{pictureIndex+1} / {content.pictureCount}</div>}
-            {/* <span>{JSON.stringify(content.mediaContentList)}</span> */}
-            {/* <span>/{content.ids[pictureIndex]}</span> */}
-            <PictureFrame  
-                webStyle = {webStyle}  
-                key = {`${props.id}-P${pictureIndex}`} 
-                adminSettings = {adminSettings} 
-                images = {images}
-                imageContent = {content.mediaContentList[pictureIndex]} 
-                setImageContent = {(value)=>{setPictureContent(pictureIndex,value)}} 
-                id = {`${props.id}-P${content.ids[pictureIndex]}`}
-                moveRight = {pictureIndex != content.pictureCount -1 ? ()=>{swapMedia(true, pictureIndex)}:null}
-                moveLeft = {pictureIndex != 0 ? ()=>{swapMedia(false, pictureIndex)}:null}
+                style={{...props.style}}      
+                className="flex-grow-1 text-center relative-div " 
+                data-no-dnd="true"        
+                onMouseEnter={() => {
+                showButtons(true);
+            }}
+            onMouseLeave={() => {
+                showButtons(false);
+            }}
+            >
+                {pictureIndex >0 && isShowButtons &&
+                    <a style={{...arrow,left:"-.25em"}} onClick = {()=>{nextSlide(-1)}}>&#10094;</a>}
+                {pictureIndex < content.pictureCount - 1 && isShowButtons &&
+                    <a style={{...arrow,right:"-.25em"}} onClick = {()=>{nextSlide(1)}}>&#10095;</a>}
+                {pictureIndex == content.pictureCount - 1 && adminSettings.isEditMode && isShowButtons && 
+                    <a style={{...arrow,top:"35%",right:"-.25em"}} onClick = {()=>{addSlide()}}>&#x002B;</a>}
+                {pictureIndex == content.pictureCount - 1 && content.pictureCount > 1 && adminSettings.isEditMode && isShowButtons && 
+                    <a style={{...arrow,bottom:"35%",right:"-.25em"}} onClick = {()=>{removeSlide()}}>-</a>}
+                {isShowButtons &&<div  className="numberText" style={numbertext}>{pictureIndex+1} / {content.pictureCount}</div>}
+                {/* <span>{JSON.stringify(content.mediaContentList)}</span> */}
+                {/* <span>/{content.ids[pictureIndex]}</span> */}
+                <PictureFrame  
+                    webStyle = {webStyle}  
+                    key = {`${props.id}-P${pictureIndex}`} 
+                    adminSettings = {adminSettings} 
+                    images = {images}
+                    imageContent = {content.mediaContentList[pictureIndex]} 
+                    setImageContent = {(value)=>{setPictureContent(pictureIndex,value)}} 
+                    id = {`${props.id}-P${content.ids[pictureIndex]}`}
+                    moveRight = {pictureIndex != content.pictureCount -1 ? ()=>{swapMedia(true, pictureIndex)}:null}
+                    moveLeft = {pictureIndex != 0 ? ()=>{swapMedia(false, pictureIndex)}:null}
 
-                includeVideos 
-                isNested
-            />
-        </div>
+                    includeVideos 
+                    isNested
+                />
+            </div>
+        </ComponentMargin>
+       
         )
     
 }

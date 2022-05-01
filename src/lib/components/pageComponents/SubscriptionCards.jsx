@@ -8,6 +8,7 @@ import useComponentStorage from '../helpers/useStorage';
 import { WebContext } from "../Website";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCog, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import ComponentMargin from '../subComponents/ComponentMargin'
 
 export default function SubscriptionCards (props){
     
@@ -106,7 +107,8 @@ export default function SubscriptionCards (props){
     }
 
     return(
-        <div className={"d-flex text-center px-5"+(localDisplaySettings.isMobile?" flex-column":"")}>
+        <ComponentMargin webStyle = {webStyle} componentName = {"subscriptionCard"}>
+            <div className={"flex-grow-1 text-center "+(localDisplaySettings.isMobile?" flex-column":" d-flex flex-row")}>
             {/* <span>Heights: {JSON.stringify(heights)}</span>
             <span>Max Height: {JSON.stringify(maxHeight)}</span> */}
             <SubscriptionCard 
@@ -146,6 +148,8 @@ export default function SubscriptionCards (props){
                 className ={'g-0 '+(localDisplaySettings.isMobile?"mt-3":"ms-3")}
             />
         </div>
+        </ComponentMargin>
+        
       )
 };
 
