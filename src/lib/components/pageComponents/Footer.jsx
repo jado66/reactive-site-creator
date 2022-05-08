@@ -1,4 +1,4 @@
-import {useContext, useEffect} from 'react'
+import {useContext} from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,31 +11,32 @@ import {
 import {WebContext} from "../Website"
 import ComponentMargin from '../subComponents/ComponentMargin';
 
+const componentMapping = {
+  Email:faEnvelope,
+  Facebook: faFacebookSquare,
+  Twitter: faTwitter,
+  Instagram: faInstagram,
+  Youtube: faYoutube,
+  Tiktok: faTiktok,
+  Discord: faDiscord,
+  Etsy: faEtsy,
+  Github: faGithub,
+  Imdb: faImdb,
+  LinkedinIn: faLinkedinIn,
+  Patreon: faPatreon,
+  Pinterest: faPinterestP,
+  Reddit: faReddit,
+  Shopify: faShopify,
+  Spotify: faSpotify,
+  Soundcloud: faSoundcloud,
+  Snapchat: faSnapchatGhost
+};
 
 export default function SocialLinks(props) {
 
   const {webStyle, socialMedias} = useContext(WebContext)
 
-  const componentMapping = {
-      Email:faEnvelope,
-      Facebook: faFacebookSquare,
-      Twitter: faTwitter,
-      Instagram: faInstagram,
-      Youtube: faYoutube,
-      Tiktok: faTiktok,
-      Discord: faDiscord,
-      Etsy: faEtsy,
-      Github: faGithub,
-      Imdb: faImdb,
-      LinkedinIn: faLinkedinIn,
-      Patreon: faPatreon,
-      Pinterest: faPinterestP,
-      Reddit: faReddit,
-      Shopify: faShopify,
-      Spotify: faSpotify,
-      Soundcloud: faSoundcloud,
-      Snapchat: faSnapchatGhost
-    };
+  
 
     let componentStyles = {}
     try {
@@ -60,8 +61,6 @@ export default function SocialLinks(props) {
       </div>
     );
 
-
-
     return(
       <ComponentMargin  componentName = {"header"} webStyle = {webStyle}>
         <div className='mx-auto w-50' style = {{...props.style}} data-no-dnd = "true">
@@ -71,7 +70,7 @@ export default function SocialLinks(props) {
           </div>
         </div>
       </ComponentMargin>
-            )
-  
+    )
+    
 };
 

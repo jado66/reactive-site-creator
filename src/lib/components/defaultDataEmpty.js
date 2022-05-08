@@ -9,6 +9,7 @@ import Mosaic from "./pageComponents/Mosaic";
 import Footer from "./pageComponents/Footer";
 import SubscriberBox from "./pageComponents/SubscriberBox";
 import PhotoGallery from "./pageComponents/PhotoGallery";
+import FileStorage from "./pageComponents/FileStorage";
 
 export const defaultSiteData = {
   siteName: "New Website",
@@ -64,6 +65,12 @@ export const defaultWebStyles = {
       marginColor:"lightShade",
       backgroundColor: "lightAccent",
       applyBackground: false
+    },
+    fileStorage:{
+      marginColor:"",
+      backgroundColor:"lightAccent",
+      textColor:"darkShade",
+      pictureBackgroundColor:"",
     },
     header:{
       size: "h2",
@@ -182,4 +189,9 @@ export const defaultComponentOptions = {
     component: PhotoGallery,
     isNestedComponent: true
   }, 
+  FileStorage: {
+    componentName: "File Storage",
+    component: FileStorage,
+    isNestedComponent: false
+  }
 }

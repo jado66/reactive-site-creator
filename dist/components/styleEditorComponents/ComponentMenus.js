@@ -129,6 +129,7 @@ function BackgroundMenu(props) {
         className: "me-2",
         children: "Margin Color: "
       }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+        addBlank: true,
         value: props.webStyle.componentStyles.background.marginColor,
         onChange: function onChange(selectedOption) {
           props.handleSelectChange("background", "marginColor", selectedOption);
@@ -397,6 +398,7 @@ function FooterMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.footer.marginColor,
       onChange: function onChange(selectedOption) {
@@ -483,6 +485,7 @@ function MosaicMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.mosaic.marginColor,
       onChange: function onChange(selectedOption) {
@@ -532,6 +535,7 @@ function HeaderMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.header.marginColor,
       onChange: function onChange(selectedOption) {
@@ -738,6 +742,7 @@ function NavigationBarMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.navigationBar.marginColor,
       onChange: function onChange(selectedOption) {
@@ -873,6 +878,7 @@ function TextEditorMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.textEditor.marginColor,
       onChange: function onChange(selectedOption) {
@@ -969,6 +975,7 @@ function StyledLinkMenu(props) {
       className: "me-3",
       children: "Margin Color: "
     }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_ColorSelect.default, {
+      addBlank: true,
       colors: props.webStyle.colors,
       value: props.webStyle.componentStyles.styledLink.marginColor,
       onChange: function onChange(selectedOption) {

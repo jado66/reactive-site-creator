@@ -16,6 +16,17 @@ body,
   margin: 3px;
 } */
 
+.invisible{
+  visibility: hidden;
+}
+
+.no-select{
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
 .jsx-parser > * {
   overflow-y: hidden;
 }

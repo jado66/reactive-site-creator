@@ -6,7 +6,11 @@ import {
     
 } from "react-router-dom";
 import { createBrowserHistory } from "history";
+import { Toast, ToastContainer, ToastYesNo} from "./helpers/Toast"; 
+import ToastTutorial from './Tutorial'
+// import { Toast } from 'bootstrap';
 
+import "bootstrap/dist/js/bootstrap.bundle.min";
 
 // CSS
 import '../css/website.css';
@@ -36,6 +40,8 @@ export default function Website(props) {
   // const history = useHistory();
   const history = createBrowserHistory();
 
+  const [warningToasts, setWarningToasts] = useState([])
+  const [toasts, setToasts] = useState([])
 
   const images = []// require.context('../../../public/images', true);
 
@@ -237,7 +243,7 @@ export default function Website(props) {
   
     deleteSocialMedia: (location, index) => {
       let sureDelete = window.confirm(`Are you sure you would like to your social media link to ${location}`);
-  
+      
       if (sureDelete){
         setSocialMedias([...socialMedias.slice(0,index) ,...socialMedias.slice(index+1)]);
       }
@@ -266,23 +272,21 @@ export default function Website(props) {
 
     saveWebsite:()=>{
       // Check if user really wants to publish edits
-      if(window.confirm("Are you sure you want to publish your edits?")){
-      
-        // If the site-creator is connected to a database
+
+      appMethods.createWarningToast("Are you sure you want to publish your edits?",()=>{
         if (props.saveComponentToDB){
           appMethods.sendMsgPortMsg("save")
           setSiteIsDraft(false)
         }
         else{
-          if(window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")){
-            appMethods.sendMsgPortMsg("save")
-            setSiteIsDraft(false)
-          }
+          appMethods.createWarningToast("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?",()=>{
+            if (props.saveComponentToDB){
+              appMethods.sendMsgPortMsg("save")
+              setSiteIsDraft(false)
+            }
+          },"warning-102")
         }
-      }
-      else{
-        alert("Please sign in as Admin to save")
-      }
+      },"warning-101")
     },
 
     toggleStyleEditor:()=>{
@@ -365,32 +369,65 @@ export default function Website(props) {
       http.send(JSON.stringify(data));
       },
 
-      startOver:()=>{
-        document.documentElement.scrollTop = 0;
-        appMethods.setWebStyle({
-          siteName: defaultSiteData.siteName,
-          colors: defaultWebStyles.colors,
-          componentStyles : defaultWebStyles.componentStyles
-        })
-        appMethods.setPages(defaultSiteData.pages)
-        appMethods.setMasterNavData(defaultSiteData.masterNavBarData)
-        appMethods.setSocialMedias(defaultSiteData.socialMedias)
-        // localStorage.setItem("showTutorial",'-1')
+    createToast:(msg)=>{
+      setToasts(prevState=>{
+        const id = `${prevState.length}.${msg.slice(0,5)}.${Math.random}`
+        
+        return [...prevState, {id: id, msg:msg}]
+      })
+    },
 
-        appMethods.setShowTutorial(true)
+    createWarningToast:(msg, onClickYes, newID = null, userInput = null)=>{
+      setWarningToasts(prevState=>{
+
+        let id = newID;
+        if (!newID){
+          id = `${prevState.length}.${msg.slice(0,5)}.${Math.random}`
+        } 
+        
+        let toastExists = false
+        prevState.forEach(el=>{
+          if (el.id === id){
+            toastExists = true
+          }
+        })
+
+        if (toastExists){
+          return prevState
+        }
+        else{
+          return [...prevState, {id: id, msg:msg, onClickYes: onClickYes, userInput:userInput}]
+
+        }
+      })
+    },
+
+    startOver:()=>{
+      document.documentElement.scrollTop = 0;
+      appMethods.setWebStyle({
+        siteName: defaultSiteData.siteName,
+        colors: defaultWebStyles.colors,
+        componentStyles : defaultWebStyles.componentStyles
+      })
+      appMethods.setPages(defaultSiteData.pages)
+      appMethods.setMasterNavData(defaultSiteData.masterNavBarData)
+      appMethods.setSocialMedias(defaultSiteData.socialMedias)
+      // localStorage.setItem("showTutorial",'-1')
+
+      appMethods.setShowTutorial(true)
+
+      appMethods.sendMsgPortMsg("clear")
+
+      setTimeout(()=>{
+        
+        apiMethods.setSiteIsDraft(false)
         localStorage.clear()
 
-        appMethods.sendMsgPortMsg("clear")
-
-        setTimeout(()=>{
-          
-          apiMethods.setSiteIsDraft(false)
-
-          // window.location.href='/'
-        },
-        1000)
-      }
-    }  
+        // window.location.href='/'
+      },
+      1000)
+    }
+  }  
 
   function handleWindowSizeChange() {
     const isMobile = window.innerWidth <= 991
@@ -451,6 +488,14 @@ export default function Website(props) {
   function handleWindowSizeChange() {
     const isMobile = window.innerWidth <= 991
     setLocalDisplaySettings({...localDisplaySettings, isMobile:isMobile})
+  }
+
+  function deleteToast(id){
+    setToasts(prevState => prevState.filter(obj => obj.id != id))
+  }
+
+  function deleteWarningToast(id){
+    setWarningToasts(prevState => prevState.filter(obj => obj.id != id))
   }
 
   function generatePageKey(){
@@ -557,9 +602,28 @@ export default function Website(props) {
         </Switch>
       </Router>
     </div>
+    <ToastContainer top center>
+      {/* <ToastYesNo type = {"Warning"} msg = "Are you sure?" callback = {()=>alert("hi")}/> */}
+      {warningToasts.map(obj => <ToastYesNo 
+                                  deleteToast = {()=>deleteWarningToast(obj.id)} 
+                                  type = {"Warning"} msg = {obj.msg} id = {obj.id} 
+                                  onClickYes = {obj.onClickYes} 
+                                  userInput = {obj.userInput}
+                                />)}
+    </ToastContainer>
+    <ToastContainer bottom end>
+      {
+        showTutorial && <ToastTutorial/>
+      }
+      {toasts.map(obj => <Toast deleteToast = {()=>deleteToast(obj.id)} msg = {obj.msg} id = {obj.id}/>)}
+    </ToastContainer>
     </WebContext.Provider>
+   
     </>
+
     
   );
 }
+
+
 

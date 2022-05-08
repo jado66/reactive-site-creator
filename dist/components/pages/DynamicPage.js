@@ -233,7 +233,7 @@ function DynamicPage(props) {
   return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
     style: {
       backgroundColor: marginColor,
-      marginTop: adminSettings.isShowEditor && !props.showTutorial ? "50px" : ""
+      marginTop: adminSettings.isShowEditor ? "50px" : ""
     },
     children: [selectedComponents.length > 0 && /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
       className: "d-flex  ",

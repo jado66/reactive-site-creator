@@ -41,31 +41,32 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+var componentMapping = {
+  Email: _freeSolidSvgIcons.faEnvelope,
+  Facebook: _freeBrandsSvgIcons.faFacebookSquare,
+  Twitter: _freeBrandsSvgIcons.faTwitter,
+  Instagram: _freeBrandsSvgIcons.faInstagram,
+  Youtube: _freeBrandsSvgIcons.faYoutube,
+  Tiktok: _freeBrandsSvgIcons.faTiktok,
+  Discord: _freeBrandsSvgIcons.faDiscord,
+  Etsy: _freeBrandsSvgIcons.faEtsy,
+  Github: _freeBrandsSvgIcons.faGithub,
+  Imdb: _freeBrandsSvgIcons.faImdb,
+  LinkedinIn: _freeBrandsSvgIcons.faLinkedinIn,
+  Patreon: _freeBrandsSvgIcons.faPatreon,
+  Pinterest: _freeBrandsSvgIcons.faPinterestP,
+  Reddit: _freeBrandsSvgIcons.faReddit,
+  Shopify: _freeBrandsSvgIcons.faShopify,
+  Spotify: _freeBrandsSvgIcons.faSpotify,
+  Soundcloud: _freeBrandsSvgIcons.faSoundcloud,
+  Snapchat: _freeBrandsSvgIcons.faSnapchatGhost
+};
+
 function SocialLinks(props) {
   var _useContext = (0, _react.useContext)(_Website.WebContext),
       webStyle = _useContext.webStyle,
       socialMedias = _useContext.socialMedias;
 
-  var componentMapping = {
-    Email: _freeSolidSvgIcons.faEnvelope,
-    Facebook: _freeBrandsSvgIcons.faFacebookSquare,
-    Twitter: _freeBrandsSvgIcons.faTwitter,
-    Instagram: _freeBrandsSvgIcons.faInstagram,
-    Youtube: _freeBrandsSvgIcons.faYoutube,
-    Tiktok: _freeBrandsSvgIcons.faTiktok,
-    Discord: _freeBrandsSvgIcons.faDiscord,
-    Etsy: _freeBrandsSvgIcons.faEtsy,
-    Github: _freeBrandsSvgIcons.faGithub,
-    Imdb: _freeBrandsSvgIcons.faImdb,
-    LinkedinIn: _freeBrandsSvgIcons.faLinkedinIn,
-    Patreon: _freeBrandsSvgIcons.faPatreon,
-    Pinterest: _freeBrandsSvgIcons.faPinterestP,
-    Reddit: _freeBrandsSvgIcons.faReddit,
-    Shopify: _freeBrandsSvgIcons.faShopify,
-    Spotify: _freeBrandsSvgIcons.faSpotify,
-    Soundcloud: _freeBrandsSvgIcons.faSoundcloud,
-    Snapchat: _freeBrandsSvgIcons.faSnapchatGhost
-  };
   var componentStyles = {};
 
   try {

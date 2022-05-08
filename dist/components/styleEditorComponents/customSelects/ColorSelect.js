@@ -36,6 +36,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ColorSelect(props) {
   var colors = [];
 
+  if (props.addBlank) {
+    colors.push({
+      label: "None",
+      value: "#FFFFFF",
+      color: "#FFFFFF"
+    });
+  }
+
   if (props.colors) {
     Object.keys(props.colors).forEach(function (color) {
       var colorName = color.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) {

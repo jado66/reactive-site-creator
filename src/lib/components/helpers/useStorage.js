@@ -99,6 +99,8 @@ function loadFromDatabase(apiMethods, componentID, setValue, setHasBeenMounted){
 }
 
 function informSiteOfDraftEdits(apiMethods){
+    
+
     delayCallback(()=>{
         apiMethods.setSiteIsDraft(true)
     },500)

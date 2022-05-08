@@ -85,6 +85,7 @@ export function BackgroundMenu(props){
           <FocusableItemTT ttText = {"This is the color of the website margins"}>
             <span className="me-2">Margin Color: </span> 
             <ColorSelect 
+              addBlank
               value ={props.webStyle.componentStyles.background.marginColor} 
               onChange = {(selectedOption)=>{props.handleSelectChange("background","marginColor",selectedOption)}}  
               colors = {props.webStyle.colors} 
@@ -323,6 +324,7 @@ export function FooterMenu(props) {
         <FocusableItem>
           <span className="me-3">Margin Color: </span> 
           <ColorSelect 
+            addBlank
             colors = {props.webStyle.colors} 
             value = {props.webStyle.componentStyles.footer.marginColor}
             onChange = {(selectedOption)=>{props.handleSelectChange("footer","marginColor",selectedOption)}}  
@@ -395,6 +397,7 @@ export function MosaicMenu(props) {
         <FocusableItem>
           <span className="me-3">Margin Color: </span> 
           <ColorSelect 
+            addBlank
             colors = {props.webStyle.colors} 
             value = {props.webStyle.componentStyles.mosaic.marginColor}
             onChange = {(selectedOption)=>{props.handleSelectChange("mosaic","marginColor",selectedOption)}}  
@@ -441,6 +444,7 @@ export function HeaderMenu(props) {
           <FocusableItem>
             <span className="me-3">Margin Color: </span> 
             <ColorSelect 
+              addBlank
               colors = {props.webStyle.colors} 
               value = {props.webStyle.componentStyles.header.marginColor}
               onChange = {(selectedOption)=>{props.handleSelectChange("header","marginColor",selectedOption)}}  
@@ -610,7 +614,8 @@ export function NavigationBarMenu(props) {
       { !props.webStyle.componentStyles.all.includeMargins && 
         <FocusableItem>
           <span className="me-3">Margin Color: </span> 
-          <ColorSelect 
+          <ColorSelect
+            addBlank 
             colors = {props.webStyle.colors} 
             value = {props.webStyle.componentStyles.navigationBar.marginColor}
             onChange = {(selectedOption)=>{props.handleSelectChange("navigationBar","marginColor",selectedOption)}}  
@@ -726,6 +731,7 @@ export function TextEditorMenu(props) {
           <FocusableItem>
             <span className="me-3">Margin Color: </span> 
             <ColorSelect 
+              addBlank
               colors = {props.webStyle.colors} 
               value = {props.webStyle.componentStyles.textEditor.marginColor}
               onChange = {(selectedOption)=>{props.handleSelectChange("textEditor","marginColor",selectedOption)}}  
@@ -796,6 +802,7 @@ export function StyledLinkMenu(props) {
           <FocusableItem>
             <span className="me-3">Margin Color: </span> 
             <ColorSelect 
+              addBlank
               colors = {props.webStyle.colors} 
               value = {props.webStyle.componentStyles.styledLink.marginColor}
               onChange = {(selectedOption)=>{props.handleSelectChange("styledLink","marginColor",selectedOption)}}  

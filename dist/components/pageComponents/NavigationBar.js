@@ -13,8 +13,6 @@ var _core = require("@dnd-kit/core");
 
 var _sortable = require("@dnd-kit/sortable");
 
-require("bootstrap/dist/js/bootstrap.bundle.min");
-
 var _modifiers = require("@dnd-kit/modifiers");
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");

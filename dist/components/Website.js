@@ -12,6 +12,12 @@ var _reactRouterDom = require("react-router-dom");
 
 var _history = require("history");
 
+var _Toast = require("./helpers/Toast");
+
+var _Tutorial = _interopRequireDefault(require("./Tutorial"));
+
+require("bootstrap/dist/js/bootstrap.bundle.min");
+
 require("../css/website.css");
 
 require("../css/index.css");
@@ -70,17 +76,28 @@ exports.WebContext = WebContext;
 function Website(props) {
   // const history = useHistory();
   var history = (0, _history.createBrowserHistory)();
+
+  var _useState = (0, _react.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      warningToasts = _useState2[0],
+      setWarningToasts = _useState2[1];
+
+  var _useState3 = (0, _react.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      toasts = _useState4[0],
+      setToasts = _useState4[1];
+
   var images = []; // require.context('../../../public/images', true);
 
-  var _useState = (0, _react.useState)(false),
-      _useState2 = _slicedToArray(_useState, 2),
-      siteIsDraft = _useState2[0],
-      _setSiteIsDraft = _useState2[1];
+  var _useState5 = (0, _react.useState)(false),
+      _useState6 = _slicedToArray(_useState5, 2),
+      siteIsDraft = _useState6[0],
+      _setSiteIsDraft = _useState6[1];
 
-  var _useState3 = (0, _react.useState)(false),
-      _useState4 = _slicedToArray(_useState3, 2),
-      showTutorial = _useState4[0],
-      _setShowTutorial = _useState4[1];
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      showTutorial = _useState8[0],
+      _setShowTutorial = _useState8[1];
 
   var siteData = props.defaultSiteData || _defaultDataEmpty.defaultSiteData; // Components
 
@@ -114,7 +131,7 @@ function Website(props) {
     }
   };
 
-  var _useState5 = (0, _react.useState)({
+  var _useState9 = (0, _react.useState)({
     isEditMode: props.isAdmin || false,
     isShowEditor: props.isAdmin || false,
     isAdmin: props.isAdmin || false,
@@ -122,21 +139,21 @@ function Website(props) {
     autoSaveEditsLocally: true,
     autoUpdateLiveWebsite: false
   }),
-      _useState6 = _slicedToArray(_useState5, 2),
-      adminSettings = _useState6[0],
-      _setAdminSettings = _useState6[1];
+      _useState10 = _slicedToArray(_useState9, 2),
+      adminSettings = _useState10[0],
+      _setAdminSettings = _useState10[1];
 
-  var _useState7 = (0, _react.useState)({
+  var _useState11 = (0, _react.useState)({
     isMobile: false
   }),
-      _useState8 = _slicedToArray(_useState7, 2),
-      localDisplaySettings = _useState8[0],
-      setLocalDisplaySettings = _useState8[1];
+      _useState12 = _slicedToArray(_useState11, 2),
+      localDisplaySettings = _useState12[0],
+      setLocalDisplaySettings = _useState12[1];
 
-  var _useState9 = (0, _react.useState)(""),
-      _useState10 = _slicedToArray(_useState9, 2),
-      msgPort = _useState10[0],
-      setMsgPort = _useState10[1];
+  var _useState13 = (0, _react.useState)(""),
+      _useState14 = _slicedToArray(_useState13, 2),
+      msgPort = _useState14[0],
+      setMsgPort = _useState14[1];
 
   var _useContextStorage = (0, _useContextStorage11.default)(adminSettings, apiMethods, msgPort, "webStyle", {
     siteName: siteData.siteName,
@@ -168,15 +185,15 @@ function Website(props) {
       promoCodes = _useContextStorage10[0],
       _setPromoCodes = _useContextStorage10[1];
 
-  var _useState11 = (0, _react.useState)({}),
-      _useState12 = _slicedToArray(_useState11, 2),
-      cart = _useState12[0],
-      _setCart = _useState12[1];
+  var _useState15 = (0, _react.useState)({}),
+      _useState16 = _slicedToArray(_useState15, 2),
+      cart = _useState16[0],
+      _setCart = _useState16[1];
 
-  var _useState13 = (0, _react.useState)({}),
-      _useState14 = _slicedToArray(_useState13, 2),
-      savedData = _useState14[0],
-      _setSavedData = _useState14[1];
+  var _useState17 = (0, _react.useState)({}),
+      _useState18 = _slicedToArray(_useState17, 2),
+      savedData = _useState18[0],
+      _setSavedData = _useState18[1];
 
   var appMethods = {
     setWebStyle: function setWebStyle(state) {
@@ -353,22 +370,21 @@ function Website(props) {
     },
     saveWebsite: function saveWebsite() {
       // Check if user really wants to publish edits
-      if (window.confirm("Are you sure you want to publish your edits?")) {
-        // If the site-creator is connected to a database
+      appMethods.createWarningToast("Are you sure you want to publish your edits?", function () {
         if (props.saveComponentToDB) {
           appMethods.sendMsgPortMsg("save");
 
           _setSiteIsDraft(false);
         } else {
-          if (window.confirm("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?")) {
-            appMethods.sendMsgPortMsg("save");
+          appMethods.createWarningToast("There is no database connection, thus continueing will result in losing your edits. Are you sure you want to continue?", function () {
+            if (props.saveComponentToDB) {
+              appMethods.sendMsgPortMsg("save");
 
-            _setSiteIsDraft(false);
-          }
+              _setSiteIsDraft(false);
+            }
+          }, "warning-102");
         }
-      } else {
-        alert("Please sign in as Admin to save");
-      }
+      }, "warning-101");
     },
     toggleStyleEditor: function toggleStyleEditor() {
       _setAdminSettings(function (prevState) {
@@ -436,6 +452,44 @@ function Website(props) {
       http.open("POST", url, true);
       http.send(JSON.stringify(data));
     },
+    createToast: function createToast(msg) {
+      setToasts(function (prevState) {
+        var id = "".concat(prevState.length, ".").concat(msg.slice(0, 5), ".").concat(Math.random);
+        return [].concat(_toConsumableArray(prevState), [{
+          id: id,
+          msg: msg
+        }]);
+      });
+    },
+    createWarningToast: function createWarningToast(msg, onClickYes) {
+      var newID = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var userInput = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+      setWarningToasts(function (prevState) {
+        var id = newID;
+
+        if (!newID) {
+          id = "".concat(prevState.length, ".").concat(msg.slice(0, 5), ".").concat(Math.random);
+        }
+
+        var toastExists = false;
+        prevState.forEach(function (el) {
+          if (el.id === id) {
+            toastExists = true;
+          }
+        });
+
+        if (toastExists) {
+          return prevState;
+        } else {
+          return [].concat(_toConsumableArray(prevState), [{
+            id: id,
+            msg: msg,
+            onClickYes: onClickYes,
+            userInput: userInput
+          }]);
+        }
+      });
+    },
     startOver: function startOver() {
       document.documentElement.scrollTop = 0;
       appMethods.setWebStyle({
@@ -448,10 +502,10 @@ function Website(props) {
       appMethods.setSocialMedias(_defaultDataEmpty.defaultSiteData.socialMedias); // localStorage.setItem("showTutorial",'-1')
 
       appMethods.setShowTutorial(true);
-      localStorage.clear();
       appMethods.sendMsgPortMsg("clear");
       setTimeout(function () {
-        apiMethods.setSiteIsDraft(false); // window.location.href='/'
+        apiMethods.setSiteIsDraft(false);
+        localStorage.clear(); // window.location.href='/'
       }, 1000);
     }
   };
@@ -518,6 +572,22 @@ function Website(props) {
     }));
   }
 
+  function _deleteToast(id) {
+    setToasts(function (prevState) {
+      return prevState.filter(function (obj) {
+        return obj.id != id;
+      });
+    });
+  }
+
+  function deleteWarningToast(id) {
+    setWarningToasts(function (prevState) {
+      return prevState.filter(function (obj) {
+        return obj.id != id;
+      });
+    });
+  }
+
   function generatePageKey() {
     var newID = -1;
 
@@ -567,7 +637,7 @@ function Website(props) {
     }, name + "Route");
   });
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_jsxRuntime.Fragment, {
-    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(WebContext.Provider, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(WebContext.Provider, {
       value: {
         images: images,
         localDisplaySettings: localDisplaySettings,
@@ -585,7 +655,7 @@ function Website(props) {
         appMethods: appMethods,
         apiMethods: apiMethods
       },
-      children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
+      children: [/*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
         className: "App",
         style: {
           minHeight: "100vh"
@@ -620,7 +690,34 @@ function Website(props) {
             })]
           })
         })
-      })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Toast.ToastContainer, {
+        top: true,
+        center: true,
+        children: warningToasts.map(function (obj) {
+          return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Toast.ToastYesNo, {
+            deleteToast: function deleteToast() {
+              return deleteWarningToast(obj.id);
+            },
+            type: "Warning",
+            msg: obj.msg,
+            id: obj.id,
+            onClickYes: obj.onClickYes,
+            userInput: obj.userInput
+          });
+        })
+      }), /*#__PURE__*/(0, _jsxRuntime.jsxs)(_Toast.ToastContainer, {
+        bottom: true,
+        end: true,
+        children: [showTutorial && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tutorial.default, {}), toasts.map(function (obj) {
+          return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Toast.Toast, {
+            deleteToast: function deleteToast() {
+              return _deleteToast(obj.id);
+            },
+            msg: obj.msg,
+            id: obj.id
+          });
+        })]
+      })]
     })
   });
 }

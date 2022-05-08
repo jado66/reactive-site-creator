@@ -6,6 +6,10 @@ export default function ColorSelect(props) {
     
     let colors = []
 
+    if (props.addBlank){
+        colors.push({label:"None",value:"#FFFFFF",color:"#FFFFFF"})
+    }
+
     if (props.colors){
         Object.keys(props.colors).forEach(color=>{
             const colorName = color.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); })

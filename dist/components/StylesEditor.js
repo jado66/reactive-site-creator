@@ -40,8 +40,6 @@ var _OptionSelect = _interopRequireDefault(require("./styleEditorComponents/cust
 
 var _ComponentMenus = require("./styleEditorComponents/ComponentMenus");
 
-var _Tutorial = _interopRequireDefault(require("./Tutorial"));
-
 var _jsxRuntime = require("react/jsx-runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -152,12 +150,10 @@ function StylesEditor(props) {
   };
 
   var deletePage = function deletePage(pageName, index) {
-    var sureDelete = prompt("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), "");
-
-    if (sureDelete === "YES") {
+    appMethods.createWarningToast("Are you sure you would like to delete the page ".concat(pageName, "? This action is irreversible. Type \"YES\" to delete this page:"), function () {
       setTempPages([].concat(_toConsumableArray(tempPages.slice(0, index)), _toConsumableArray(tempPages.slice(index + 1))));
       appMethods.setPages([].concat(_toConsumableArray(pages.slice(0, index)), _toConsumableArray(pages.slice(index + 1))));
-    }
+    }, "warning-101", "YES");
   };
 
   var addPage = function addPage() {
@@ -365,6 +361,11 @@ function StylesEditor(props) {
     handleStyleChange: handleStyleChange
   })), _componentStyleMenus);
   var socialMediaSelectOptions = [/*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
+    selected: true,
+    disabled: true,
+    className: "hidden",
+    children: "New Link"
+  }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Facebook"
   }), /*#__PURE__*/(0, _jsxRuntime.jsx)("option", {
     children: "Twitter"
@@ -562,14 +563,14 @@ function StylesEditor(props) {
     style: {
       top: 0,
       zIndex: 999,
-      position: props.showTutorial ? "" : "fixed"
+      position: "fixed"
     },
-    children: /*#__PURE__*/(0, _jsxRuntime.jsxs)(UserPreferencesContext.Provider, {
+    children: /*#__PURE__*/(0, _jsxRuntime.jsx)(UserPreferencesContext.Provider, {
       value: {
         userEditorPreferences: userEditorPreferences,
         setShowTooltips: setShowTooltips
       },
-      children: [/*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
+      children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
         className: "row m-auto w-100 border-bottom border-dark bg-light",
         style: {
           zIndex: 2
@@ -996,7 +997,16 @@ function StylesEditor(props) {
                   type: "checkbox",
                   checked: adminSettings.autoUpdateLiveWebsite,
                   onClick: function onClick(evt) {
-                    if (window.confirm("Are you sure you would like to auto publish ALL edits?")) {
+                    if (!adminSettings.autoUpdateLiveWebsite) {
+                      appMethods.createWarningToast("Are you sure you would like to auto publish ALL edits?", function () {
+                        appMethods.setAdminSettings(function (prevState) {
+                          return _objectSpread(_objectSpread({}, prevState), {}, {
+                            autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
+                            autoUpdateLiveWebsite: prevState.autoSaveEditsLocally
+                          });
+                        });
+                      }, "warning-100");
+                    } else {
                       appMethods.setAdminSettings(function (prevState) {
                         return _objectSpread(_objectSpread({}, prevState), {}, {
                           autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
@@ -1042,9 +1052,13 @@ function StylesEditor(props) {
               })]
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuDivider, {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
               label: "Editor Settings",
-              menuClassName: "border border-dark",
+              menuClassName: "border border-dark p-0",
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+                className: "py-2",
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+                  style: {
+                    padding: "6px 0"
+                  },
                   onClick: function onClick(evt) {
                     appMethods.setAdminSettings(function (prevState) {
                       return _objectSpread(_objectSpread({}, prevState), {}, {
@@ -1057,15 +1071,17 @@ function StylesEditor(props) {
               })
             }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.SubMenu, {
               label: "Danger Zone",
-              menuClassName: "border border-dark",
+              menuClassName: "border border-dark p-0",
               children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactMenu.MenuItem, {
+                className: "py-2",
                 children: /*#__PURE__*/(0, _jsxRuntime.jsx)("a", {
+                  style: {
+                    padding: "6px 0"
+                  },
                   onClick: function onClick(evt) {
-                    var sureDelete = prompt("Are you sure you would like to delete all site data? This action is irreversible. Type \"YES\" to start over:", "");
-
-                    if (sureDelete === "YES") {
+                    appMethods.createWarningToast("Are you sure you would like to delete all site data? This action is irreversible. Type \"YES\" to start over:", function () {
                       appMethods.startOver();
-                    }
+                    }, "warning-101", "YES");
                   },
                   children: "Delete Site Data"
                 })
@@ -1231,7 +1247,7 @@ function StylesEditor(props) {
             children: siteIsDraft ? "Draft Site" : "Live Site"
           })]
         })]
-      }), props.showTutorial && /*#__PURE__*/(0, _jsxRuntime.jsx)(_Tutorial.default, {})]
+      })
     })
   });
 }

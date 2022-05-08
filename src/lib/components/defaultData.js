@@ -9,6 +9,7 @@ import Mosaic from "../components/pageComponents/Mosaic";
 import Footer from "../components/pageComponents/Footer";
 import SubscriberBox from "../components/pageComponents/SubscriberBox";
 import PhotoGallery from "../components/pageComponents/PhotoGallery";
+import FileStorage from "./pageComponents/FileStorage";
 
 export const defaultSiteData = {
   siteName: "New Website",
@@ -156,6 +157,13 @@ export const defaultWebStyles = {
       backgroundColor: "lightShade",
 
     },
+    fileStorage:{
+      marginColor:"",
+      backgroundColor:"lightAccent",
+      textColor:"darkShade",
+      pictureBackgroundColor:"",
+
+    },
     mosaic:{
       marginColor: "",
       arrangement: "LP,RL-LL,RP",
@@ -274,4 +282,9 @@ export const defaultComponentOptions = {
     component: PhotoGallery,
     isNestedComponent: true
   }, 
+  FileStorage: {
+    componentName: "File Storage",
+    component: FileStorage,
+    isNestedComponent: false
+  }
 }

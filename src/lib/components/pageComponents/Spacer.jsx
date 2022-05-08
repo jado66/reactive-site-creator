@@ -33,7 +33,7 @@ export default function Spacer(props) {
       
     >
       <div 
-        className={"relative " +(isShowBar && ! isShowButtons?"bg-primary":"")}
+        className={"relative " +(isShowBar && ! isShowButtons?"bg-primary ":"") +(props.index == "-1"?"mt-3":"")}
         style={{marginTop:'-2px', height:"4px"}}
         onMouseEnter={() => 
           showBar(true)
@@ -56,6 +56,7 @@ export default function Spacer(props) {
               <div style={{display:"flex", flexDirection:"row"}} >
                   {/* <button style={{width:"5%"}} className="btn btn-light btn-outline-secondary my-1 g-0" onClick={()=>{this.closeAddComponents()}}>{"X"}</button> */}
                   {/* <button style={{width:"5%"}} className="btn btn-light btn-outline-secondary my-1 g-0" onMouseUp={()=>{this.onMouseUp()}} onMouseDown={()=>{this.onMouseDown(true)}}>{"<"}</button> */}
+                  
                   {optionButtons}
                   {/* <button style={{width:"5%"}} className="btn btn-light btn-outline-secondary my-1 g-0" onMouseUp={()=>{this.onMouseUp()}} onMouseDown={()=>{this.onMouseDown(false)}}>{">"}</button> */}
               </div>

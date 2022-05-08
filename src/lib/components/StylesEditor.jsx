@@ -24,7 +24,6 @@ import ColorSelect from "./styleEditorComponents/customSelects/ColorSelect";
 import OptionSelect from "./styleEditorComponents/customSelects/OptionSelect";
 
 import { HeaderMenu, FooterMenu, NavigationBarMenu, LinkBoxMenu, PictureFrameMenu, StyledLinkMenu, PictureSlideShowMenu, TextEditorMenu, SubscriberCardMenu, MosaicMenu, BackgroundMenu, SubscriberBoxMenu, PhotoGalleryMenu } from "./styleEditorComponents/ComponentMenus";
-import Tutorial from "./Tutorial";
 
 export const UserPreferencesContext = createContext()
 
@@ -78,13 +77,11 @@ export default function StylesEditor(props) {
   }
 
   const deletePage = (pageName, index) => {
-    let sureDelete = prompt(`Are you sure you would like to delete the page ${pageName}? This action is irreversible. Type "YES" to delete this page:`, "");
 
-    if (sureDelete === "YES"){
+    appMethods.createWarningToast(`Are you sure you would like to delete the page ${pageName}? This action is irreversible. Type "YES" to delete this page:`, ()=>{
       setTempPages([...tempPages.slice(0,index) ,...tempPages.slice(index+1)]);
       appMethods.setPages([...pages.slice(0,index) ,...pages.slice(index+1)])
-
-    }
+    }, "warning-101","YES")
   }
 
   const addPage = () =>{
@@ -317,6 +314,7 @@ export default function StylesEditor(props) {
   };  
 
 const socialMediaSelectOptions = [
+  <option selected disabled className="hidden">New Link</option>,
   <option>Facebook</option>,
   <option>Twitter</option>,
   <option>Instagram</option>,
@@ -401,7 +399,7 @@ const socialMediaSelectOptions = [
 // 
   return (
     
-    <div className={"nav nav-fill container-fluid  g-0   "+showRibbonClass} style={{top: 0,zIndex:999, position:props.showTutorial?"":"fixed"}} >
+    <div className={"nav nav-fill container-fluid  g-0   "+showRibbonClass} style={{top: 0,zIndex:999, position:"fixed"}} >
       <UserPreferencesContext.Provider value = {
           {
             userEditorPreferences: userEditorPreferences,
@@ -682,15 +680,24 @@ const socialMediaSelectOptions = [
                             checked = {adminSettings.autoUpdateLiveWebsite}
                             onClick={(evt)=>
                               {
-                                if (window.confirm("Are you sure you would like to auto publish ALL edits?")){
-                                
+                                if (!adminSettings.autoUpdateLiveWebsite){
+                                  appMethods.createWarningToast("Are you sure you would like to auto publish ALL edits?", ()=>{
+                                    appMethods.setAdminSettings((prevState) => ({
+                                      ...prevState,
+                                      autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
+                                      autoUpdateLiveWebsite: prevState.autoSaveEditsLocally,
+
+                                    }))
+                                  }, "warning-100")
+                                }
+                                else{
                                   appMethods.setAdminSettings((prevState) => ({
                                     ...prevState,
                                     autoSaveEditsLocally: !prevState.autoSaveEditsLocally,
                                     autoUpdateLiveWebsite: prevState.autoSaveEditsLocally,
 
                                   }))
-                                } 
+                                }
                               } }
                           />
                           <label className="form-check-label" >Auto Publish</label> 
@@ -717,9 +724,9 @@ const socialMediaSelectOptions = [
                   }
                   
                   <MenuDivider />
-                  <SubMenu label={"Editor Settings"} menuClassName={"border border-dark"}>
-                    <MenuItem>
-                      <a onClick={(evt)=>
+                  <SubMenu label={"Editor Settings"} menuClassName={"border border-dark p-0"}>
+                    <MenuItem className={"py-2"}>
+                      <a style={{padding:"6px 0"}} onClick={(evt)=>
                         {
                           appMethods.setAdminSettings((prevState) => ({
                             ...prevState,
@@ -733,15 +740,13 @@ const socialMediaSelectOptions = [
                     </MenuItem>
                     
                   </SubMenu>
-                  <SubMenu label={"Danger Zone"} menuClassName={"border border-dark"}>
-                    <MenuItem>
-                      <a onClick={(evt)=>
+                  <SubMenu label={"Danger Zone"} menuClassName={"border border-dark p-0"}>
+                    <MenuItem className={"py-2"}>
+                      <a style={{padding:"6px 0"}} onClick={(evt)=>
                         {   
-                          let sureDelete = prompt(`Are you sure you would like to delete all site data? This action is irreversible. Type "YES" to start over:`, "");
-
-                          if (sureDelete === "YES"){
+                          appMethods.createWarningToast(`Are you sure you would like to delete all site data? This action is irreversible. Type "YES" to start over:`, ()=>{
                             appMethods.startOver()
-                          }
+                          }, "warning-101","YES")
                         }}
                       >
 
@@ -852,9 +857,7 @@ const socialMediaSelectOptions = [
 
           </div>
         </div>
-        {props.showTutorial &&
-          <Tutorial/>
-        }
+      
       </UserPreferencesContext.Provider>
     </div>   
   );

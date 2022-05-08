@@ -12,7 +12,6 @@ import {
   horizontalListSortingStrategy,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import "bootstrap/dist/js/bootstrap.bundle.min";
 
 import {
   restrictToVerticalAxis,
@@ -21,7 +20,7 @@ import {
 
 
 
-import { faCaretSquareDown,  faPencilAlt ,faArrowsAlt, faShoppingCart, faBars, faCog, faL, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCaretSquareDown,  faPencilAlt, faShoppingCart, faBars, faCog, faCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookSquare, faTwitter, faInstagram, faYoutube, faTiktok, faDiscord, faEtsy, faGithub, faImdb, faLinkedinIn,faPatreon, faPinterestP, faReddit, faShopify, faSpotify, faSoundcloud, faSnapchatGhost } from "@fortawesome/free-brands-svg-icons"

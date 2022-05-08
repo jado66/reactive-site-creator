@@ -65,7 +65,7 @@ function Spacer(props) {
     // style={{ height: (isShowButtons?"2.5em":".5em") }}
     ,
     children: /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
-      className: "relative " + (isShowBar && !isShowButtons ? "bg-primary" : ""),
+      className: "relative " + (isShowBar && !isShowButtons ? "bg-primary " : "") + (props.index == "-1" ? "mt-3" : ""),
       style: {
         marginTop: '-2px',
         height: "4px"

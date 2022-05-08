@@ -27,6 +27,8 @@ var _SubscriberBox = _interopRequireDefault(require("./pageComponents/Subscriber
 
 var _PhotoGallery = _interopRequireDefault(require("./pageComponents/PhotoGallery"));
 
+var _FileStorage = _interopRequireDefault(require("./pageComponents/FileStorage"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var defaultSiteData = {
@@ -71,6 +73,12 @@ var defaultWebStyles = {
       marginColor: "lightShade",
       backgroundColor: "lightAccent",
       applyBackground: false
+    },
+    fileStorage: {
+      marginColor: "",
+      backgroundColor: "lightAccent",
+      textColor: "darkShade",
+      pictureBackgroundColor: ""
     },
     header: {
       size: "h2",
@@ -186,6 +194,11 @@ var defaultComponentOptions = {
     componentName: "Photo Gallery",
     component: _PhotoGallery.default,
     isNestedComponent: true
+  },
+  FileStorage: {
+    componentName: "File Storage",
+    component: _FileStorage.default,
+    isNestedComponent: false
   }
 };
 exports.defaultComponentOptions = defaultComponentOptions;

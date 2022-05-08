@@ -190,7 +190,7 @@ export default function DynamicPage(props) {
   let includeMargins = webStyle.componentStyles.all.includeMargins
 
   return (
-    <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor && !props.showTutorial ?"50px":""}}> 
+    <div style ={{backgroundColor:marginColor, marginTop:adminSettings.isShowEditor ?"50px":""}}> 
     {/* marginTop:adminSettings.isShowEditor?"50px":"" */}
        {selectedComponents.length > 0 && 
         <div className="d-flex  " style={{position:"absolute", width:"100vw", zIndex:2000}}>

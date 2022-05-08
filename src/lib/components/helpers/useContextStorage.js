@@ -116,6 +116,7 @@ export default function useContextStorage(adminSettings, apiMethods, msgPort, co
 }
   
   function informSiteOfDraftEdits(apiMethods){
+
     delayCallback(()=>{
       apiMethods.setSiteIsDraft(true)
     },500)
