@@ -19,9 +19,7 @@ export const defaultSiteData = {
         name:"Home",
         path:"/",
         components:
-          [
-            
-          ]
+        [{"name":"Header","id":"Home-Header--1141","content":{}},{"name":"Mosaic","id":"Home-Mosaic-0569","content":{}}]
       }
     ],
   masterNavBarData: 

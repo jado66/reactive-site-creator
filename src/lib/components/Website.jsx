@@ -31,6 +31,7 @@ import { defaultSiteData, defaultWebStyles, defaultComponentOptions } from "./de
 import ShopManager from "./pages/ShopManager";
 
 import {ciede2000, rgbToHex} from "./helpers/colorDiff";
+import { coolColors } from "./coolorsPalettes";
 
 
 export const WebContext = createContext()
@@ -311,63 +312,57 @@ export default function Website(props) {
       setSavedData(newSavedData)
     },
     getRandomColors:()=>{
-      var url = "http://colormind.io/api/";
-      var data = {
-        model : "default",
-        input : [[Math.floor(Math.random() * 56),Math.floor(Math.random() * 56),Math.floor(Math.random() * 56)],"N","N","N",[Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220,Math.floor(Math.random() * 36)+220]]
+      let paletteHex = coolColors[Math.floor(Math.random()*(coolColors.length-1))]
+  
+
+      let palette = []
+  
+      for (var i = 0; i < 5; i++){
+        palette.push(hexToRgb(paletteHex[i]))
       }
-      
-      var http = new XMLHttpRequest();
-      
-      http.onreadystatechange = function() {
-        // alert(http.readyState)
-        if(http.readyState == 4 && http.status == 200) {
-          var palette = JSON.parse(http.responseText).result;
-          // var palette = [[190,213,243],[0,0,0],[255,255,255],[105,180,95],[3,8,9]]
-          var diff = []
+  
+      // alert(JSON.stringify(palette))
 
-          for (var i = 0; i < 5; i++){
-            diff.push(ciede2000(palette[i],[0,0,0]))
-          }
 
+      var diff = []
+  
+      for (var i = 0; i < 5; i++){
+        diff.push(ciede2000(palette[i],[0,0,0]))
+      }
+  
           //1) combine the arrays:
-          let list = [    
-            [palette[0], diff[0]],
-            [palette[1], diff[1]],
-            [palette[2], diff[2]],
-            [palette[3], diff[3]],
-            [palette[4], diff[4]]
-          ]
-          //2) sort:
-          list.sort((a, b) => b[1] - a[1]);
-
-          // alert(JSON.stringify(list))
-
-          let hexColors = []
-          //3) separate them back out:
-          for (var k = 0; k < 5; k++) {
-            hexColors.push(rgbToHex(list[k][0]));
-          }
-
-          appMethods.setWebStyle(
-            {
-              ...webStyle,
-              colors:{
-                ...webStyle.colors,
-                lightShade: hexColors[0],
-                lightAccent: hexColors[1],
-                mainBrandColor: hexColors[2],
-                darkAccent: hexColors[3],
-                darkShade: hexColors[4]
-              }
-            }
-          )     
-        }
+      let list = [    
+        [palette[0], diff[0]],
+        [palette[1], diff[1]],
+        [palette[2], diff[2]],
+        [palette[3], diff[3]],
+        [palette[4], diff[4]]
+      ]
+      //2) sort:
+      list.sort((a, b) => b[1] - a[1]);
+  
+        // alert(JSON.stringify(list))
+  
+      let hexColors = []
+      //3) separate them back out:
+      for (var k = 0; k < 5; k++) {
+        hexColors.push(rgbToHex(list[k][0]));
       }
-      
-      http.open("POST", url, true);
-      http.send(JSON.stringify(data));
-      },
+  
+      appMethods.setWebStyle(
+        {
+          ...webStyle,
+          colors:{
+            ...webStyle.colors,
+            lightShade: hexColors[0],
+            lightAccent: hexColors[1],
+            mainBrandColor: hexColors[2],
+            darkAccent: hexColors[3],
+            darkShade: hexColors[4]
+          }
+        }
+      )         
+    },
 
     createToast:(msg)=>{
       setToasts(prevState=>{
@@ -627,3 +622,11 @@ export default function Website(props) {
 
 
 
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+   ] : null;
+}
